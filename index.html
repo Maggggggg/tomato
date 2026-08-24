@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tomato Mutations</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #18212b, #0d1117);
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 18px 10px 10px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.subtitle {
+    color: #aeb9c4;
+    margin-top: 5px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 12px;
+}
+
+.stat {
+    background: #202b36;
+    border: 1px solid #344454;
+    border-radius: 12px;
+    padding: 10px 15px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.game {
+    width: min(900px, 94%);
+    margin: auto;
+}
+
+.field {
+    min-height: 250px;
+    background:
+        radial-gradient(circle at 20% 20%, #315f2c 0 3%, transparent 4%),
+        radial-gradient(circle at 70% 70%, #315f2c 0 3%, transparent 4%),
+        linear-gradient(#39743a, #245b2b);
+    border: 4px solid #172f19;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: inset 0 0 30px #102813;
+}
+
+.tomato {
+    font-size: 100px;
+    line-height: 1;
+    filter: drop-shadow(0 8px 5px rgba(0,0,0,.35));
+    animation: bounce .8s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-7px); }
+}
+
+.tomatoName {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.value {
+    font-size: 20px;
+    color: #ffd95a;
+    margin-top: 5px;
+}
+
+button {
+    border: 0;
+    border-radius: 14px;
+    padding: 15px 22px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    background: #e74c3c;
+    box-shadow: 0 5px 0 #a82d22;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #a82d22;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 18px 0;
+}
+
+.mutate {
+    background: #9b59b6;
+    box-shadow: 0 5px 0 #713d85;
+}
+
+.mutate:active {
+    box-shadow: 0 1px 0 #713d85;
+}
+
+.sell {
+    background: #f39c12;
+    box-shadow: 0 5px 0 #a96505;
+}
+
+.sell:active {
+    box-shadow: 0 1px 0 #a96505;
+}
+
+.reset {
+    background: #34495e;
+    box-shadow: 0 5px 0 #1e2c38;
+}
+
+.panel {
+    background: #18232d;
+    border: 1px solid #344454;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 15px;
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-size: 21px;
+}
+
+.mutations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mutation {
+    background: #273544;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+.mutation.common {
+    border: 1px solid #62c370;
+}
+
+.mutation.rare {
+    border: 1px solid #4da6ff;
+}
+
+.mutation.epic {
+    border: 1px solid #b66cff;
+}
+
+.mutation.legendary {
+    border: 1px solid #ffb52e;
+}
+
+.mutation.mythic {
+    border: 1px solid #ff4f81;
+}
+
+.log {
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: #cbd5df;
+}
+
+.log div {
+    padding: 5px 0;
+    border-bottom: 1px solid #26333f;
+}
+
+.progress {
+    height: 14px;
+    background: #10171e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progressBar {
+    height: 100%;
+    width: 0%;
+    background: #e74c3c;
+    transition: width .2s;
+}
+
+.info {
+    text-align: center;
+    color: #9eabb7;
+    font-size: 13px;
+    margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍅 Tomato Mutations</h1>
+    <div class="subtitle">Crée la tomate la plus mutée possible !</div>
+</header>
+
+<div class="stats">
+    <div class="stat">
+        💰 Argent<br>
+        <strong id="money">$0</strong>
+    </div>
+
+    <div class="stat">
+        🧬 Mutations<br>
+        <strong id="mutationCount">0</strong>
+    </div>
+
+    <div class="stat">
+        🌱 Génération<br>
+        <strong id="generation">1</strong>
+    </div>
+</div>
+
+<main class="game">
+
+    <section class="field">
+        <div class="tomato" id="tomato">🍅</div>
+        <div class="tomatoName" id="tomatoName">Tomate normale</div>
+        <div class="value" id="tomatoValue">$10</div>
+    </section>
+
+    <div class="buttons">
+
+        <button class="mutate" id="mutateButton" type="button">
+            🧬 MUTER
+        </button>
+
+        <button class="sell" id="sellButton" type="button">
+            💰 VENDRE
+        </button>
+
+        <button class="reset" id="newButton" type="button">
+            🌱 NOUVELLE TOMATE
+        </button>
+
+    </div>
+
+    <section class="panel">
+        <h2>🧬 Mutations de la tomate</h2>
+        <div id="mutationList" class="mutations">
+            <div class="mutation">Aucune mutation</div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>⚡ Puissance génétique</h2>
+        <div>
+            <span id="chanceText">Chance de mutation : 100%</span>
+        </div>
+
+        <div class="progress">
+            <div class="progressBar" id="progressBar"></div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>📜 Journal</h2>
+        <div class="log" id="log"></div>
+    </section>
+
+    <div class="info">
+        Les mutations multiples sont extrêmement rares. Certaines tomates peuvent théoriquement atteindre 200 mutations.
+    </div>
+
+</main>
+
+<script>
+"use strict";
+
+/* =========================================================
+   TOMATO MUTATIONS
+   ========================================================= */
+
+/* Argent du joueur */
+let money = Number(localStorage.getItem("tomatoMoney")) || 0;
+
+/* Génération actuelle */
+let generation = Number(localStorage.getItem("tomatoGeneration")) || 1;
+
+/* Mutations de la tomate actuelle */
+let mutations = [];
+
+/* =========================================================
+   LISTE DES MUTATIONS
+   ========================================================= */
+
+const MUTATIONS = [
+
+    { name: "Géante", multiplier: 2, rarity: 35, tier: "common" },
+    { name: "Petite", multiplier: 1.5, rarity: 35, tier: "common" },
+    { name: "Dorée", multiplier: 5, rarity: 20, tier: "rare" },
+    { name: "Bleue", multiplier: 6, rarity: 18, tier: "rare" },
+    { name: "Verte", multiplier: 4, rarity: 18, tier: "rare" },
+    { name: "Cristallisée", multiplier: 10, rarity: 10, tier: "epic" },
+    { name: "Électrique", multiplier: 12, rarity: 8, tier: "epic" },
+    { name: "Enflammée", multiplier: 15, rarity: 7, tier: "epic" },
+    { name: "Glacée", multiplier: 18, rarity: 6, tier: "epic" },
+    { name: "Arc-en-ciel", multiplier: 30, rarity: 3, tier: "legendary" },
+    { name: "Galactique", multiplier: 50, rarity: 1.5, tier: "legendary" },
+    { name: "Cosmique", multiplier: 100, rarity: 0.5, tier: "mythic" },
+    { name: "Divine", multiplier: 250, rarity: 0.15, tier: "mythic" },
+    { name: "Omniverselle", multiplier: 1000, rarity: 0.02, tier: "mythic" }
+
+];
+
+/* =========================================================
+   OUTILS
+   ========================================================= */
+
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function formatMoney(number) {
+
+    if (number < 1000) {
+        return "$" + Math.floor(number);
+    }
+
+    if (number < 1000000) {
+        return "$" + (number / 1000).toFixed(1) + "K";
+    }
+
+    if (number < 1000000000) {
+        return "$" + (number / 1000000).toFixed(2) + "M";
+    }
+
+    if (number < 1000000000000) {
+        return "$" + (number / 1000000000).toFixed(2) + "B";
+    }
+
+    return "$" + (number / 1000000000000).toFixed(2) + "T";
+}
+
+/* =========================================================
+   CHOISIR UNE MUTATION
+   ========================================================= */
+
+function chooseMutation() {
+
+    let total = MUTATIONS.reduce((sum, mutation) => {
+        return sum + mutation.rarity;
+    }, 0);
+
+    let roll = Math.random() * total;
+
+    for (const mutation of MUTATIONS) {
+
+        roll -= mutation.rarity;
+
+        if (roll <= 0) {
+            return mutation;
+        }
+    }
+
+    return MUTATIONS[0];
+}
+
+/* =========================================================
+   NOMBRE DE MUTATIONS EN UNE FOIS
+   ========================================================= */
+
+function getMutationAmount() {
+
+    const roll = Math.random();
+
+    /*
+       1 mutation : très fréquent
+       2 mutations : moins fréquent
+       3 mutations : rare
+       4 mutations : très rare
+       5 mutations : extrêmement rare
+       6-10 : légendaire
+       11-50 : quasiment impossible
+       51-200 : événement extrêmement exceptionnel
+    */
+
+    if (roll < 0.965) return 1;
+
+    if (roll < 0.992) return 2;
+
+    if (roll < 0.998) return 3;
+
+    if (roll < 0.9995) return 4;
+
+    if (roll < 0.9998) return 5;
+
+    if (roll < 0.99995) return Math.floor(random(6, 11));
+
+    if (roll < 0.999995) return Math.floor(random(11, 51));
+
+    return Math.floor(random(51, 201));
+}
+
+/* =========================================================
+   MUTER
+   ========================================================= */
+
+function mutateTomato() {
+
+    const amount = getMutationAmount();
+
+    let added = [];
+
+    for (let i = 0; i < amount; i++) {
+
+        const mutation = chooseMutation();
+
+        /*
+           On autorise plusieurs exemplaires d'une même mutation.
+           Cela permet d'avoir des combinaisons énormes.
+        */
+
+        mutations.push(mutation);
+
+        added.push(mutation);
+    }
+
+    updateInterface();
+
+    if (amount === 1) {
+
+        addLog(
+            "🧬 Mutation obtenue : <strong>" +
+            added[0].name +
+            "</strong>"
+        );
+
+    } else {
+
+        addLog(
+            "🔥 <strong>" +
+            amount +
+            " MUTATIONS EN UNE FOIS !</strong>"
+        );
+    }
+
+    /*
+       Si énormément de mutations sont obtenues,
+       afficher un message spécial.
+    */
+
+    if (amount >= 10) {
+
+        addLog(
+            "🌟 INCROYABLE ! Une mutation multiple exceptionnelle !"
+        );
+    }
+
+    if (amount >= 50) {
+
+        addLog(
+            "💀 <strong>ÉVÉNEMENT IMPOSSIBLEMENT RARE : " +
+            amount +
+            " MUTATIONS !</strong>"
+        );
+    }
+
+    saveGame();
+}
+
+/* =========================================================
+   VALEUR DE LA TOMATE
+   ========================================================= */
+
+function calculateValue() {
+
+    let value = 10;
+
+    for (const mutation of mutations) {
+        value *= mutation.multiplier;
+    }
+
+    /*
+       Bonus supplémentaire selon le nombre de mutations.
+    */
+
+    if (mutations.length >= 10) {
+        value *= 2;
+    }
+
+    if (mutations.length >= 25) {
+        value *= 5;
+    }
+
+    if (mutations.length >= 50) {
+        value *= 20;
+    }
+
+    if (mutations.length >= 100) {
+        value *= 100;
+    }
+
+    if (mutations.length >= 200) {
+        value *= 10000;
+    }
+
+    return value;
+}
+
+/* =========================================================
+   INTERFACE
+   ========================================================= */
+
+function updateInterface() {
+
+    document.getElementById("money").textContent =
+        formatMoney(money);
+
+    document.getElementById("mutationCount").textContent =
+        mutations.length;
+
+    document.getElementById("generation").textContent =
+        generation;
+
+    const value = calculateValue();
+
+    document.getElementById("tomatoValue").textContent =
+        formatMoney(value);
+
+    /*
+       Nom de la tomate
+    */
+
+    if (mutations.length === 0) {
+
+        document.getElementById("tomatoName").textContent =
+            "Tomate normale";
+
+    } else if (mutations.length === 1) {
+
+        document.getElementById("tomatoName").textContent =
+            "Tomate " + mutations[0].name;
+
+    } else {
+
+        document.getElementById("tomatoName").textContent =
+            "Tomate mutée ×" + mutations.length;
+    }
+
+    /*
+       Afficher les mutations
+    */
+
+    const list = document.getElementById("mutationList");
+
+    list.innerHTML = "";
+
+    if (mutations.length === 0) {
+
+        list.innerHTML =
+            '<div class="mutation">Aucune mutation</div>';
+
+    } else {
+
+        /*
+           Pour éviter de créer 200 éléments identiques,
+           on regroupe les mutations.
+        */
+
+        const counts = {};
+
+        for (const mutation of mutations) {
+
+            if (!counts[mutation.name]) {
+                counts[mutation.name] = {
+                    mutation: mutation,
+                    count: 0
+                };
+            }
+
+            counts[mutation.name].count++;
+        }
+
+        for (const key in counts) {
+
+            const data = counts[key];
+
+            const element = document.createElement("div");
+
+            element.className =
+                "mutation " + data.mutation.tier;
+
+            element.textContent =
+                "🧬 " +
+                data.mutation.name +
+                (data.count > 1 ? " ×" + data.count : "");
+
+            list.appendChild(element);
+        }
+    }
+
+    /*
+       Barre de progression jusqu'à 200 mutations
+    */
+
+    const progress =
+        Math.min((mutations.length / 200) * 100, 100);
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+
+    document.getElementById("chanceText").textContent =
+        "Mutations : " + mutations.length + " / 200";
+
+}
+
+/* =========================================================
+   VENDRE
+   ========================================================= */
+
+function sellTomato() {
+
+    if (mutations.length === 0) {
+
+        addLog("❌ Cette tomate n'a aucune mutation.");
+
+        return;
+    }
+
+    const value = calculateValue();
+
+    money += value;
+
+    addLog(
+        "💰 Tomate vendue pour <strong>" +
+        formatMoney(value) +
+        "</strong> !"
+    );
+
+    updateInterface();
+
+    saveGame();
+}
+
+/* =========================================================
+   NOUVELLE TOMATE
+   ========================================================= */
+
+function newTomato() {
+
+    mutations = [];
+
+    generation++;
+
+    addLog(
+        "🌱 Nouvelle tomate plantée ! Génération " +
+        generation
+    );
+
+    updateInterface();
+
+    saveGame();
+}
+
+/* =========================================================
+   JOURNAL
+   ========================================================= */
+
+function addLog(message) {
+
+    const log = document.getElementById("log");
+
+    const line = document.createElement("div");
+
+    line.innerHTML =
+        "• " + message;
+
+    log.prepend(line);
+
+    /*
+       Limiter le journal à 50 lignes
+    */
+
+    while (log.children.length > 50) {
+        log.removeChild(log.lastChild);
+    }
+}
+
+/* =========================================================
+   SAUVEGARDE
+   ========================================================= */
+
+function saveGame() {
+
+    localStorage.setItem(
+        "tomatoMoney",
+        money
+    );
+
+    localStorage.setItem(
+        "tomatoGeneration",
+        generation
+    );
+}
+
+/* =========================================================
+   BOUTONS
+   ========================================================= */
+
+document.getElementById("mutateButton")
+    .addEventListener("click", mutateTomato);
+
+document.getElementById("sellButton")
+    .addEventListener("click", sellTomato);
+
+document.getElementById("newButton")
+    .addEventListener("click", newTomato);
+
+/*
+   Support supplémentaire pour téléphone.
+   Le click fonctionne normalement sur iPhone/Android,
+   mais pointerup permet d'éviter certains problèmes
+   avec des navigateurs mobiles.
+*/
+
+document.getElementById("mutateButton")
+    .addEventListener("pointerup", function(event) {
+
+        if (event.pointerType === "touch") {
+            event.preventDefault();
+        }
+    });
+
+/* =========================================================
+   DÉMARRAGE
+   ========================================================= */
+
+updateInterface();
+
+addLog(
+    "🍅 Bienvenue ! Clique sur <strong>MUTER</strong> pour commencer."
+);
+
+</script>
+
+</body>
+</html>
