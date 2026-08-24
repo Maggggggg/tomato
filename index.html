@@ -1,0 +1,107 @@
+om/share?code=a2c56c8e6261ed42a65e01b300a8b33c&type=Server
+
+EYE STAR RUN NEED 2 MAX CUP ONLY
+
+Deadly World  •  Hier à 22:21
+gerard [NG],  — 21:18
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Tomato Mutation</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 40%,#26384d,#0d1420 70%);font-family:Arial,sans-serif;color:white;overflow:hidden;touch-action:manipulation}
+#game{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+#hud{position:fixed;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;z-index:5;pointer-events:none}
+.card{background:rgba(8,14,23,.82);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:11px 14px;box-shadow:0 8px 25px #0005;backdrop-filter:blur(8px)}
+#title{font-weight:900;font-size:18px}
+#count{font-size:13px;color:#b9c8d8;margin-top:3px}
+#bestBox{text-align:right;min-width:150px}
+#bestName{font-weight:800;color:#ffd86b}
+#bestMult{font-size:20px;font-weight:900}
+#stage{
+  position:relative;
+  z-index:10;
+  text-align:center;
+  width:100%;
+  padding:90px 20px 100px;
+  pointer-events:auto;
+}
+#tomatoWrap{position:relative;width:min(58vw,260px);height:min(58vw,260px);margin:0 auto 22px}
+#tomato{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 28%,#ff8a79 0 7%,#e73532 22%,#b51022 68%,#6d0817 100%);box-shadow:inset -22px -25px 35px #65000d99,inset 12px 12px 22px #ffb08a55,0 25px 45px #0008;position:relative;cursor:pointer;transition:transform .12s}
+#tomato:before,#tomato:after{content:"";position:absolute;background:#278b3c;border-radius:100% 0 100% 0;left:50%;top:0;transform-origin:bottom left}
+#tomato:before{width:70px;height:42px;transform:translateX(-8px) rotate(15deg)}
+#tomato:after{width:58px;height:38px;transform:translateX(-42px) rotate(-28deg)}
+#face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:900;text-shadow:0 3px 8px #500}
+#mutation{font-size:25px;font-weight:900;min-height:34px;text-shadow:0 3px 10px #000}
+#rarity{font-size:14px;color:#b8c8d8;margin:5px 0 14px}
+button{
+  position:relative;
+  z-index:20;
+  display:inline-block;
+  border:0;
+  border-radius:14px;
+  background:#ff4a42;
+  color:white;
+  font-size:18px;
+  font-weight:900;
+  padding:15px 24px;
+  min-width:190px;
+  min-height:56px;
+  box-shadow:0 8px 20px #0005;
+  cursor:pointer;
+  pointer-events:auto;
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+}
+button:active{transform:scale(.96)}
+button:focus{outline:3px solid rgba(255,255,255,.45);outline-offset:3px}
+#history{position:fixed;bottom:12px;left:12px;right:12px;display:flex;gap:7px;overflow:hidden;justify-content:center;pointer-events:none}
+.pill{background:#111b29dd;border:1px solid #ffffff18;padding:7px 10px;border-radius:999px;font-size:12px;white-space:nowrap}
+.flash{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.08)}}
+.legend{position:fixed;bottom:12px;right:12px;opacity:.65;font-size:10px}
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="hud">
+    <div class="card"><div id="title">🍅 TOMATO MUTATION</div><div id="count">0 mutations découvertes</div></div>
+    <div class="card" id="bestBox"><div>MEILLEUR MULTIPLICATEUR</div><div id="bestName">—</div><div id="bestMult">×1</div></div>
+  </div>
+  <main id="stage">
+    <div id="tomatoWrap"><div id="tomato"><div id="face">•ᴗ•</div></div></div>
+    <div id="mutation">Touche la tomate !</div>
+    <div id="rarity">Une mutation aléatoire parmi 200</div>
+    <button id="mutate">MUTER 🍅</button>
+  </main>
+  <div id="history"></div>
+</div>
+<script>
+const mutations = [];
+const groups = [
+  ["Commun",70,1.05,["Rouge vif","Brillante","Lisse","Juteuse","Sucrée","Acidulée","Mini","Géante","Ronde","Tachetée","Rayée","Veloutée","Dorée","Pâle","Sombre","Fraîche","Mûre","Croquante","Mollette","Polie","Terreuse","Rosée","Givrée","Chaude","Poivrée","Salée","Miel","Citron","Herbacée","Fumée","Soyeuse","Cristalline","Piquante","Étoilée","Lunaire","Solaire","Mouillée","Sèche","Dense","Légère","Spongieuse","Lumineuse","Opaque","Transparente","Vibrante","Flottante","Bondissante","Rugueuse","Parfumée","Fruité","Épicée","Mentholée","Vanillée","Caramélisée","Gélifiée","Mousseuse","Pétillante","Nacrée","Cuivrée","Argentée","Velours","Cœur rouge","Feuille triple","Tige longue","Tige courte","Goutte","Double graine","Sans pépins","Pleine de pépins","Tomate cube","Tomate œuf"]],
+  ["Peu commune",18,1.5,["Néon","Saphir","Émeraude","Améthyste","Ambre","Perle","Aurore","Brumeuse","Électrique","Magnétique","Bulleuse","Miroir","Prismatique","Fluorescente","Élastique","Géométrique","Spirale","Nuageuse","Arc-en-ciel","Volcanique","Aquatique","Cristal rouge","Cristal bleu","Cristal vert","Cristal violet","Gelée royale","Double cœur","Triple cœur","Feuillage doré","Peau de pierre","Peau de verre","Pétales rouges","Halo doux","Étincelante","Ombreuse","Encre","Sang-dragon","Menthe glacée","Cacao","Carbone","Chrome","Cuivre vivant","Rubis tendre","Quartz"]],
+  ["Rare",8,3,["Galaxie","Plasma","Foudre","Comète","Nébuleuse","Obsidienne","Rubis","Diamant","Météore","Gravité","Tempête","Éclipse","Vortex","Cœur solaire","Astre bleu","Astre violet","Flamme bleue","Glace noire","Lumière pure","Ombre vive","Acier vivant","Sable du temps","Prisme royal","Graine cosmique","Couronne d'épines","Ailes de feuille","Œil mystique","Runique","Ancienne","Spectrale"]],
+  ["Épique",3,8,["Dragon","Phénix","Titan","Roi solaire","Reine lunaire","Tempête éternelle","Cœur de magma","Void","Dimensionnelle","Étoile filante","Cristal ancien","Âme astrale","Fleur cosmique","Golem","Mythique rouge","Mythique bleue","Mythique dorée","Gardienne"]],
+  ["Légendaire",0.8,20,["Dieu tomate","Supernova","Cœur de l'univers","Temps fracturé","Réalité inversée","Éternelle","Dragon céleste","Éclipse absolue","Origine"]],
+  ["Très rare",0.2,100,["TOMATE DIVINE","∞ COSMIQUE","BIG BANG","ULTIME ORIGINE","MUTATION IMPOSSIBLE"]]
+];
+let id=0;
+for(const [rarity,chance,mult,names] of groups){
+  for(const name of names) mutations.push({id:++id,name,rarity,mult,chance});
+}
+// Exactement 200 entrées: compléter les noms si nécessaire avec des variantes originales.
+const extraPrefixes=["Turbo","Astrale","Royal","Quantum","Solaire","Lunaire","Void","Prismatique","Ancienne","Nébulaire"];
+const extraSuffixes=["Prime","X","Omega","Nova","Z","Prime+","Alpha","Ultra","Max","Eon"];
+while(mutations.length<200){
+  const n=mutations.length- groups.reduce((s,g)=>s+g[3].length,0);
+  const idx=mutations.length;
+  const rarity = idx%10<7 ? "Commun" : idx%10<9 ? "Peu commune" : "Rare";
+  const base=rarity==="Commun"?1.05:rarity==="Peu commune"?1.5:3;
+  const chance=rarity==="Commun"?70:rarity==="Peu commune"?18:8;
+  mutations.push({id:++id,name:extraPrefixes[n%10]+" "+extraSuffixes[Math.floor(n/10)%10],rarity,mult:base+((n%7)*0.05),chance});
+... (53lignes restantes)
