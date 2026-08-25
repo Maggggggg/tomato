@@ -1,0 +1,3030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>🍅 Tomato Mutations</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:white;
+  background:radial-gradient(circle at top,#263b4d,#090e13 70%);
+  min-height:100vh;
+}
+
+button{
+  border:0;
+  border-radius:14px;
+  padding:13px 18px;
+  font-size:17px;
+  font-weight:bold;
+  color:white;
+  cursor:pointer;
+  touch-action:manipulation;
+  box-shadow:0 5px 0 #0005;
+}
+
+button:active{
+  transform:translateY(4px);
+  box-shadow:0 1px 0 #0005;
+}
+
+header{
+  text-align:center;
+  padding:15px 10px 5px;
+}
+
+h1{
+  margin:0;
+  font-size:30px;
+}
+
+.subtitle{
+  color:#aeb9c5;
+  margin-top:5px;
+}
+
+.game{
+  width:min(1000px,94%);
+  margin:auto;
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+
+.stat{
+  background:#192530;
+  border:1px solid #344858;
+  border-radius:12px;
+  padding:9px 15px;
+  min-width:105px;
+  text-align:center;
+}
+
+.field{
+  position:relative;
+  min-height:390px;
+  border:4px solid #17301a;
+  border-radius:24px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%,#477e3e 0 3%,transparent 3.5%),
+    radial-gradient(circle at 80% 70%,#477e3e 0 3%,transparent 3.5%),
+    linear-gradient(#438341,#27602c);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* =========================
+   TOMATE
+========================= */
+
+.fruit{
+  position:relative;
+  width:165px;
+  height:150px;
+  border-radius:52% 48% 50% 50%;
+  background:
+    radial-gradient(circle at 32% 23%,#ffb0a5 0 8%,transparent 9%),
+    radial-gradient(circle at 36% 30%,#ff7267 0 20%,transparent 21%),
+    radial-gradient(circle at 50% 58%,#ef3d3d 0 50%,#b91622 100%);
+  border:3px solid #9e1820;
+  box-shadow:
+    inset -14px -17px 18px #760c1640,
+    0 12px 22px #0006;
+  transition:.3s;
+  animation:float 1.5s infinite alternate ease-in-out;
+  z-index:5;
+}
+
+@keyframes float{
+  from{transform:translateY(0)}
+  to{transform:translateY(-6px)}
+}
+
+/* petite dépression de la tomate */
+
+.tomatoTop{
+  position:absolute;
+  top:10px;
+  left:50%;
+  width:72px;
+  height:30px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:#c92129;
+  opacity:.35;
+}
+
+/* yeux */
+
+.faceEye{
+  position:absolute;
+  top:55px;
+  width:24px;
+  height:29px;
+  background:white;
+  border:2px solid #252525;
+  border-radius:50%;
+  z-index:3;
+}
+
+.faceEye:after{
+  content:"";
+  position:absolute;
+  width:10px;
+  height:14px;
+  background:#222;
+  border-radius:50%;
+  left:5px;
+  top:6px;
+}
+
+.faceEye.left{left:39px}
+.faceEye.right{right:39px}
+
+.mouth{
+  position:absolute;
+  left:50%;
+  bottom:30px;
+  transform:translateX(-50%);
+  width:46px;
+  height:21px;
+  border-bottom:5px solid #301414;
+  border-radius:0 0 45px 45px;
+  z-index:3;
+}
+
+.cheek{
+  position:absolute;
+  top:83px;
+  width:23px;
+  height:11px;
+  background:#ff8b8b77;
+  border-radius:50%;
+}
+
+.cheek.left{left:17px}
+.cheek.right{right:17px}
+
+/* FEUILLES CLIQUABLES */
+
+.leavesButton{
+  position:absolute;
+  top:-25px;
+  left:50%;
+  width:100px;
+  height:48px;
+  transform:translateX(-50%);
+  z-index:20;
+  cursor:pointer;
+}
+
+.stem{
+  position:absolute;
+  top:-20px;
+  left:50%;
+  width:10px;
+  height:29px;
+  background:#704321;
+  border-radius:8px;
+  transform:translateX(-50%) rotate(8deg);
+}
+
+.leaf{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  width:43px;
+  height:22px;
+  background:#4ba54c;
+  border-radius:100% 0 100% 0;
+  transform:translateX(-75%) rotate(-20deg);
+  transition:.15s;
+}
+
+.leaf.r{
+  transform:translateX(-5%) rotate(20deg);
+  border-radius:0 100% 0 100%;
+}
+
+.leavesButton:active .leaf{
+  transform:translateX(-75%) rotate(-30deg) scale(1.15);
+}
+
+.leavesButton:active .leaf.r{
+  transform:translateX(-5%) rotate(30deg) scale(1.15);
+}
+
+/* =========================
+   CAROTTE
+========================= */
+
+.fruit.carrot{
+  width:85px;
+  height:210px;
+  border-radius:48% 48% 58% 58%;
+  background:linear-gradient(150deg,#ffc45a,#f36a19 60%,#c7440c);
+  border:3px solid #a83c0b;
+}
+
+.fruit.carrot .tomatoTop{
+  display:none;
+}
+
+.fruit.carrot .stem{
+  height:25px;
+  background:#438c39;
+}
+
+.fruit.carrot .leaf{
+  background:#49a544;
+}
+
+/* =========================
+   MUTATIONS VISUELLES
+========================= */
+
+.fruit.golden{
+  box-shadow:
+    0 0 38px #ffd83d99,
+    inset -13px -16px 18px #8d610033;
+}
+
+.fruit.green{
+  background:
+    radial-gradient(circle at 32% 23%,#d8ffc9 0 8%,transparent 9%),
+    radial-gradient(circle at 36% 30%,#9cff83 0 20%,transparent 21%),
+    radial-gradient(circle,#55c94e 0 50%,#207b29 100%);
+}
+
+.fruit.blue{
+  background:radial-gradient(circle,#b3f4ff,#3d9bea 55%,#1554a5);
+}
+
+.fruit.rainbow{
+  background:conic-gradient(#f44,#fc4,#5d5,#4cf,#75f,#f5c,#f44);
+}
+
+.fruit.fire{
+  background:radial-gradient(circle,#fff38a,#ff7b1e 50%,#b81818);
+  box-shadow:0 0 38px #ff6b1a;
+}
+
+.fruit.ice{
+  background:radial-gradient(circle,#fff,#71e6ff 55%,#2778e8);
+  box-shadow:0 0 30px #65ddff;
+}
+
+.fruit.rotten{
+  background:radial-gradient(circle,#a98952,#55401f 60%,#292015);
+  filter:saturate(.55);
+}
+
+/* =========================
+   BANANE
+========================= */
+
+.bananaSkin{
+  display:none;
+  position:absolute;
+  inset:-24px -31px;
+  z-index:7;
+  pointer-events:none;
+}
+
+.fruit.bananaMutation .bananaSkin{
+  display:block;
+}
+
+.bananaPeel{
+  position:absolute;
+  width:50px;
+  height:105px;
+  background:linear-gradient(90deg,#fff04c,#ffd21a 55%,#e7a600);
+  border:3px solid #b98500;
+  border-radius:70% 25% 80% 30%;
+  transform-origin:top center;
+  box-shadow:3px 7px 7px #0004;
+}
+
+.bananaPeel.p1{
+  left:20px;
+  top:15px;
+  transform:rotate(-30deg);
+}
+
+.bananaPeel.p2{
+  left:60px;
+  top:8px;
+  transform:rotate(-8deg);
+}
+
+.bananaPeel.p3{
+  right:20px;
+  top:15px;
+  transform:rotate(30deg);
+}
+
+.bananaTip{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#60430b;
+  top:2px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.bananaFace{
+  position:absolute;
+  left:50%;
+  top:62px;
+  transform:translateX(-50%);
+  width:72px;
+  height:65px;
+  border-radius:50%;
+  background:#ffd83d;
+  border:3px solid #c29400;
+  z-index:10;
+  box-shadow:0 5px 8px #0004;
+}
+
+.bananaEye{
+  position:absolute;
+  width:13px;
+  height:17px;
+  background:#fff;
+  border:2px solid #222;
+  border-radius:50%;
+  top:17px;
+}
+
+.bananaEye:after{
+  content:"";
+  position:absolute;
+  width:6px;
+  height:8px;
+  background:#111;
+  border-radius:50%;
+  left:2px;
+  top:3px;
+}
+
+.bananaEye.left{left:15px}
+.bananaEye.right{right:15px}
+
+.bananaSmile{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  width:25px;
+  height:12px;
+  border-bottom:3px solid #442800;
+  border-radius:50%;
+  transform:translateX(-50%);
+}
+
+/* =========================
+   PETITS EMOJIS AUTOUR
+========================= */
+
+.mutationParticles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:30;
+}
+
+.mutationParticle{
+  position:absolute;
+  animation:particleOut 1.5s ease-out forwards;
+  filter:drop-shadow(0 4px 4px #0007);
+}
+
+@keyframes particleOut{
+  0%{
+    opacity:0;
+    transform:scale(.3) translateY(20px) rotate(-20deg);
+  }
+  15%{
+    opacity:1;
+  }
+  70%{
+    opacity:1;
+  }
+  100%{
+    opacity:0;
+    transform:scale(.8) translateY(-65px) rotate(20deg);
+  }
+}
+
+/* =========================
+   NOM / VALEUR
+========================= */
+
+.fruitName{
+  margin-top:13px;
+  font-size:23px;
+  font-weight:bold;
+  text-align:center;
+}
+
+.value{
+  margin-top:5px;
+  color:#ffe36b;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.mutationDisplay{
+  margin-top:12px;
+  width:min(850px,96%);
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.mutationTag{
+  background:#101b23e8;
+  border:1px solid #526878;
+  border-radius:9px;
+  padding:7px 9px;
+  font-size:14px;
+}
+
+.negative{
+  border-color:#ff5555;
+  color:#ff9a9a;
+}
+
+/* =========================
+   BOUTONS
+========================= */
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:18px 0;
+}
+
+.mutate{
+  background:#9b59b6;
+  box-shadow:0 5px 0 #713d85;
+}
+
+.sell{
+  background:#f39c12;
+  box-shadow:0 5px 0 #a96505;
+}
+
+.shopBtn{
+  background:#28a765;
+  box-shadow:0 5px 0 #16713f;
+}
+
+.oddsBtn{
+  background:#3478db;
+  box-shadow:0 5px 0 #225397;
+}
+
+.indexBtn{
+  background:#7751c7;
+  box-shadow:0 5px 0 #4d3187;
+}
+
+/* =========================
+   PANNEAUX
+========================= */
+
+.panel{
+  background:#15212b;
+  border:1px solid #344858;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:15px;
+}
+
+.panel h2{
+  margin-top:0;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:9px;
+  border-bottom:1px solid #2d3c48;
+  text-align:left;
+}
+
+th{
+  color:#ffd95a;
+}
+
+/* =========================
+   MODALES
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000c;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:15px;
+}
+
+.modalBox{
+  width:min(760px,96%);
+  max-height:90vh;
+  overflow:auto;
+  background:#17232d;
+  border:1px solid #455b6b;
+  border-radius:18px;
+  padding:20px;
+}
+
+.close{
+  float:right;
+  background:#34495e;
+  padding:8px 12px;
+}
+
+/* =========================
+   USERNAME
+========================= */
+
+input{
+  width:100%;
+  padding:15px;
+  border-radius:12px;
+  border:2px solid #455967;
+  background:#0d151c;
+  color:white;
+  font-size:18px;
+  outline:none;
+}
+
+.usernameScreen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(160deg,#14212c,#070a0e);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:200;
+}
+
+.usernameBox{
+  width:min(430px,90%);
+  text-align:center;
+  background:#182631;
+  padding:25px;
+  border-radius:20px;
+  border:1px solid #405363;
+}
+
+.usernameBox button{
+  margin-top:12px;
+  background:#9b59b6;
+}
+
+/* =========================
+   SECRET
+========================= */
+
+.secret{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:#000e;
+  z-index:300;
+  text-align:center;
+}
+
+.secretText{
+  font-size:clamp(38px,12vw,110px);
+  font-weight:1000;
+  animation:secret .3s infinite alternate;
+}
+
+@keyframes secret{
+  from{
+    transform:scale(1) rotate(-2deg);
+  }
+  to{
+    transform:scale(1.12) rotate(2deg);
+  }
+}
+
+/* =========================
+   EXPLOSION
+========================= */
+
+.explosion{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:250;
+  pointer-events:none;
+}
+
+.boom{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:white;
+  box-shadow:
+    0 0 30px 15px white,
+    0 0 100px 50px #ffb300;
+  animation:boom 1s ease-out forwards;
+}
+
+@keyframes boom{
+  0%{
+    transform:scale(.1);
+    opacity:1;
+  }
+  40%{
+    transform:scale(8);
+    opacity:1;
+  }
+  100%{
+    transform:scale(30);
+    opacity:0;
+  }
+}
+
+/* =========================
+   JOURNAL
+========================= */
+
+.log{
+  max-height:170px;
+  overflow:auto;
+  color:#c4d0da;
+  font-size:14px;
+}
+
+.log div{
+  padding:5px 0;
+  border-bottom:1px solid #26343f;
+}
+
+/* =========================
+   INDEX / ODDS
+========================= */
+
+.mutationRow{
+  display:flex;
+  justify-content:space-between;
+  padding:8px;
+  border-bottom:1px solid #2d3b46;
+}
+
+.unknown{
+  color:#687783;
+}
+
+/* =========================
+   SHOP
+========================= */
+
+.shopItem{
+  background:#202f3a;
+  border:1px solid #3b5262;
+  border-radius:15px;
+  padding:15px;
+  margin:10px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.shopBuy{
+  background:#28a765;
+  box-shadow:0 4px 0 #16713f;
+}
+
+.shopBuy:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.info{
+  color:#84929e;
+  font-size:13px;
+  text-align:center;
+  padding-bottom:25px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- USERNAME -->
+
+<div class="usernameScreen" id="usernameScreen">
+
+  <div class="usernameBox">
+
+    <h1>🍅 Tomato Mutations</h1>
+
+    <p>Choisis ton username</p>
+
+    <input
+      id="usernameInput"
+      maxlength="16"
+      placeholder="Username"
+    >
+
+    <button id="startButton">
+      COMMENCER
+    </button>
+
+  </div>
+
+</div>
+
+
+<header>
+
+<h1>🍅 Tomato Mutations</h1>
+
+<div class="subtitle">
+Joueur :
+<strong id="usernameDisplay">---</strong>
+</div>
+
+</header>
+
+
+<div class="stats">
+
+<div class="stat">
+💰
+<br>
+<strong id="money">$0</strong>
+</div>
+
+<div class="stat">
+🧬
+<br>
+<strong id="mutationCount">0</strong>
+</div>
+
+<div class="stat">
+🌱
+<br>
+<strong id="generation">1</strong>
+</div>
+
+</div>
+
+
+<main class="game">
+
+
+<section class="field">
+
+<div class="fruit" id="fruit">
+
+<div class="tomatoTop"></div>
+
+<div class="stem"></div>
+
+<!-- ZONE CLIQUABLE DES FEUILLES -->
+
+<div
+  class="leavesButton"
+  id="leavesButton"
+  title="???"
+>
+
+<div class="leaf"></div>
+<div class="leaf r"></div>
+
+</div>
+
+<div class="faceEye left"></div>
+<div class="faceEye right"></div>
+
+<div class="cheek left"></div>
+<div class="cheek right"></div>
+
+<div class="mouth"></div>
+
+
+<!-- BANANE -->
+
+<div class="bananaSkin">
+
+  <div class="bananaPeel p1">
+    <div class="bananaTip"></div>
+  </div>
+
+  <div class="bananaPeel p2">
+    <div class="bananaTip"></div>
+  </div>
+
+  <div class="bananaPeel p3">
+    <div class="bananaTip"></div>
+  </div>
+
+  <div class="bananaFace">
+
+    <div class="bananaEye left"></div>
+    <div class="bananaEye right"></div>
+
+    <div class="bananaSmile"></div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<div
+class="fruitName"
+id="fruitName">
+🍅 Tomate normale
+</div>
+
+
+<div
+class="value"
+id="fruitValue">
+$10
+</div>
+
+
+<div
+class="mutationDisplay"
+id="mutationDisplay">
+</div>
+
+
+<div
+class="mutationParticles"
+id="mutationParticles">
+</div>
+
+</section>
+
+
+<div class="buttons">
+
+<button
+class="mutate"
+id="mutateButton">
+🧬 MUTER
+</button>
+
+<button
+class="sell"
+id="sellButton">
+💰 VENDRE
+</button>
+
+<button
+class="shopBtn"
+id="shopButton">
+🛒 BOUTIQUE
+</button>
+
+<button
+class="indexBtn"
+id="indexButton">
+📖 INDEX
+</button>
+
+<button
+class="oddsBtn"
+id="oddsButton">
+🎲 ODDS
+</button>
+
+</div>
+
+
+<section class="panel">
+
+<h2>🏆 Mes records</h2>
+
+<table>
+
+<tr>
+<th></th>
+<th>Meilleur prix</th>
+<th>Mutations</th>
+</tr>
+
+<tr>
+
+<th>🍅 Tomate</th>
+
+<td id="bestTomatoValue">
+$0
+</td>
+
+<td id="bestTomatoMutations">
+Aucune
+</td>
+
+</tr>
+
+<tr>
+
+<th>🥕 Carotte</th>
+
+<td id="bestCarrotValue">
+$0
+</td>
+
+<td id="bestCarrotMutations">
+Aucune
+</td>
+
+</tr>
+
+</table>
+
+</section>
+
+
+<section class="panel">
+
+<h2>🌎 TOP 10</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>#</th>
+<th>Pseudo</th>
+<th>🍅 Tomate</th>
+<th>🥕 Carotte</th>
+</tr>
+
+</thead>
+
+<tbody id="leaderboard">
+</tbody>
+
+</table>
+
+</section>
+
+
+<section class="panel">
+
+<h2>📜 Journal</h2>
+
+<div
+class="log"
+id="log">
+</div>
+
+</section>
+
+
+<div class="info">
+Les anciennes mutations sont remplacées à chaque mutation.
+</div>
+
+</main>
+
+
+<!-- SHOP -->
+
+<div
+class="modal"
+id="shopModal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('shopModal')">
+✕
+</button>
+
+<h2>🛒 Boutique</h2>
+
+<div class="shopItem">
+
+<div>
+
+<strong>🥕 Carotte</strong>
+
+<br>
+
+Prix :
+<strong>1K</strong>
+
+<br>
+
+💵
+<strong>×2</strong>
+valeur
+
+<br>
+
+<small>
+Disponible uniquement avec une tomate sans mutation.
+</small>
+
+</div>
+
+<button
+class="shopBuy"
+id="carrotButton">
+
+1K
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ODDS -->
+
+<div
+class="modal"
+id="oddsModal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('oddsModal')">
+✕
+</button>
+
+<h2>🎲 ODDS</h2>
+
+<p>
+Les 3 mutations secrètes ne sont pas affichées.
+</p>
+
+<div id="oddsList"></div>
+
+</div>
+
+</div>
+
+
+<!-- INDEX -->
+
+<div
+class="modal"
+id="indexModal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('indexModal')">
+✕
+</button>
+
+<h2>📖 Index des mutations</h2>
+
+<div id="indexList"></div>
+
+</div>
+
+</div>
+
+
+<!-- SECRET -->
+
+<div
+class="secret"
+id="secretScreen">
+
+<div
+class="secretText"
+id="secretText">
+</div>
+
+</div>
+
+
+<!-- EXPLOSION -->
+
+<div
+class="explosion"
+id="explosion">
+
+<div class="boom"></div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://rjsrmwtbglhuarmqyfun.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_mSlW81Ge9VrJmFEk-nWGCQ_31yVwxEL";
+
+const supabase =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =====================================================
+   VERSION
+===================================================== */
+
+const UPDATE_VERSION="4.0";
+
+
+/*
+Reset LOCAL de l'argent lors de la nouvelle version.
+Le leaderboard Supabase peut lui aussi être reset
+avec le SQL que tu as exécuté.
+*/
+
+if(
+localStorage.getItem("tomatoUpdateVersion")
+!==UPDATE_VERSION
+){
+
+localStorage.setItem(
+"tomatoMoney",
+"0"
+);
+
+localStorage.setItem(
+"tomatoUpdateVersion",
+UPDATE_VERSION
+);
+
+}
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let username =
+localStorage.getItem("tomatoUsername") || "";
+
+let money =
+Number(
+localStorage.getItem("tomatoMoney")
+) || 0;
+
+let generation =
+Number(
+localStorage.getItem("tomatoGeneration")
+) || 1;
+
+let currentMutations=[];
+
+let fruitType="tomato";
+
+
+/* =====================================================
+   RECORDS
+===================================================== */
+
+let bestTomatoValue =
+Number(
+localStorage.getItem("bestTomatoValue")
+) || 0;
+
+let bestTomatoMutations =
+JSON.parse(
+localStorage.getItem(
+"bestTomatoMutations"
+) || "[]"
+);
+
+
+let bestCarrotValue =
+Number(
+localStorage.getItem("bestCarrotValue")
+) || 0;
+
+let bestCarrotMutations =
+JSON.parse(
+localStorage.getItem(
+"bestCarrotMutations"
+) || "[]"
+);
+
+
+let discovered =
+JSON.parse(
+localStorage.getItem(
+"discoveredMutations"
+) || "[]"
+);
+
+
+/* =====================================================
+   MUTATIONS
+=====================================================
+
+   Multiplicateurs fortement réduits.
+
+   Une seule nouvelle mutation est exactement à 0,05%.
+   Les autres nouvelles mutations sont entre 1% et 0,05%.
+
+   Les probabilités sont les poids utilisés pour le tirage.
+===================================================== */
+
+const M=[
+
+/* NOUVELLES */
+
+["Banane","🍌",1.35,1.00],
+
+/* MÉTÉO */
+
+["Pluie","🌧️",1.10,6],
+["Orage","⛈️",1.25,4],
+["Foudre","⚡",1.45,3],
+["Neige","🌨️",1.20,4],
+["Blizzard","🌬️",1.60,2],
+["Brouillard","🌫️",1.08,5],
+["Vent","💨",1.07,6],
+["Tornade","🌪️",1.80,1],
+["Ouragan","🌀",2.10,0.80],
+["Canicule","☀️",1.35,2],
+["Éclipse","🌑",2.00,0.70],
+["Aurore","🌌",2.30,0.50],
+["Arc solaire","🌈",2.60,0.35],
+["Gravité","🪐",2.80,0.25],
+["Antigravité","🌀",3.00,0.20],
+["Onde de choc","💥",3.20,0.15],
+["Séisme","🌋",2.70,0.30],
+["Météorite","☄️",3.50,0.12],
+["Supernova","💫",4.00,0.08],
+["Trou noir","🕳️",5.00,0.05],
+
+["Cristaux de glace","🧊",1.75,0.90],
+["Rosée","💧",1.05,5],
+["Givre","🥶",1.30,1.50],
+["Sable","🏜️",1.12,4],
+["Tempête de sable","🌪️",1.55,0.80],
+["Lave","🌋",2.00,0.25],
+["Volcanique","🌋",2.40,0.15],
+["Plasma","🔮",3.00,0.10],
+["Radiation","☢️",3.80,0.07],
+["Magnétique","🧲",3.30,0.09],
+
+/* NÉGATIVES */
+
+["Pourris","☠️",0.5,2],
+["Assèché","🏜️",0.3333333333,1]
+
+];
+
+
+/* =====================================================
+   SECRÈTES
+===================================================== */
+
+const SECRETS=[
+
+{
+name:"Bober Turba",
+emoji:"🦫",
+multiplier:20,
+denominator:10000
+},
+
+{
+name:"FAAAAAAAAAAAH",
+emoji:"📢",
+multiplier:30,
+denominator:50000
+},
+
+{
+name:"Tortue Pingouin",
+emoji:"🐢🐧",
+multiplier:50,
+denominator:100000
+}
+
+];
+
+
+/* =====================================================
+   FORMAT ARGENT
+===================================================== */
+
+function formatMoney(n){
+
+n=Number(n);
+
+if(n<1000)
+return "$"+Math.floor(n);
+
+const units=[
+
+["K",1e3],
+["M",1e6],
+["B",1e9],
+["T",1e12],
+["Qa",1e15],
+["Qi",1e18],
+["Sx",1e21],
+["Sp",1e24],
+["Oc",1e27],
+["No",1e30],
+["Dc",1e33]
+
+];
+
+for(
+let i=units.length-1;
+i>=0;
+i--
+){
+
+if(n>=units[i][1]){
+
+let x=n/units[i][1];
+
+return "$"+
+(
+x>=100
+?x.toFixed(0)
+:x>=10
+?x.toFixed(1)
+:x.toFixed(2)
+)+units[i][0];
+
+}
+
+}
+
+return "$"+n;
+
+}
+
+
+/* =====================================================
+   CHOIX MUTATION
+===================================================== */
+
+function chooseMutation(){
+
+const total=
+M.reduce(
+(s,m)=>s+m[3],
+0
+);
+
+let r=
+Math.random()*total;
+
+for(
+const m of M
+){
+
+r-=m[3];
+
+if(r<=0)
+return m;
+
+}
+
+return M[0];
+
+}
+
+
+/* =====================================================
+   NOMBRE DE MUTATIONS
+===================================================== */
+
+function getMutationAmount(){
+
+const r=Math.random();
+
+if(r<0.95)
+return 1;
+
+if(r<0.98)
+return 2;
+
+if(r<0.992)
+return 3;
+
+if(r<0.997)
+return 4;
+
+if(r<0.999)
+return 5;
+
+if(r<0.9997)
+return Math.floor(Math.random()*5)+6;
+
+if(r<0.99995)
+return Math.floor(Math.random()*40)+11;
+
+if(r<0.999995)
+return Math.floor(Math.random()*50)+51;
+
+return Math.floor(Math.random()*100)+101;
+
+}
+
+
+/* =====================================================
+   VALEUR
+===================================================== */
+
+function calculateValue(){
+
+let value=10;
+
+for(
+const mutation of currentMutations
+){
+
+value*=mutation.multiplier;
+
+}
+
+if(
+fruitType==="carrot"
+){
+
+value*=2;
+
+}
+
+return Math.max(0,value);
+
+}
+
+
+/* =====================================================
+   PARTICULES EMOJIS
+===================================================== */
+
+function showMutationParticles(){
+
+const container=
+document.getElementById(
+"mutationParticles"
+);
+
+container.innerHTML="";
+
+if(!currentMutations.length)
+return;
+
+
+/*
+3 ou 4 emojis maximum.
+On prend des mutations différentes si possible.
+*/
+
+let chosen=[...currentMutations];
+
+chosen.sort(
+()=>Math.random()-0.5
+);
+
+chosen=
+chosen.slice(
+0,
+Math.random()<0.5?3:4
+);
+
+
+chosen.forEach(
+(m,i)=>{
+
+const p=
+document.createElement("div");
+
+p.className=
+"mutationParticle";
+
+p.textContent=m.emoji;
+
+const positions=[
+  ["15%","40%",34],
+  ["75%","32%",43],
+  ["22%","65%",28],
+  ["72%","67%",38]
+];
+
+const pos=
+positions[i];
+
+p.style.left=pos[0];
+p.style.top=pos[1];
+p.style.fontSize=pos[2]+"px";
+
+container.appendChild(p);
+
+}
+);
+
+}
+
+
+/* =====================================================
+   SECRÈTES
+===================================================== */
+
+function checkSecrets(){
+
+for(
+const secret of SECRETS
+){
+
+if(
+Math.floor(
+Math.random()*
+secret.denominator
+)===0
+){
+
+currentMutations.push({
+
+name:secret.name,
+emoji:secret.emoji,
+multiplier:secret.multiplier,
+secret:true,
+negative:false
+
+});
+
+if(
+!discovered.includes(
+secret.name
+)
+){
+
+discovered.push(
+secret.name
+);
+
+}
+
+
+/*
+Tortue Pingouin est extrêmement rare.
+Explosion systématique.
+*/
+
+triggerRareExplosion();
+
+
+if(
+secret.name===
+"FAAAAAAAAAAAH"
+){
+
+showSecret(
+"📢 FAAAAAAAAAAAAAH 📢"
+);
+
+}else{
+
+addLog(
+"🔐 SECRET : "+
+secret.emoji+
+" "+
+secret.name
+);
+
+}
+
+}
+
+}
+
+localStorage.setItem(
+"discoveredMutations",
+JSON.stringify(discovered)
+);
+
+}
+
+
+/* =====================================================
+   TORTUE PINGOUIN
+   CLIC SUR LES FEUILLES
+===================================================== */
+
+function activateTurtlePenguin(){
+
+/*
+On remplace la combinaison actuelle
+par Tortue Pingouin.
+*/
+
+currentMutations=[];
+
+const secret=SECRETS.find(
+s=>s.name==="Tortue Pingouin"
+);
+
+currentMutations.push({
+
+name:secret.name,
+emoji:secret.emoji,
+multiplier:secret.multiplier,
+secret:true,
+negative:false
+
+});
+
+
+if(
+!discovered.includes(
+secret.name
+)
+){
+
+discovered.push(
+secret.name
+);
+
+localStorage.setItem(
+"discoveredMutations",
+JSON.stringify(discovered)
+);
+
+}
+
+
+triggerRareExplosion();
+
+showMutationParticles();
+
+addLog(
+"🐢🐧 SECRET DÉCOUVERT : Tortue Pingouin !"
+);
+
+updateUI();
+
+save();
+
+}
+
+
+/* =====================================================
+   MUTER
+===================================================== */
+
+function mutate(){
+
+currentMutations=[];
+
+const amount=
+getMutationAmount();
+
+
+for(
+let i=0;
+i<amount;
+i++
+){
+
+const m=
+chooseMutation();
+
+currentMutations.push({
+
+name:m[0],
+emoji:m[1],
+multiplier:m[2],
+negative:m[2]<1,
+secret:false
+
+});
+
+
+if(
+!discovered.includes(
+m[0]
+)
+){
+
+discovered.push(
+m[0]
+);
+
+}
+
+}
+
+
+checkSecrets();
+
+localStorage.setItem(
+"discoveredMutations",
+JSON.stringify(discovered)
+);
+
+
+if(amount>=10){
+
+addLog(
+"🌟 COMBINAISON EXTRÊMEMENT RARE : "+
+amount+
+" mutations !"
+);
+
+}
+
+
+showMutationParticles();
+
+updateFruit();
+
+updateUI();
+
+
+addLog(
+
+amount===1
+
+?
+
+"🧬 Nouvelle mutation : "+
+currentMutations[0].emoji+
+" "+
+currentMutations[0].name
+
+:
+
+"🔥 Nouvelle combinaison : "+
+amount+
+" mutations !"
+
+);
+
+save();
+
+}
+
+
+/* =====================================================
+   EXPLOSION
+===================================================== */
+
+function triggerRareExplosion(){
+
+const explosion=
+document.getElementById(
+"explosion"
+);
+
+explosion.style.display="flex";
+
+setTimeout(
+()=>{
+explosion.style.display="none";
+},
+1000
+);
+
+}
+
+
+/* =====================================================
+   AFFICHAGE FRUIT
+===================================================== */
+
+function updateFruit(){
+
+const fruit=
+document.getElementById(
+"fruit"
+);
+
+fruit.className="fruit";
+
+
+if(
+fruitType==="carrot"
+){
+
+fruit.classList.add("carrot");
+
+}
+
+
+for(
+const m of currentMutations
+){
+
+if(m.name==="Banane")
+fruit.classList.add("bananaMutation");
+
+if(m.name==="Pluie")
+fruit.classList.add("blue");
+
+if(m.name==="Foudre")
+fruit.classList.add("golden");
+
+if(m.name==="Enflammée")
+fruit.classList.add("fire");
+
+if(m.name==="Glacée")
+fruit.classList.add("ice");
+
+if(m.name==="Pourris")
+fruit.classList.add("rotten");
+
+}
+
+}
+
+
+/* =====================================================
+   INTERFACE
+===================================================== */
+
+function updateUI(){
+
+document.getElementById(
+"money"
+).textContent=
+formatMoney(money);
+
+
+document.getElementById(
+"generation"
+).textContent=
+generation;
+
+
+document.getElementById(
+"mutationCount"
+).textContent=
+currentMutations.length;
+
+
+document.getElementById(
+"fruitValue"
+).textContent=
+formatMoney(
+calculateValue()
+);
+
+
+document.getElementById(
+"fruitName"
+).textContent=
+
+fruitType==="carrot"
+
+?
+
+"🥕 Carotte 💵 ×2"
+
+:
+
+currentMutations.length
+
+?
+
+"🍅 Tomate mutée"
+
+:
+
+"🍅 Tomate normale";
+
+
+const display=
+document.getElementById(
+"mutationDisplay"
+);
+
+display.innerHTML="";
+
+
+for(
+const m of currentMutations
+){
+
+const tag=
+document.createElement(
+"div"
+);
+
+tag.className=
+"mutationTag"+
+(
+m.negative
+?" negative"
+:""
+);
+
+
+if(m.secret){
+
+tag.textContent=
+m.emoji+
+" "+
+m.name+
+" ×"+
+m.multiplier;
+
+}else if(m.negative){
+
+tag.textContent=
+m.emoji+
+" "+
+m.name+
+" ×"+
+Number(m.multiplier).toFixed(
+m.name==="Assèché"?2:1
+);
+
+}else{
+
+tag.textContent=
+m.emoji+
+" "+
+m.name+
+" ×"+
+m.multiplier;
+
+}
+
+display.appendChild(tag);
+
+}
+
+
+updateFruit();
+
+updateRecords();
+
+updateLeaderboard();
+
+updateCarrotButton();
+
+}
+
+
+/* =====================================================
+   BOUTON CAROTTE
+===================================================== */
+
+function updateCarrotButton(){
+
+const button=
+document.getElementById(
+"carrotButton"
+);
+
+if(
+currentMutations.length>0
+){
+
+button.disabled=true;
+button.textContent="🚫 MUTÉE";
+
+}else{
+
+button.disabled=false;
+button.textContent="1K";
+
+}
+
+}
+
+
+/* =====================================================
+   RECORDS
+===================================================== */
+
+function updateRecords(){
+
+document.getElementById(
+"bestTomatoValue"
+).textContent=
+formatMoney(bestTomatoValue);
+
+
+document.getElementById(
+"bestCarrotValue"
+).textContent=
+formatMoney(bestCarrotValue);
+
+
+document.getElementById(
+"bestTomatoMutations"
+).innerHTML=
+
+bestTomatoMutations.length
+
+?
+
+bestTomatoMutations
+.map(
+m=>
+m.emoji+
+" "+
+m.name+
+" ×"+
+m.multiplier
+)
+.join("<br>")
+
+:
+
+"Aucune";
+
+
+document.getElementById(
+"bestCarrotMutations"
+).innerHTML=
+
+bestCarrotMutations.length
+
+?
+
+bestCarrotMutations
+.map(
+m=>
+m.emoji+
+" "+
+m.name+
+" ×"+
+m.multiplier
+)
+.join("<br>")
+
+:
+
+"Aucune";
+
+}
+
+
+/* =====================================================
+   RECORD APRÈS VENTE
+===================================================== */
+
+function checkBestAfterSale(
+value,
+soldFruit,
+mutations
+){
+
+if(
+soldFruit==="tomato"
+&&
+value>bestTomatoValue
+){
+
+bestTomatoValue=value;
+
+bestTomatoMutations=
+mutations;
+
+localStorage.setItem(
+"bestTomatoValue",
+value
+);
+
+localStorage.setItem(
+"bestTomatoMutations",
+JSON.stringify(mutations)
+);
+
+addLog(
+"🏆 NOUVEAU RECORD TOMATE : "+
+formatMoney(value)
+);
+
+}
+
+
+if(
+soldFruit==="carrot"
+&&
+value>bestCarrotValue
+){
+
+bestCarrotValue=value;
+
+bestCarrotMutations=
+mutations;
+
+localStorage.setItem(
+"bestCarrotValue",
+value
+);
+
+localStorage.setItem(
+"bestCarrotMutations",
+JSON.stringify(mutations)
+);
+
+addLog(
+"🏆 NOUVEAU RECORD CAROTTE : "+
+formatMoney(value)
+);
+
+}
+
+}
+
+
+/* =====================================================
+   VENDRE
+===================================================== */
+
+function sell(){
+
+if(
+!currentMutations.length
+){
+
+addLog(
+"❌ Il faut au moins une mutation pour vendre."
+);
+
+return;
+
+}
+
+
+const value=
+calculateValue();
+
+const soldFruit=
+fruitType;
+
+const soldMutations=
+currentMutations.map(
+m=>({
+
+name:m.name,
+emoji:m.emoji,
+multiplier:m.multiplier
+
+})
+);
+
+
+checkBestAfterSale(
+value,
+soldFruit,
+soldMutations
+);
+
+
+money+=value;
+
+
+addLog(
+"💰 Vente : +"+
+formatMoney(value)
+);
+
+
+currentMutations=[];
+
+fruitType="tomato";
+
+generation++;
+
+
+save();
+
+updateUI();
+
+}
+
+
+/* =====================================================
+   CAROTTE
+===================================================== */
+
+function buyCarrot(){
+
+/*
+INTERDICTION SI LA TOMATE EST MUTÉE
+*/
+
+if(
+currentMutations.length>0
+){
+
+addLog(
+"🚫 Impossible d'acheter une carotte : ta tomate est mutée !"
+);
+
+return;
+
+}
+
+
+if(
+money<1000
+){
+
+addLog(
+"❌ Il faut 1K."
+);
+
+return;
+
+}
+
+
+money-=1000;
+
+fruitType="carrot";
+
+
+addLog(
+"🥕 Carotte achetée ! ×2 valeur."
+);
+
+
+updateUI();
+
+save();
+
+closeModal(
+"shopModal"
+);
+
+}
+
+
+/* =====================================================
+   SAUVEGARDE
+===================================================== */
+
+function save(){
+
+localStorage.setItem(
+"tomatoMoney",
+money
+);
+
+localStorage.setItem(
+"tomatoGeneration",
+generation
+);
+
+}
+
+
+/* =====================================================
+   SECRET SCREEN
+===================================================== */
+
+function showSecret(text){
+
+const screen=
+document.getElementById(
+"secretScreen"
+);
+
+document.getElementById(
+"secretText"
+).textContent=text;
+
+screen.style.display="flex";
+
+setTimeout(
+()=>{
+screen.style.display="none";
+},
+4000
+);
+
+}
+
+
+/* =====================================================
+   JOURNAL
+===================================================== */
+
+function addLog(message){
+
+const log=
+document.getElementById(
+"log"
+);
+
+const div=
+document.createElement(
+"div"
+);
+
+div.innerHTML=
+"• "+
+escapeHTML(message);
+
+
+log.prepend(div);
+
+
+while(
+log.children.length>50
+){
+
+log.removeChild(
+log.lastChild
+);
+
+}
+
+}
+
+
+/* =====================================================
+   INDEX
+===================================================== */
+
+function openIndex(){
+
+const list=
+document.getElementById(
+"indexList"
+);
+
+list.innerHTML="";
+
+
+const all=
+M.map(
+m=>({
+
+name:m[0],
+emoji:m[1],
+multiplier:m[2],
+secret:false
+
+})
+)
+.concat(
+SECRETS.map(
+s=>({
+
+name:s.name,
+emoji:s.emoji,
+multiplier:s.multiplier,
+secret:true
+
+})
+)
+);
+
+
+for(
+const m of all
+){
+
+const row=
+document.createElement(
+"div"
+);
+
+row.className=
+"mutationRow";
+
+
+if(
+discovered.includes(
+m.name
+)
+){
+
+row.innerHTML=
+
+`
+<span>
+${m.emoji}
+${escapeHTML(m.name)}
+</span>
+
+<strong>
+×${m.multiplier}
+</strong>
+`;
+
+}else{
+
+row.innerHTML=
+
+`
+<span class="unknown">
+❓ Mutation inconnue
+</span>
+
+<span>
+???
+</span>
+`;
+
+}
+
+
+list.appendChild(row);
+
+}
+
+
+document.getElementById(
+"indexModal"
+).style.display="flex";
+
+}
+
+
+/* =====================================================
+   ODDS
+===================================================== */
+
+function openOdds(){
+
+const list=
+document.getElementById(
+"oddsList"
+);
+
+list.innerHTML="";
+
+
+const total=
+M.reduce(
+(s,m)=>s+m[3],
+0
+);
+
+
+/*
+IMPORTANT :
+
+Plus rare = plus bas.
+
+Donc :
+1% -> en haut
+0.5%
+0.1%
+0.05% -> en bas
+*/
+
+const sorted=
+[...M].sort(
+(a,b)=>b[3]-a[3]
+);
+
+
+for(
+const m of sorted
+){
+
+const probability=
+m[3]/total*100;
+
+
+const row=
+document.createElement(
+"div"
+);
+
+row.className=
+"mutationRow";
+
+
+row.innerHTML=
+
+`
+<span>
+${m[1]}
+${escapeHTML(m[0])}
+</span>
+
+<strong>
+${
+probability<0.05
+?
+"<0,05%"
+:
+probability.toFixed(2)+"%"
+}
+</strong>
+`;
+
+
+list.appendChild(row);
+
+}
+
+
+document.getElementById(
+"oddsModal"
+).style.display="flex";
+
+}
+
+
+/* =====================================================
+   FERMER
+===================================================== */
+
+function closeModal(id){
+
+document.getElementById(
+id
+).style.display="none";
+
+}
+
+
+/* =====================================================
+   USERNAME
+===================================================== */
+
+function buyOrStart(){
+
+const input=
+document.getElementById(
+"usernameInput"
+);
+
+const name=
+input.value.trim();
+
+
+if(
+name.length<2
+){
+
+alert(
+"Choisis un username d'au moins 2 caractères."
+);
+
+return;
+
+}
+
+
+username=
+name.substring(
+0,
+16
+);
+
+
+localStorage.setItem(
+"tomatoUsername",
+username
+);
+
+
+document.getElementById(
+"usernameScreen"
+).style.display="none";
+
+
+document.getElementById(
+"usernameDisplay"
+).textContent=
+username;
+
+
+updateUI();
+
+
+addLog(
+"👋 Bienvenue "+
+username+
+" !"
+);
+
+}
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHTML(text){
+
+const d=
+document.createElement("div");
+
+d.textContent=text;
+
+return d.innerHTML;
+
+}
+
+
+/* =====================================================
+   LEADERBOARD SUPABASE
+===================================================== */
+
+async function updateLeaderboard(){
+
+if(!username)
+return;
+
+
+try{
+
+/*
+Récupère les joueurs.
+*/
+
+const {
+data,
+error
+} =
+await supabase
+.from("leaderboard")
+.select(
+"username,best_tomato,best_carrot"
+)
+.order(
+"best_tomato",
+{
+ascending:false
+}
+)
+.limit(50);
+
+
+if(error){
+
+console.error(
+"Leaderboard:",
+error
+);
+
+return;
+
+}
+
+
+const tbody=
+document.getElementById(
+"leaderboard"
+);
+
+tbody.innerHTML="";
+
+
+/*
+S'assure que notre joueur existe.
+*/
+
+const mine=
+data.find(
+p=>p.username===username
+);
+
+
+if(!mine){
+
+const {
+error:insertError
+} =
+await supabase
+.from("leaderboard")
+.insert({
+
+username:username,
+
+best_tomato:
+bestTomatoValue,
+
+best_carrot:
+bestCarrotValue,
+
+tomato_mutations:
+bestTomatoMutations,
+
+carrot_mutations:
+bestCarrotMutations
+
+});
+
+
+if(insertError){
+
+console.error(
+"Insert leaderboard:",
+insertError
+);
+
+}
+
+}else{
+
+/*
+On ne peut qu'améliorer
+le meilleur score.
+*/
+
+const newTomato=
+Math.max(
+Number(mine.best_tomato)||0,
+bestTomatoValue
+);
+
+const newCarrot=
+Math.max(
+Number(mine.best_carrot)||0,
+bestCarrotValue
+);
+
+
+if(
+newTomato!==
+Number(mine.best_tomato)||
+
+newCarrot!==
+Number(mine.best_carrot)
+){
+
+await supabase
+.from("leaderboard")
+.update({
+
+best_tomato:newTomato,
+best_carrot:newCarrot,
+
+tomato_mutations:
+bestTomatoMutations,
+
+carrot_mutations:
+bestCarrotMutations,
+
+updated_at:
+new Date().toISOString()
+
+})
+.eq(
+"username",
+username
+);
+
+}
+
+}
+
+
+/*
+Recharge le classement.
+*/
+
+const {
+data:board,
+error:boardError
+} =
+await supabase
+.from("leaderboard")
+.select(
+"username,best_tomato,best_carrot"
+)
+.order(
+"best_tomato",
+{
+ascending:false
+}
+)
+.limit(10);
+
+
+if(boardError)
+return;
+
+
+board.forEach(
+(p,i)=>{
+
+const tr=
+document.createElement("tr");
+
+tr.innerHTML=
+
+`
+<td>${i+1}</td>
+
+<td>
+${escapeHTML(p.username)}
+</td>
+
+<td>
+${formatMoney(
+p.best_tomato||0
+)}
+</td>
+
+<td>
+${formatMoney(
+p.best_carrot||0
+)}
+</td>
+`;
+
+tbody.appendChild(tr);
+
+});
+
+}catch(error){
+
+console.error(
+"Supabase:",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   ÉVÉNEMENTS
+===================================================== */
+
+document
+.getElementById("startButton")
+.addEventListener(
+"click",
+buyOrStart
+);
+
+
+document
+.getElementById("usernameInput")
+.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Enter")
+buyOrStart();
+
+}
+);
+
+
+document
+.getElementById("mutateButton")
+.addEventListener(
+"click",
+mutate
+);
+
+
+document
+.getElementById("sellButton")
+.addEventListener(
+"click",
+sell
+);
+
+
+document
+.getElementById("shopButton")
+.addEventListener(
+"click",
+()=>{
+
+document.getElementById(
+"shopModal"
+).style.display="flex";
+
+}
+);
+
+
+document
+.getElementById("indexButton")
+.addEventListener(
+"click",
+openIndex
+);
+
+
+document
+.getElementById("oddsButton")
+.addEventListener(
+"click",
+openOdds
+);
+
+
+document
+.getElementById("carrotButton")
+.addEventListener(
+"click",
+buyCarrot
+);
+
+
+/*
+SECRET TORTUE PINGOUIN :
+
+clic sur les feuilles.
+*/
+
+document
+.getElementById("leavesButton")
+.addEventListener(
+"click",
+activateTurtlePenguin
+);
+
+
+/* =====================================================
+   DÉMARRAGE
+===================================================== */
+
+if(username){
+
+document.getElementById(
+"usernameScreen"
+).style.display="none";
+
+document.getElementById(
+"usernameDisplay"
+).textContent=username;
+
+}else{
+
+document.getElementById(
+"usernameScreen"
+).style.display="flex";
+
+}
+
+
+updateFruit();
+
+updateUI();
+
+addLog(
+"🍅 Bienvenue dans Tomato Mutations !"
+);
+
+</script>
+
+</body>
+</html>
