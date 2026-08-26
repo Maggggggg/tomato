@@ -4,20 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-<title>🍅 Tomato Mutations — Admin</title>
+<title>🍅 Tomato Mutations — ADMIN</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   background:#090b10;
-  color:#fff;
-  font-family:Arial,sans-serif;
+  color:white;
+  font-family:Arial,sans-serif
 }
 
 header{
@@ -29,170 +27,173 @@ header{
   gap:10px;
   position:sticky;
   top:0;
-  z-index:5;
+  z-index:5
 }
 
 h1{
   font-size:21px;
-  margin:0;
+  margin:0
 }
 
 .wrap{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
-  padding:16px;
+  padding:16px
 }
 
-button,
-input,
-textarea{
-  font:inherit;
+button,input,select,textarea{
+  font:inherit
 }
 
 button{
   border:0;
   border-radius:10px;
   padding:10px 13px;
-  color:#fff;
+  color:white;
   background:#272e3b;
-  cursor:pointer;
+  cursor:pointer
 }
 
 button:hover{
-  filter:brightness(1.15);
+  filter:brightness(1.15)
 }
 
 button:disabled{
   opacity:.5;
-  cursor:not-allowed;
+  cursor:not-allowed
 }
 
-.blue{
-  background:#285c9d;
-}
-
-.good{
-  background:#247a49;
-}
-
-.warn{
-  background:#9b6718;
-}
-
-.danger{
-  background:#b52d35;
-}
+.blue{background:#285c9d}
+.good{background:#247a49}
+.warn{background:#9b6718}
+.danger{background:#b52d35}
 
 .card{
   background:#121722;
   border:1px solid #252c39;
   border-radius:14px;
-  padding:14px;
-  margin-bottom:14px;
+  padding:15px;
+  margin-bottom:14px
+}
+
+.login{
+  width:min(430px,calc(100% - 30px));
+  margin:70px auto
+}
+
+.login h2{
+  margin-top:0
+}
+
+.login input{
+  width:100%;
+  margin:7px 0 15px;
+  padding:12px;
+  background:#0c1017;
+  color:white;
+  border:1px solid #333c4c;
+  border-radius:10px
+}
+
+.login button{
+  width:100%;
+  margin-top:5px
 }
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:10px;
+  margin-bottom:14px
 }
 
 .stat{
   background:#181e29;
   border-radius:12px;
-  padding:15px;
+  padding:14px
 }
 
 .stat b{
-  font-size:24px;
   display:block;
-  margin-top:5px;
+  font-size:24px;
+  margin-top:5px
 }
 
 .controls{
   display:flex;
   gap:8px;
-  flex-wrap:wrap;
+  flex-wrap:wrap
 }
 
 .controls input{
   flex:1;
   min-width:200px;
+  padding:10px;
   background:#0d1118;
-  color:#fff;
+  color:white;
   border:1px solid #303847;
-  border-radius:10px;
-  padding:11px;
+  border-radius:10px
 }
 
 .tablewrap{
-  overflow:auto;
+  overflow:auto
 }
 
-.player{
-  min-width:850px;
+table{
   width:100%;
-  border-collapse:collapse;
+  min-width:950px;
+  border-collapse:collapse
 }
 
-.player th,
-.player td{
+th,td{
   text-align:left;
   padding:11px;
   border-bottom:1px solid #282f3c;
-  vertical-align:top;
+  vertical-align:top
 }
 
-.player th{
-  color:#aeb8ca;
+th{
+  color:#aeb8ca
 }
 
 .actions{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
+  gap:5px
+}
+
+.online{
+  color:#45d889
+}
+
+.offline{
+  color:#8992a3
+}
+
+.banned{
+  color:#ff5f67;
+  font-weight:bold
 }
 
 .small{
   font-size:12px;
-  color:#98a3b7;
+  color:#98a3b7
 }
 
 .success{
-  color:#50dd91;
+  color:#50dd91
 }
 
 .error{
-  color:#ff6a72;
+  color:#ff6a72
 }
 
 .loading{
-  color:#f4c95d;
-}
-
-.login{
-  width:min(420px,100%);
-  margin:70px auto;
-  padding:15px;
-}
-
-.login input{
-  width:100%;
-  margin:7px 0 12px;
-  background:#0c1017;
-  color:#fff;
-  border:1px solid #333c4c;
-  border-radius:10px;
-  padding:12px;
-}
-
-.login button{
-  width:100%;
-  margin-top:5px;
+  color:#f4c95d
 }
 
 #adminPanel{
-  display:none;
+  display:none
 }
 
 .modal{
@@ -203,66 +204,42 @@ button:disabled{
   align-items:center;
   justify-content:center;
   padding:15px;
-  z-index:20;
+  z-index:20
 }
 
 .modal.show{
-  display:flex;
+  display:flex
 }
 
 .modalbox{
   width:min(500px,100%);
-  max-height:90vh;
-  overflow:auto;
   background:#151b26;
   border:1px solid #303848;
   border-radius:16px;
-  padding:18px;
+  padding:18px
 }
 
 .modalbox input,
-.modalbox textarea{
+.modalbox textarea,
+.modalbox select{
   width:100%;
   margin:7px 0 14px;
-  background:#0c1017;
-  color:#fff;
-  border:1px solid #333c4c;
-  border-radius:9px;
   padding:11px;
-}
-
-.mutationList{
-  background:#0d1118;
-  border:1px solid #293241;
-  border-radius:10px;
-  padding:10px;
-  margin-top:10px;
-  max-height:180px;
-  overflow:auto;
-}
-
-.mutationItem{
-  padding:7px;
-  border-bottom:1px solid #252c39;
-}
-
-.mutationItem:last-child{
-  border-bottom:0;
+  background:#0c1017;
+  color:white;
+  border:1px solid #333c4c;
+  border-radius:9px
 }
 
 @media(max-width:700px){
 
   .stats{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,1fr)
   }
 
   header{
     align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .wrap{
-    padding:10px;
+    flex-direction:column
   }
 }
 </style>
@@ -270,9 +247,9 @@ button:disabled{
 
 <body>
 
-<!-- =====================================================
+<!-- =========================
      CONNEXION
-===================================================== -->
+========================= -->
 
 <div id="loginPanel" class="login">
 
@@ -280,7 +257,7 @@ button:disabled{
 
     <h2>🍅 Tomato Mutations</h2>
 
-    <h3>🔐 Connexion Admin</h3>
+    <h3>🔐 Administration</h3>
 
     <p class="small">
       Connecte-toi avec ton compte administrateur Supabase.
@@ -291,7 +268,7 @@ button:disabled{
     <input
       id="loginEmail"
       type="email"
-      placeholder="Ton adresse email"
+      placeholder="Adresse email"
       autocomplete="email"
     >
 
@@ -300,21 +277,20 @@ button:disabled{
     <input
       id="loginPassword"
       type="password"
-      placeholder="Ton mot de passe"
+      placeholder="Mot de passe"
       autocomplete="current-password"
     >
 
     <button
-      class="blue"
       id="loginBtn"
+      class="blue"
     >
       Se connecter
     </button>
 
     <div
       id="loginStatus"
-      class="small"
-      style="margin-top:12px"
+      style="margin-top:14px"
     ></div>
 
   </div>
@@ -322,9 +298,9 @@ button:disabled{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      ADMIN
-===================================================== -->
+========================= -->
 
 <div id="adminPanel">
 
@@ -334,10 +310,7 @@ button:disabled{
 
   <div class="controls">
 
-    <span
-      id="adminEmail"
-      class="small"
-    ></span>
+    <span id="adminEmail" class="small"></span>
 
     <button id="logout">
       Déconnexion
@@ -350,13 +323,8 @@ button:disabled{
 
 <div class="wrap">
 
-  <div
-    id="status"
-    class="card"
-  >
-    <span class="loading">
-      Chargement...
-    </span>
+  <div id="status" class="card">
+    <span class="loading">Chargement...</span>
   </div>
 
 
@@ -368,13 +336,18 @@ button:disabled{
     </div>
 
     <div class="stat">
-      🍅 Meilleur tomate
-      <b id="bestTomato">0</b>
+      🟢 En ligne
+      <b id="online">0</b>
     </div>
 
     <div class="stat">
-      🥕 Meilleur carotte
-      <b id="bestCarrot">0</b>
+      🔨 Bannis
+      <b id="banned">0</b>
+    </div>
+
+    <div class="stat">
+      🧬 Mutations
+      <b id="mutations">0</b>
     </div>
 
   </div>
@@ -386,7 +359,7 @@ button:disabled{
 
       <input
         id="search"
-        placeholder="Rechercher un pseudo..."
+        placeholder="Rechercher un pseudo ou un ID..."
       >
 
       <button
@@ -396,6 +369,13 @@ button:disabled{
         🔄 Actualiser
       </button>
 
+      <button
+        class="good"
+        id="messageBtn"
+      >
+        📢 Message global
+      </button>
+
     </div>
 
   </div>
@@ -403,26 +383,26 @@ button:disabled{
 
   <div class="card">
 
-    <h3>👥 Joueurs</h3>
-
     <div class="tablewrap">
 
-      <table class="player">
+      <table>
 
         <thead>
 
           <tr>
             <th>Joueur</th>
-            <th>🍅 Record tomate</th>
-            <th>🥕 Record carotte</th>
-            <th>🧬 Mutations</th>
+            <th>Statut</th>
+            <th>Argent</th>
+            <th>Mutations</th>
             <th>Dernière activité</th>
             <th>Actions</th>
           </tr>
 
         </thead>
 
-        <tbody id="players"></tbody>
+        <tbody id="players">
+
+        </tbody>
 
       </table>
 
@@ -435,9 +415,9 @@ button:disabled{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      MODAL
-===================================================== -->
+========================= -->
 
 <div
   class="modal"
@@ -459,8 +439,8 @@ button:disabled{
       </button>
 
       <button
-        class="blue"
         id="confirm"
+        class="blue"
       >
         Confirmer
       </button>
@@ -474,9 +454,9 @@ button:disabled{
 
 <script>
 
-/* =========================================================
+/* =====================================================
    SUPABASE
-========================================================= */
+===================================================== */
 
 const SUPABASE_URL =
   "https://rjsrmwtbglhuarmqyfun.supabase.co";
@@ -484,20 +464,16 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_mSlW81Ge9VrJmFEk-nWGCQ_31yVwxEL";
 
-const {
-  createClient
-} = supabase;
-
 const db =
-  createClient(
+  supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 
 
-/* =========================================================
+/* =====================================================
    VARIABLES
-========================================================= */
+===================================================== */
 
 let players = [];
 
@@ -506,17 +482,17 @@ let currentPlayer = null;
 let currentAction = null;
 
 
-/* =========================================================
+/* =====================================================
    HELPERS
-========================================================= */
+===================================================== */
 
-const $ =
-  id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
 
 
-function esc(value){
+function esc(v){
 
-  return String(value ?? "")
+  return String(v ?? "")
     .replace(
       /[&<>"']/g,
       c => ({
@@ -531,69 +507,33 @@ function esc(value){
 }
 
 
-function money(value){
+function money(v){
 
-  return Number(value || 0)
+  return Number(v || 0)
     .toLocaleString("fr-FR");
 
 }
 
 
-function date(value){
+function formatDate(v){
 
-  if(!value)
+  if(!v)
     return "—";
 
   const d =
-    new Date(value);
+    new Date(v);
 
-  if(
-    Number.isNaN(
-      d.getTime()
-    )
-  ){
+  if(isNaN(d.getTime()))
     return "—";
-  }
 
-  return d.toLocaleString(
-    "fr-FR"
-  );
+  return d.toLocaleString("fr-FR");
 
 }
 
 
-function mutationArray(value){
-
-  if(Array.isArray(value))
-    return value;
-
-  if(typeof value === "string"){
-
-    try{
-
-      const parsed =
-        JSON.parse(value);
-
-      return Array.isArray(parsed)
-        ? parsed
-        : [];
-
-    }catch(e){
-
-      return [];
-
-    }
-
-  }
-
-  return [];
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
+/* =====================================================
+   CONNEXION
+===================================================== */
 
 async function login(){
 
@@ -609,21 +549,15 @@ async function login(){
   if(!email || !password){
 
     $("loginStatus").innerHTML =
-      '<span class="error">' +
-      'Entre ton email et ton mot de passe.' +
-      '</span>';
+      '<span class="error">⚠️ Entre ton email et ton mot de passe.</span>';
 
     return;
-
   }
 
   $("loginBtn").disabled = true;
 
   $("loginStatus").innerHTML =
-    '<span class="loading">' +
-    'Connexion...' +
-    '</span>';
-
+    '<span class="loading">🔄 Connexion...</span>';
 
   const {
     data,
@@ -631,47 +565,44 @@ async function login(){
   } =
     await db.auth.signInWithPassword({
 
-      email,
-      password
+      email:email,
+
+      password:password
 
     });
 
 
   if(error){
 
+    console.error(error);
+
     $("loginBtn").disabled = false;
 
     $("loginStatus").innerHTML =
-      '<span class="error">' +
+      '<span class="error">❌ ' +
       esc(error.message) +
       '</span>';
 
     return;
-
   }
 
 
-  if(!data.session){
+  if(!data || !data.user){
 
     $("loginBtn").disabled = false;
 
     $("loginStatus").innerHTML =
-      '<span class="error">' +
-      'Connexion impossible.' +
-      '</span>';
+      '<span class="error">❌ Aucun utilisateur connecté.</span>';
 
     return;
-
   }
 
 
   $("loginStatus").innerHTML =
-    '<span class="success">' +
-    'Connexion réussie.' +
-    '</span>';
+    '<span class="success">✅ Connexion réussie.</span>';
 
 
-  await startAdmin();
+  await openAdmin();
 
 }
 
@@ -691,30 +622,45 @@ $("loginPassword").addEventListener(
 );
 
 
-/* =========================================================
-   VÉRIFICATION ADMIN
-========================================================= */
+/* =====================================================
+   OUVERTURE ADMIN
+===================================================== */
 
-async function startAdmin(){
+async function openAdmin(){
+
+  $("status").innerHTML =
+    '<span class="loading">🔄 Vérification du compte...</span>';
 
   const {
     data:{
       session
-    }
+    },
+    error:sessionError
   } =
     await db.auth.getSession();
 
 
+  if(sessionError){
+
+    $("loginStatus").innerHTML =
+      '<span class="error">❌ Erreur session : ' +
+      esc(sessionError.message) +
+      '</span>';
+
+    $("loginBtn").disabled = false;
+
+    return;
+  }
+
+
   if(!session){
 
-    $("loginPanel").style.display =
-      "block";
+    $("loginStatus").innerHTML =
+      '<span class="error">❌ Session introuvable.</span>';
 
-    $("adminPanel").style.display =
-      "none";
+    $("loginBtn").disabled = false;
 
-    return false;
-
+    return;
   }
 
 
@@ -723,45 +669,52 @@ async function startAdmin(){
     session.user.id;
 
 
-  $("status").innerHTML =
-    '<span class="loading">' +
-    'Vérification des droits administrateur...' +
-    '</span>';
-
+  /*
+    On vérifie l'administrateur.
+  */
 
   const {
     data:isAdmin,
-    error
+    error:adminError
   } =
-    await db.rpc(
-      "is_admin"
+    await db.rpc("is_admin");
+
+
+  if(adminError){
+
+    console.error(
+      "Erreur is_admin:",
+      adminError
     );
 
-
-  if(error){
-
-    $("status").innerHTML =
+    $("loginStatus").innerHTML =
       '<span class="error">' +
-      'Erreur de vérification : ' +
-      esc(error.message) +
+      '❌ La connexion fonctionne, mais la vérification admin a échoué.<br><br>' +
+      esc(adminError.message) +
       '</span>';
 
-    return false;
+    $("loginBtn").disabled = false;
 
+    return;
   }
 
 
-  if(!isAdmin){
+  if(isAdmin !== true){
 
-    $("status").innerHTML =
+    $("loginStatus").innerHTML =
       '<span class="error">' +
       '⛔ Ce compte n’est pas administrateur.' +
       '</span>';
 
-    return false;
+    $("loginBtn").disabled = false;
 
+    return;
   }
 
+
+  /*
+    ADMIN OK
+  */
 
   $("loginPanel").style.display =
     "none";
@@ -778,21 +731,17 @@ async function startAdmin(){
 
   await loadPlayers();
 
-  return true;
-
 }
 
 
-/* =========================================================
+/* =====================================================
    CHARGER LES JOUEURS
-========================================================= */
+===================================================== */
 
 async function loadPlayers(){
 
   $("status").innerHTML =
-    '<span class="loading">' +
-    '🔄 Chargement des joueurs...' +
-    '</span>';
+    '<span class="loading">🔄 Chargement des joueurs...</span>';
 
 
   const {
@@ -800,10 +749,10 @@ async function loadPlayers(){
     error
   } =
     await db
-      .from("leaderboard")
+      .from("players")
       .select("*")
       .order(
-        "best_tomato",
+        "last_seen",
         {
           ascending:false
         }
@@ -812,16 +761,18 @@ async function loadPlayers(){
 
   if(error){
 
-    console.error(error);
+    console.error(
+      "Erreur players:",
+      error
+    );
 
     $("status").innerHTML =
       '<span class="error">' +
-      'Erreur : ' +
+      '❌ Impossible de charger les joueurs.<br><br>' +
       esc(error.message) +
       '</span>';
 
     return;
-
   }
 
 
@@ -831,7 +782,9 @@ async function loadPlayers(){
 
   $("status").innerHTML =
     '<span class="success">' +
-    '🛡️ Connecté en tant qu’administrateur.' +
+    '🛡️ Administrateur connecté — ' +
+    players.length +
+    ' joueur(s).' +
     '</span>';
 
 
@@ -840,13 +793,13 @@ async function loadPlayers(){
 }
 
 
-/* =========================================================
+/* =====================================================
    AFFICHAGE
-========================================================= */
+===================================================== */
 
 function render(){
 
-  const q =
+  const search =
     $("search")
       .value
       .trim()
@@ -855,12 +808,28 @@ function render(){
 
   const filtered =
     players.filter(
-      p =>
-        String(
-          p.username || ""
-        )
-        .toLowerCase()
-        .includes(q)
+      p => {
+
+        const username =
+          String(
+            p.username || ""
+          )
+          .toLowerCase();
+
+
+        const id =
+          String(
+            p.id || ""
+          )
+          .toLowerCase();
+
+
+        return (
+          username.includes(search) ||
+          id.includes(search)
+        );
+
+      }
     );
 
 
@@ -868,177 +837,200 @@ function render(){
     players.length;
 
 
-  const bestTomato =
-    players.length
-      ? Math.max(
-          ...players.map(
-            p =>
-              Number(
-                p.best_tomato || 0
-              )
-          )
-        )
-      : 0;
+  $("online").textContent =
+    players.filter(
+      p => p.is_online === true
+    ).length;
 
 
-  const bestCarrot =
-    players.length
-      ? Math.max(
-          ...players.map(
-            p =>
-              Number(
-                p.best_carrot || 0
-              )
-          )
-        )
-      : 0;
+  $("banned").textContent =
+    players.filter(
+      p => p.ban_active === true
+    ).length;
 
 
-  $("bestTomato").textContent =
-    money(bestTomato);
+  $("mutations").textContent =
+    players.reduce(
+      (total,p) =>
+        total +
+        Number(
+          p.discovered_mutations || 0
+        ),
+      0
+    );
 
 
-  $("bestCarrot").textContent =
-    money(bestCarrot);
+  if(filtered.length === 0){
+
+    $("players").innerHTML =
+      `<tr>
+        <td colspan="6">
+          <span class="small">
+            Aucun joueur trouvé.
+          </span>
+        </td>
+      </tr>`;
+
+    return;
+  }
 
 
   $("players").innerHTML =
-    filtered.map(
-      p => {
+    filtered
+      .map(
+        p => {
 
-        const tomatoMutations =
-          mutationArray(
-            p.tomato_mutations
-          );
+          let status;
 
 
-        const carrotMutations =
-          mutationArray(
-            p.carrot_mutations
-          );
+          if(p.ban_active){
+
+            status =
+              '<span class="banned">🔨 BANNI</span>';
+
+          }
+
+          else if(p.is_online){
+
+            status =
+              '<span class="online">🟢 EN LIGNE</span>';
+
+          }
+
+          else{
+
+            status =
+              '<span class="offline">⚫ HORS LIGNE</span>';
+
+          }
 
 
-        const mutationCount =
-          tomatoMutations.length +
-          carrotMutations.length;
+          return `
+
+<tr>
+
+<td>
+
+<b>
+${esc(p.username || "Sans pseudo")}
+</b>
+
+<div class="small">
+ID : ${esc(p.id)}
+</div>
+
+</td>
 
 
-        return `
-
-          <tr>
-
-            <td>
-
-              <b>
-                ${esc(p.username || "Sans pseudo")}
-              </b>
-
-            </td>
+<td>
+${status}
+</td>
 
 
-            <td>
-
-              🍅
-              <b>
-                ${money(p.best_tomato)}
-              </b>
-
-            </td>
+<td>
+💰 ${money(p.money)} $
+</td>
 
 
-            <td>
-
-              🥕
-              <b>
-                ${money(p.best_carrot)}
-              </b>
-
-            </td>
+<td>
+🧬 ${Number(p.discovered_mutations || 0)}
+</td>
 
 
-            <td>
-
-              🧬
-              ${mutationCount}
-
-            </td>
+<td>
+${formatDate(p.last_seen)}
+</td>
 
 
-            <td>
+<td>
 
-              ${date(p.updated_at)}
-
-            </td>
+<div class="actions">
 
 
-            <td>
-
-              <div class="actions">
-
-                <button
-                  class="warn"
-                  onclick="openAction(
-                    'tomato',
-                    ${JSON.stringify(p.username)}
-                  )"
-                >
-                  🍅 Tomate
-                </button>
+<button
+class="warn"
+onclick='openAction("money",${JSON.stringify(p.id)})'
+>
+💰 Argent
+</button>
 
 
-                <button
-                  class="good"
-                  onclick="openAction(
-                    'carrot',
-                    ${JSON.stringify(p.username)}
-                  )"
-                >
-                  🥕 Carotte
-                </button>
+<button
+class="blue"
+onclick='openAction("mutations",${JSON.stringify(p.id)})'
+>
+🧬 Mutations
+</button>
 
 
-                <button
-                  class="blue"
-                  onclick="openAction(
-                    'mutations',
-                    ${JSON.stringify(p.username)}
-                  )"
-                >
-                  🧬 Mutations
-                </button>
+<button
+class="danger"
+onclick='openAction("kick",${JSON.stringify(p.id)})'
+>
+👢 Kick
+</button>
 
 
-                <button
-                  class="danger"
-                  onclick="openAction(
-                    'reset',
-                    ${JSON.stringify(p.username)}
-                  )"
-                >
-                  ♻️ Reset
-                </button>
+${
+p.ban_active
 
-              </div>
+?
 
-            </td>
+`
 
-          </tr>
+<button
+class="good"
+onclick='openAction("unban",${JSON.stringify(p.id)})'
+>
+🔓 Débannir
+</button>
 
-        `;
+`
 
-      }
-    ).join("");
+:
+
+`
+
+<button
+class="danger"
+onclick='openAction("ban",${JSON.stringify(p.id)})'
+>
+🔨 Ban
+</button>
+
+`
+}
+
+
+<button
+onclick='openAction("reset",${JSON.stringify(p.id)})'
+>
+♻️ Reset
+</button>
+
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+        }
+      )
+      .join("");
 
 }
 
 
-/* =========================================================
-   OUVRIR ACTION
-========================================================= */
+/* =====================================================
+   MODAL
+===================================================== */
 
 function openAction(
   action,
-  username
+  id
 ){
 
   currentAction =
@@ -1047,8 +1039,7 @@ function openAction(
 
   currentPlayer =
     players.find(
-      p =>
-        p.username === username
+      p => String(p.id) === String(id)
     );
 
 
@@ -1061,157 +1052,176 @@ function openAction(
     .add("show");
 
 
-  if(action === "tomato"){
+  const titles = {
 
-    $("modalTitle").textContent =
-      "🍅 Modifier le record tomate";
+    money:
+      "💰 Modifier l'argent",
 
+    mutations:
+      "🧬 Modifier les mutations",
 
-    $("modalContent").innerHTML = `
+    kick:
+      "👢 Expulser le joueur",
 
-      <p>
-        Joueur :
-        <b>
-          ${esc(currentPlayer.username)}
-        </b>
-      </p>
+    ban:
+      "🔨 Bannir le joueur",
 
-      <label>
-        Nouveau record
-      </label>
+    unban:
+      "🔓 Débannir le joueur",
 
-      <input
-        id="value"
-        type="number"
-        min="0"
-        value="${Number(
-          currentPlayer.best_tomato || 0
-        )}"
-      >
+    reset:
+      "♻️ Réinitialiser le compte"
 
-    `;
-
-  }
+  };
 
 
-  else if(action === "carrot"){
+  $("modalTitle").textContent =
+    titles[action];
 
-    $("modalTitle").textContent =
-      "🥕 Modifier le record carotte";
 
+  if(action === "money"){
 
     $("modalContent").innerHTML = `
 
-      <p>
-        Joueur :
-        <b>
-          ${esc(currentPlayer.username)}
-        </b>
-      </p>
+<label>Nouvel argent</label>
 
-      <label>
-        Nouveau record
-      </label>
+<input
+id="actionValue"
+type="number"
+min="0"
+value="${Number(currentPlayer.money || 0)}"
+>
 
-      <input
-        id="value"
-        type="number"
-        min="0"
-        value="${Number(
-          currentPlayer.best_carrot || 0
-        )}"
-      >
+<div class="small">
+La valeur actuelle sera remplacée.
+</div>
 
-    `;
+`;
 
   }
 
 
   else if(action === "mutations"){
 
-    const mutations =
-      mutationArray(
-        currentPlayer.tomato_mutations
-      );
+    $("modalContent").innerHTML = `
+
+<label>
+Nombre de mutations découvertes
+</label>
+
+<input
+id="actionValue"
+type="number"
+min="0"
+value="${Number(currentPlayer.discovered_mutations || 0)}"
+>
+
+`;
+
+  }
 
 
-    $("modalTitle").textContent =
-      "🧬 Mutations du joueur";
-
+  else if(action === "kick"){
 
     $("modalContent").innerHTML = `
 
-      <p>
-        <b>
-          ${esc(currentPlayer.username)}
-        </b>
-      </p>
+<p>
+Expulser <b>
+${esc(currentPlayer.username)}
+</b> ?
+</p>
 
-      <p>
-        Mutations tomate enregistrées :
-        <b>${mutations.length}</b>
-      </p>
+<label>Message</label>
 
-      <div class="mutationList">
+<input
+id="actionValue"
+value="Tu as été expulsé par un administrateur."
+>
 
-        ${
-          mutations.length
-          ?
-          mutations
-            .map(
-              m =>
-                `<div class="mutationItem">
-                  🧬 ${esc(m)}
-                </div>`
-            )
-            .join("")
-          :
-          `<div class="small">
-            Aucune mutation enregistrée.
-          </div>`
-        }
+`;
 
-      </div>
+  }
 
-    `;
+
+  else if(action === "ban"){
+
+    $("modalContent").innerHTML = `
+
+<label>Durée</label>
+
+<select id="duration">
+
+<option value="3600">
+1 heure
+</option>
+
+<option value="86400">
+1 jour
+</option>
+
+<option value="604800">
+7 jours
+</option>
+
+<option value="2592000">
+30 jours
+</option>
+
+<option value="0">
+Permanent
+</option>
+
+</select>
+
+
+<label>Raison</label>
+
+<textarea id="actionValue">Violation des règles</textarea>
+
+`;
+
+  }
+
+
+  else if(action === "unban"){
+
+    $("modalContent").innerHTML = `
+
+<p>
+Retirer le bannissement de
+<b>
+${esc(currentPlayer.username)}
+</b> ?
+</p>
+
+`;
 
   }
 
 
   else if(action === "reset"){
 
-    $("modalTitle").textContent =
-      "♻️ Réinitialiser";
-
-
     $("modalContent").innerHTML = `
 
-      <p>
-        ⚠️ Tu vas remettre à zéro les
-        records de :
-      </p>
+<p>
+⚠️ <b>Attention</b>
+</p>
 
-      <p>
-        <b>
-          ${esc(currentPlayer.username)}
-        </b>
-      </p>
+<p>
+Cette action remettra à zéro l'argent,
+les mutations découvertes et les records de :
+</p>
 
-      <p class="small">
-        Les données du leaderboard seront
-        remises à zéro.
-      </p>
+<p>
+<b>${esc(currentPlayer.username)}</b>
+</p>
 
-    `;
+`;
 
   }
 
 }
 
-
-/* =========================================================
-   FERMER MODAL
-========================================================= */
 
 function closeModal(){
 
@@ -1228,9 +1238,58 @@ function closeModal(){
 }
 
 
-/* =========================================================
-   CONFIRMER
-========================================================= */
+/* =====================================================
+   LOG ADMIN
+===================================================== */
+
+async function adminLog(
+  action,
+  playerId,
+  details={}
+){
+
+  const {
+    data:{
+      user
+    }
+  } =
+    await db.auth.getUser();
+
+
+  if(!user)
+    return;
+
+
+  const {
+    error
+  } =
+    await db
+      .from("admin_logs")
+      .insert({
+
+        admin_id:user.id,
+
+        player_id:playerId,
+
+        action:action,
+
+        details:details
+
+      });
+
+
+  if(error)
+    console.warn(
+      "Log admin impossible:",
+      error.message
+    );
+
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
 
 async function confirmAction(){
 
@@ -1238,21 +1297,26 @@ async function confirmAction(){
     return;
 
 
-  const username =
-    currentPlayer.username;
+  const player =
+    currentPlayer;
+
+
+  $("confirm").disabled =
+    true;
 
 
   try{
 
-    /* TOMATE */
 
-    if(currentAction === "tomato"){
+    /* ARGENT */
+
+    if(currentAction === "money"){
 
       const value =
         Math.max(
           0,
           Number(
-            $("value").value
+            $("actionValue").value
           ) || 0
         );
 
@@ -1261,39 +1325,43 @@ async function confirmAction(){
         error
       } =
         await db
-          .from("leaderboard")
+          .from("players")
           .update({
-
-            best_tomato:
-              value,
-
-            updated_at:
-              new Date()
-                .toISOString()
-
+            money:value
           })
           .eq(
-            "username",
-            username
+            "id",
+            player.id
           );
 
 
       if(error)
         throw error;
+
+
+      await adminLog(
+        "set_money",
+        player.id,
+        {
+          money:value
+        }
+      );
 
     }
 
 
-    /* CAROTTE */
+    /* MUTATIONS */
 
-    else if(currentAction === "carrot"){
+    else if(currentAction === "mutations"){
 
       const value =
         Math.max(
           0,
-          Number(
-            $("value").value
-          ) || 0
+          Math.floor(
+            Number(
+              $("actionValue").value
+            ) || 0
+          )
         );
 
 
@@ -1301,25 +1369,249 @@ async function confirmAction(){
         error
       } =
         await db
-          .from("leaderboard")
+          .from("players")
           .update({
-
-            best_carrot:
-              value,
-
-            updated_at:
-              new Date()
-                .toISOString()
-
+            discovered_mutations:value
           })
           .eq(
-            "username",
-            username
+            "id",
+            player.id
           );
 
 
       if(error)
         throw error;
+
+
+      await adminLog(
+        "set_mutations",
+        player.id,
+        {
+          value:value
+        }
+      );
+
+    }
+
+
+    /* KICK */
+
+    else if(currentAction === "kick"){
+
+      const message =
+        $("actionValue").value ||
+        "Tu as été expulsé par un administrateur.";
+
+
+      const {
+        error
+      } =
+        await db
+          .from("players")
+          .update({
+
+            kick_until:
+              new Date(
+                Date.now()+30000
+              ).toISOString()
+
+          })
+          .eq(
+            "id",
+            player.id
+          );
+
+
+      if(error)
+        throw error;
+
+
+      await adminLog(
+        "kick",
+        player.id,
+        {
+          message:message
+        }
+      );
+
+    }
+
+
+    /* BAN */
+
+    else if(currentAction === "ban"){
+
+      const seconds =
+        Number(
+          $("duration").value
+        );
+
+
+      const expires =
+        seconds === 0
+        ? null
+        : new Date(
+            Date.now() +
+            seconds * 1000
+          ).toISOString();
+
+
+      let result;
+
+
+      result =
+        await db
+          .from("bans")
+          .update({
+            active:false
+          })
+          .eq(
+            "player_id",
+            player.id
+          )
+          .eq(
+            "active",
+            true
+          );
+
+
+      if(result.error)
+        throw result.error;
+
+
+      result =
+        await db
+          .from("bans")
+          .insert({
+
+            player_id:
+              player.id,
+
+            reason:
+              $("actionValue").value ||
+              "Aucune raison",
+
+            expires_at:
+              expires,
+
+            active:true
+
+          });
+
+
+      if(result.error)
+        throw result.error;
+
+
+      result =
+        await db
+          .from("players")
+          .update({
+            is_online:false,
+            ban_active:true
+          })
+          .eq(
+            "id",
+            player.id
+          );
+
+
+      /*
+        Si ban_active n'existe pas,
+        on ne bloque pas toute l'action.
+      */
+
+      if(result.error){
+
+        console.warn(
+          "ban_active non modifié:",
+          result.error.message
+        );
+
+        result =
+          await db
+            .from("players")
+            .update({
+              is_online:false
+            })
+            .eq(
+              "id",
+              player.id
+            );
+
+        if(result.error)
+          throw result.error;
+
+      }
+
+
+      await adminLog(
+        "ban",
+        player.id,
+        {
+          expires_at:expires
+        }
+      );
+
+    }
+
+
+    /* UNBAN */
+
+    else if(currentAction === "unban"){
+
+      let result =
+        await db
+          .from("bans")
+          .update({
+            active:false
+          })
+          .eq(
+            "player_id",
+            player.id
+          )
+          .eq(
+            "active",
+            true
+          );
+
+
+      if(result.error)
+        throw result.error;
+
+
+      /*
+        On essaie aussi de mettre
+        ban_active à false.
+      */
+
+      result =
+        await db
+          .from("players")
+          .update({
+            ban_active:false
+          })
+          .eq(
+            "id",
+            player.id
+          );
+
+
+      if(result.error){
+
+        console.warn(
+          "ban_active non disponible:",
+          result.error.message
+        );
+
+      }
+
+
+      await adminLog(
+        "unban",
+        player.id,
+        {}
+      );
 
     }
 
@@ -1332,30 +1624,37 @@ async function confirmAction(){
         error
       } =
         await db
-          .from("leaderboard")
+          .from("players")
           .update({
 
-            best_tomato:0,
+            money:0,
 
-            best_carrot:0,
+            discovered_mutations:0,
 
-            tomato_mutations:[],
+            best_tomato_value:0,
 
-            carrot_mutations:[],
+            best_tomato_mutations:[],
 
-            updated_at:
-              new Date()
-                .toISOString()
+            best_carrot_value:0,
+
+            best_carrot_mutations:[]
 
           })
           .eq(
-            "username",
-            username
+            "id",
+            player.id
           );
 
 
       if(error)
         throw error;
+
+
+      await adminLog(
+        "reset_account",
+        player.id,
+        {}
+      );
 
     }
 
@@ -1370,18 +1669,22 @@ async function confirmAction(){
     console.error(error);
 
     alert(
-      "Erreur : " +
+      "❌ Erreur :\n\n" +
       (error.message || error)
     );
 
   }
 
+
+  $("confirm").disabled =
+    false;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    BOUTONS
-========================================================= */
+===================================================== */
 
 $("cancel").onclick =
   closeModal;
@@ -1399,9 +1702,9 @@ $("search").oninput =
   render;
 
 
-/* =========================================================
+/* =====================================================
    LOGOUT
-========================================================= */
+===================================================== */
 
 $("logout").onclick =
   async () => {
@@ -1414,28 +1717,95 @@ $("logout").onclick =
     $("loginPanel").style.display =
       "block";
 
-    $("loginEmail").value =
+    $("loginPassword").value =
       "";
 
-    $("loginPassword").value =
+    $("loginStatus").innerHTML =
       "";
 
   };
 
 
-/* =========================================================
+/* =====================================================
+   MESSAGE GLOBAL
+===================================================== */
+
+$("messageBtn").onclick =
+  async () => {
+
+    const message =
+      prompt(
+        "Message à envoyer à tous les joueurs :"
+      );
+
+
+    if(!message)
+      return;
+
+
+    const {
+      data:{
+        user
+      }
+    } =
+      await db.auth.getUser();
+
+
+    if(!user){
+
+      alert(
+        "Session administrateur introuvable."
+      );
+
+      return;
+    }
+
+
+    const {
+      error
+    } =
+      await db
+        .from("global_messages")
+        .insert({
+
+          message:message,
+
+          created_by:user.id
+
+        });
+
+
+    if(error){
+
+      alert(
+        "❌ " +
+        error.message
+      );
+
+    }else{
+
+      alert(
+        "✅ Message envoyé."
+      );
+
+    }
+
+  };
+
+
+/* =====================================================
    TEMPS RÉEL
-========================================================= */
+===================================================== */
 
 db
-  .channel("admin-leaderboard-live")
+  .channel("admin-live")
 
   .on(
     "postgres_changes",
     {
       event:"*",
       schema:"public",
-      table:"leaderboard"
+      table:"players"
     },
     () => {
 
@@ -1447,11 +1817,11 @@ db
   .subscribe();
 
 
-/* =========================================================
+/* =====================================================
    DÉMARRAGE
-========================================================= */
+===================================================== */
 
-(async () => {
+(async()=>{
 
   const {
     data:{
@@ -1463,15 +1833,7 @@ db
 
   if(session){
 
-    await startAdmin();
-
-  }else{
-
-    $("loginPanel").style.display =
-      "block";
-
-    $("adminPanel").style.display =
-      "none";
+    await openAdmin();
 
   }
 
