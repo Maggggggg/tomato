@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -42,6 +43,7 @@ button:active{
 header{
   text-align:center;
   padding:15px 10px 5px;
+  position:relative;
 }
 
 h1{
@@ -52,6 +54,62 @@ h1{
 .subtitle{
   color:#aeb9c5;
   margin-top:5px;
+}
+
+/* =========================
+   INDEX VISIBLE
+========================= */
+
+.indexCounter{
+  position:absolute;
+  top:12px;
+  right:15px;
+  min-width:88px;
+  padding:8px 12px;
+  border-radius:13px;
+  background:linear-gradient(145deg,#7653c9,#4b3188);
+  border:2px solid #a98ce8;
+  box-shadow:
+    0 5px 0 #35225f,
+    0 0 18px #7653c955;
+  text-align:center;
+  font-weight:bold;
+  z-index:20;
+}
+
+.indexCounterTitle{
+  font-size:11px;
+  color:#d9ceff;
+  letter-spacing:1px;
+}
+
+.indexCounterValue{
+  font-size:23px;
+  line-height:25px;
+  color:white;
+}
+
+@media(max-width:600px){
+
+  .indexCounter{
+    top:8px;
+    right:8px;
+    min-width:72px;
+    padding:5px 8px;
+  }
+
+  .indexCounterTitle{
+    font-size:9px;
+  }
+
+  .indexCounterValue{
+    font-size:19px;
+  }
+
+  h1{
+    padding-right:70px;
+    padding-left:10px;
+  }
 }
 
 .game{
@@ -383,6 +441,42 @@ h1{
   background:
     radial-gradient(circle,#a98952,#55401f 60%,#292015);
   filter:saturate(.55);
+}
+
+/* =========================
+   EFFETS SUPPLEMENTAIRES
+========================= */
+
+.fruit.crystal{
+  background:
+    linear-gradient(135deg,#ffffff,#9be7ff 35%,#7c5cff 70%,#e5b8ff);
+  box-shadow:
+    0 0 25px #b8dfff,
+    0 0 55px #9a72ff,
+    inset 0 0 20px #fff;
+}
+
+.fruit.plasma{
+  background:
+    radial-gradient(circle at 40% 35%,#fff,#ff65e7 25%,#733cff 65%,#1a0b46);
+  box-shadow:
+    0 0 30px #ff50e8,
+    0 0 60px #743cff;
+}
+
+.fruit.meteor{
+  background:
+    radial-gradient(circle at 35% 25%,#fff1b0,#ff8a1c 35%,#8e2117 70%,#22100d);
+  box-shadow:
+    0 0 30px #ff641e;
+}
+
+.fruit.blackhole{
+  background:
+    radial-gradient(circle,#050505 20%,#28114c 45%,#8d4aff 60%,#050505 75%);
+  box-shadow:
+    0 0 25px #8e4dff,
+    0 0 65px #5721b8;
 }
 
 /* électrique */
@@ -864,6 +958,15 @@ input{
 
 <header>
 
+<!-- INDEX VISIBLE EN HAUT À DROITE -->
+
+<div class="indexCounter">
+  <div class="indexCounterTitle">📖 INDEX</div>
+  <div class="indexCounterValue">
+    <span id="indexCounter">0</span>/100
+  </div>
+</div>
+
 <h1>🍅 Tomato Mutations</h1>
 
 <div class="subtitle">
@@ -1209,7 +1312,7 @@ onclick="closeModal('oddsModal')">
 
 <p>
 De la mutation la plus fréquente à la plus rare.
-Les 3 mutations secrètes ne sont pas affichées.
+Les 4 mutations secrètes ne sont pas affichées.
 </p>
 
 <div id="oddsList"></div>
@@ -1236,6 +1339,11 @@ onclick="closeModal('indexModal')">
 </button>
 
 <h2>📖 Index des mutations</h2>
+
+<p>
+Découvertes :
+<strong id="indexModalCounter">0/100</strong>
+</p>
 
 <div id="indexList"></div>
 
@@ -1296,7 +1404,7 @@ window.supabase.createClient(
    VERSION
 ===================================================== */
 
-const UPDATE_VERSION="5.0";
+const UPDATE_VERSION="6.0";
 
 
 /*
@@ -1387,9 +1495,15 @@ localStorage.getItem(
 Format :
 
 [nom, emoji, multiplicateur, poids]
+
+96 mutations NON secrètes au total.
 */
 
 const M=[
+
+/* =========================
+   FRUITS
+========================= */
 
 ["Dorée","🟡",1.15,10],
 
@@ -1450,7 +1564,9 @@ const M=[
 ["Maïs","🌽",1.90,2],
 
 
-/* ANIMAUX */
+/* =========================
+   ANIMAUX
+========================= */
 
 ["Lapin","🐇",2.0,1.5],
 
@@ -1493,7 +1609,9 @@ const M=[
 ["Dragon","🐲",3,.12],
 
 
-/* MUTATIONS SPÉCIALES */
+/* =========================
+   MUTATIONS SPÉCIALES
+========================= */
 
 ["Cristallisée","💎",3.2,.10],
 
@@ -1506,16 +1624,19 @@ const M=[
 ["Arc-en-ciel","🌈",4,.06],
 
 
-/* NEGATIVES */
+/* =========================
+   NÉGATIVES
+   MULTIPLICATEURS INCHANGÉS
+========================= */
 
 ["Pourris","☠️",0.5,2],
 
 ["Assèché","🏜️",1/3,1],
 
 
-/* =================================================
-   UNIQUEMENT MÉTÉO
-================================================= */
+/* =========================
+   MÉTÉO
+========================= */
 
 ["Pluie","🌧️",1.10,5],
 
@@ -1575,9 +1696,48 @@ const M=[
 
 ["Radiation","☢️",3.50,.04],
 
-["Magnétique","🧲",3.10,.05]
+["Magnétique","🧲",3.10,.05],
+
+
+/* =====================================================
+   10 NOUVELLES MUTATIONS
+   MULTIPLICATEURS ENTRE ×1.5 ET ×5
+===================================================== */
+
+["Framboise","🫐",1.50,.8],
+
+["Abricot","🍑",1.75,.65],
+
+["Mandarine","🍊",2.00,.55],
+
+["Fruit de la passion","🥭",2.25,.45],
+
+["Grenadille","🟠",2.50,.35],
+
+["Ramboutan","🔴",3.00,.25],
+
+["Durian","🥭",3.50,.18],
+
+["Léopard","🐆",4.00,.10],
+
+["Requin","🦈",4.50,.06],
+
+["Phénix","🔥",5.00,.03]
 
 ];
+
+
+/* =====================================================
+   VÉRIFICATION
+===================================================== */
+
+/*
+96 mutations normales sont définies ci-dessus.
+Avec les 4 secrets, l'index total = 100.
+*/
+
+const TOTAL_INDEX_MUTATIONS =
+M.length + 4;
 
 
 /* =====================================================
@@ -1605,6 +1765,20 @@ name:"Tortue Pingouin",
 emoji:"🐢🐧",
 multiplier:50,
 denominator:100000
+},
+
+/*
+SECRÈTE ULTIME
+Encore plus rare que les autres.
+Non affichée dans ODDS.
+*/
+
+{
+name:"???",
+emoji:"❓",
+multiplier:100,
+denominator:1000000,
+ultimate:true
 }
 
 ];
@@ -1635,7 +1809,12 @@ const animalNames=new Set([
 "Canard",
 "Pingouin",
 "Tortue",
-"Dragon"
+"Dragon",
+
+/* nouvelles */
+"Léopard",
+"Requin",
+"Phénix"
 
 ]);
 
@@ -1788,6 +1967,8 @@ return Math.max(
 value
 );
 
+}
+
 
 /* =====================================================
    SECRETS
@@ -1823,13 +2004,29 @@ saveDiscovered();
 
 function addSecret(secret){
 
+/*
+Évite qu'un même secret soit ajouté plusieurs fois
+dans la même combinaison.
+*/
+
+if(
+currentMutations.some(
+m=>m.name===secret.name
+)
+){
+
+return;
+
+}
+
 currentMutations.push({
 
 name:secret.name,
 emoji:secret.emoji,
 multiplier:secret.multiplier,
 negative:false,
-secret:true
+secret:true,
+ultimate:secret.ultimate || false
 
 });
 
@@ -1841,16 +2038,42 @@ discovered.push(
 secret.name
 );
 
+updateIndexCounter();
+
 }
 
 addLog(
 "🔐 SECRET : "+
 secret.emoji+
 " "+
+(
+secret.ultimate
+?
+"???"
+:
 secret.name
+)
 );
 
 triggerRareExplosion();
+
+
+/* secret ultime */
+
+if(
+secret.ultimate
+){
+
+showSecret(
+"❓ ??? ❓"
+);
+
+return;
+
+}
+
+
+/* FAAAAAAAAAAH */
 
 if(
 secret.name==="FAAAAAAAAAAAH"
@@ -1873,10 +2096,8 @@ function leafSecret(){
 
 /*
 Tortue Pingouin :
-1 / 100 000 normalement.
-
-Le clic sur les feuilles déclenche directement
-la découverte du secret.
+Le clic sur une feuille déclenche
+directement la découverte du secret.
 */
 
 currentMutations=[];
@@ -1947,6 +2168,8 @@ m[0]
 checkSecrets();
 
 saveDiscovered();
+
+updateIndexCounter();
 
 if(amount>=10){
 
@@ -2128,9 +2351,7 @@ const weatherMap={
 
 "Givre":"❄️",
 
-"Cristaux de glace":"🧊",
-
-"Supernova":"💫"
+"Cristaux de glace":"🧊"
 
 };
 
@@ -2223,6 +2444,18 @@ fruit.classList.add("electric");
 if(has("Banane"))
 fruit.classList.add("banana");
 
+if(has("Cristallisée"))
+fruit.classList.add("crystal");
+
+if(has("Plasma"))
+fruit.classList.add("plasma");
+
+if(has("Météorite"))
+fruit.classList.add("meteor");
+
+if(has("Trou noir"))
+fruit.classList.add("blackhole");
+
 
 /* animaux */
 
@@ -2268,6 +2501,50 @@ companions.appendChild(c);
 /* météo */
 
 updateWeather();
+
+}
+
+
+/* =====================================================
+   INDEX COMPTEUR
+===================================================== */
+
+function updateIndexCounter(){
+
+/*
+On compte uniquement les noms uniques.
+L'index est limité à 100.
+*/
+
+const unique =
+[...new Set(discovered)];
+
+discovered=unique;
+
+const count =
+Math.min(
+discovered.length,
+100
+);
+
+const visible =
+document.getElementById(
+"indexCounter"
+);
+
+if(visible){
+visible.textContent=count;
+}
+
+const modalCounter =
+document.getElementById(
+"indexModalCounter"
+);
+
+if(modalCounter){
+modalCounter.textContent=
+count+"/100";
+}
 
 }
 
@@ -2362,10 +2639,10 @@ m.negative
 let multiplierText;
 
 if(m.name==="Pourris"){
-multiplierText="÷2";
+multiplierText="×0.5";
 }
 else if(m.name==="Assèché"){
-multiplierText="÷3";
+multiplierText="×"+m.multiplier;
 }
 else{
 multiplierText="×"+m.multiplier;
@@ -2374,7 +2651,13 @@ multiplierText="×"+m.multiplier;
 tag.textContent =
 m.emoji+
 " "+
-m.name+
+(
+m.secret && m.ultimate
+?
+"???"
+:
+m.name
+)+
 " "+
 multiplierText;
 
@@ -2389,6 +2672,8 @@ updateRecords();
 updateCarrotButton();
 
 spawnMutationEmojis();
+
+updateIndexCounter();
 
 }
 
@@ -2702,6 +2987,8 @@ localStorage.setItem(
 generation
 );
 
+saveDiscovered();
+
 }
 
 
@@ -2795,6 +3082,7 @@ document.getElementById(
 
 list.innerHTML="";
 
+
 const all =
 M.map(
 m=>({
@@ -2814,12 +3102,14 @@ s=>({
 name:s.name,
 emoji:s.emoji,
 multiplier:s.multiplier,
-secret:true
+secret:true,
+ultimate:s.ultimate || false
 
 })
 )
 
 );
+
 
 for(
 const m of all
@@ -2833,6 +3123,7 @@ document.createElement(
 row.className=
 "mutationRow";
 
+
 if(
 discovered.includes(
 m.name
@@ -2843,7 +3134,13 @@ row.innerHTML=`
 
 <span>
 ${m.emoji}
-${m.name}
+${
+m.ultimate
+?
+"???"
+:
+m.name
+}
 </span>
 
 <strong>
@@ -2872,6 +3169,13 @@ list.appendChild(row);
 
 }
 
+
+/*
+Compte en haut du panneau.
+*/
+
+updateIndexCounter();
+
 document.getElementById(
 "indexModal"
 ).style.display="flex";
@@ -2892,6 +3196,13 @@ document.getElementById(
 
 list.innerHTML="";
 
+
+/*
+IMPORTANT :
+M contient uniquement les mutations non secrètes.
+Les 4 secrets ne passent donc jamais dans ODDS.
+*/
+
 const total =
 M.reduce(
 (s,m)=>s+m[3],
@@ -2907,6 +3218,7 @@ const sorted =
 [...M].sort(
 (a,b)=>b[3]-a[3]
 );
+
 
 for(
 const m of sorted
@@ -2946,6 +3258,7 @@ ${m[0]}
 
 <strong>
 ${oddsText}
+&nbsp; ×${m[2]}
 </strong>
 
 `;
@@ -3531,6 +3844,8 @@ updateFruit();
 
 updateUI();
 
+updateIndexCounter();
+
 addLog(
 "🍅 Bienvenue dans Tomato Mutations !"
 );
@@ -3561,3 +3876,4 @@ loadLeaderboard,
 
 </body>
 </html>
+```
