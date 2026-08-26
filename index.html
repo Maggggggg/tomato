@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -181,27 +180,53 @@ h1{
     inset -15px -17px 20px #760c1644,
     inset 8px 5px 12px #ffffff33,
     0 13px 25px #0007;
+
+  /* L'animation utilise maintenant translate uniquement,
+     pour ne pas annuler les changements de forme */
   animation:float 1.5s infinite alternate ease-in-out;
-  transition:.4s;
+
+  transition:
+    width .35s ease,
+    height .35s ease,
+    border-radius .35s ease,
+    transform .35s ease,
+    box-shadow .35s ease;
+
   z-index:5;
 }
 
 @keyframes float{
-  from{transform:translateY(0)}
-  to{transform:translateY(-6px)}
+  from{
+    translate:0 0;
+  }
+  to{
+    translate:0 -6px;
+  }
 }
 
-/* petite */
-.fruit.small{
-  transform:scale(.55);
+/* =========================
+   TOMATE PETITE
+========================= */
+
+.fruit.small:not(.carrot){
+  width:105px;
+  height:100px;
+  border-radius:45% 55% 52% 48%;
 }
 
-/* géante */
-.fruit.big{
-  transform:scale(1.45);
+/* =========================
+   TOMATE GÉANTE
+========================= */
+
+.fruit.big:not(.carrot){
+  width:220px;
+  height:205px;
+  border-radius:44% 56% 51% 49%;
 }
 
-/* yeux */
+/* =========================
+   YEUX
+========================= */
 
 .faceEye{
   position:absolute;
@@ -233,7 +258,55 @@ h1{
   right:38px;
 }
 
-/* bouche */
+/* adaptation yeux tomate petite */
+
+.fruit.small:not(.carrot) .faceEye{
+  top:34px;
+  width:17px;
+  height:21px;
+}
+
+.fruit.small:not(.carrot) .faceEye:after{
+  width:7px;
+  height:10px;
+  left:4px;
+  top:4px;
+}
+
+.fruit.small:not(.carrot) .faceEye.left{
+  left:25px;
+}
+
+.fruit.small:not(.carrot) .faceEye.right{
+  right:25px;
+}
+
+/* adaptation yeux tomate géante */
+
+.fruit.big:not(.carrot) .faceEye{
+  top:70px;
+  width:30px;
+  height:37px;
+}
+
+.fruit.big:not(.carrot) .faceEye:after{
+  width:13px;
+  height:18px;
+  left:6px;
+  top:7px;
+}
+
+.fruit.big:not(.carrot) .faceEye.left{
+  left:55px;
+}
+
+.fruit.big:not(.carrot) .faceEye.right{
+  right:55px;
+}
+
+/* =========================
+   BOUCHE
+========================= */
 
 .mouth{
   position:absolute;
@@ -247,7 +320,23 @@ h1{
   z-index:10;
 }
 
-/* joues */
+.fruit.small:not(.carrot) .mouth{
+  bottom:21px;
+  width:34px;
+  height:18px;
+  border-bottom-width:4px;
+}
+
+.fruit.big:not(.carrot) .mouth{
+  bottom:42px;
+  width:67px;
+  height:35px;
+  border-bottom-width:7px;
+}
+
+/* =========================
+   JOUES
+========================= */
 
 .cheek{
   position:absolute;
@@ -267,7 +356,37 @@ h1{
   right:12px;
 }
 
-/* tige */
+.fruit.small:not(.carrot) .cheek{
+  top:57px;
+  width:18px;
+  height:8px;
+}
+
+.fruit.small:not(.carrot) .cheek.left{
+  left:8px;
+}
+
+.fruit.small:not(.carrot) .cheek.right{
+  right:8px;
+}
+
+.fruit.big:not(.carrot) .cheek{
+  top:112px;
+  width:34px;
+  height:15px;
+}
+
+.fruit.big:not(.carrot) .cheek.left{
+  left:18px;
+}
+
+.fruit.big:not(.carrot) .cheek.right{
+  right:18px;
+}
+
+/* =========================
+   TIGE
+========================= */
 
 .stem{
   position:absolute;
@@ -281,7 +400,21 @@ h1{
   z-index:8;
 }
 
-/* feuilles */
+.fruit.small:not(.carrot) .stem{
+  top:-19px;
+  width:7px;
+  height:25px;
+}
+
+.fruit.big:not(.carrot) .stem{
+  top:-34px;
+  width:13px;
+  height:44px;
+}
+
+/* =========================
+   FEUILLES
+========================= */
 
 .leaf{
   position:absolute;
@@ -301,6 +434,18 @@ h1{
   border-radius:0 100% 0 100%;
 }
 
+.fruit.small:not(.carrot) .leaf{
+  top:-18px;
+  width:28px;
+  height:15px;
+}
+
+.fruit.big:not(.carrot) .leaf{
+  top:-31px;
+  width:50px;
+  height:27px;
+}
+
 /* =========================
    CAROTTE
 ========================= */
@@ -314,6 +459,24 @@ h1{
     linear-gradient(150deg,#ffc45a,#f36a19 60%,#c7440c);
   border:3px solid #a83c0b;
 }
+
+/* CAROTTE PETITE */
+
+.fruit.carrot.small{
+  width:62px;
+  height:130px;
+  border-radius:46% 46% 62% 62%;
+}
+
+/* CAROTTE GÉANTE */
+
+.fruit.carrot.big{
+  width:125px;
+  height:245px;
+  border-radius:46% 46% 60% 60%;
+}
+
+/* yeux carotte normale */
 
 .fruit.carrot .faceEye{
   top:66px;
@@ -329,11 +492,74 @@ h1{
   right:19px;
 }
 
+/* yeux carotte petite */
+
+.fruit.carrot.small .faceEye{
+  top:45px;
+  width:13px;
+  height:17px;
+}
+
+.fruit.carrot.small .faceEye:after{
+  width:7px;
+  height:10px;
+  left:3px;
+  top:4px;
+}
+
+.fruit.carrot.small .faceEye.left{
+  left:12px;
+}
+
+.fruit.carrot.small .faceEye.right{
+  right:12px;
+}
+
+/* yeux carotte géante */
+
+.fruit.carrot.big .faceEye{
+  top:82px;
+  width:24px;
+  height:30px;
+}
+
+.fruit.carrot.big .faceEye:after{
+  width:11px;
+  height:15px;
+  left:5px;
+  top:6px;
+}
+
+.fruit.carrot.big .faceEye.left{
+  left:26px;
+}
+
+.fruit.carrot.big .faceEye.right{
+  right:26px;
+}
+
+/* bouche carotte */
+
 .fruit.carrot .mouth{
   bottom:40px;
   width:38px;
   height:20px;
 }
+
+.fruit.carrot.small .mouth{
+  bottom:27px;
+  width:26px;
+  height:14px;
+  border-bottom-width:4px;
+}
+
+.fruit.carrot.big .mouth{
+  bottom:52px;
+  width:50px;
+  height:27px;
+}
+
+/* joues carotte */
 
 .fruit.carrot .cheek{
   top:96px;
@@ -348,13 +574,69 @@ h1{
   right:5px;
 }
 
+.fruit.carrot.small .cheek{
+  top:66px;
+  width:13px;
+  height:7px;
+}
+
+.fruit.carrot.small .cheek.left{
+  left:3px;
+}
+
+.fruit.carrot.small .cheek.right{
+  right:3px;
+}
+
+.fruit.carrot.big .cheek{
+  top:122px;
+  width:25px;
+  height:12px;
+}
+
+.fruit.carrot.big .cheek.left{
+  left:7px;
+}
+
+.fruit.carrot.big .cheek.right{
+  right:7px;
+}
+
+/* tige carotte */
+
 .fruit.carrot .stem{
   height:27px;
   background:#438c39;
 }
 
+.fruit.carrot.small .stem{
+  height:20px;
+  width:7px;
+  top:-17px;
+}
+
+.fruit.carrot.big .stem{
+  height:35px;
+  width:13px;
+  top:-30px;
+}
+
+/* feuilles carotte */
+
 .fruit.carrot .leaf{
   background:#49a544;
+}
+
+.fruit.carrot.small .leaf{
+  top:-16px;
+  width:27px;
+  height:14px;
+}
+
+.fruit.carrot.big .leaf{
+  top:-28px;
+  width:48px;
+  height:25px;
 }
 
 /* =========================
@@ -479,7 +761,9 @@ h1{
     0 0 65px #5721b8;
 }
 
-/* électrique */
+/* =========================
+   ELECTRIQUE
+========================= */
 
 .electricAura{
   display:none;
@@ -511,7 +795,9 @@ h1{
   }
 }
 
-/* météo */
+/* =========================
+   METEO
+========================= */
 
 .weatherEffect{
   position:absolute;
@@ -566,7 +852,9 @@ h1{
   color:#ff9a9a;
 }
 
-/* petits emojis décoratifs */
+/* =========================
+   PETITS EMOJIS
+========================= */
 
 .sideEmoji{
   position:absolute;
@@ -590,7 +878,9 @@ h1{
   }
 }
 
-/* animaux */
+/* =========================
+   ANIMAUX
+========================= */
 
 .mutationCompanions{
   position:absolute;
@@ -958,8 +1248,6 @@ input{
 
 <header>
 
-<!-- INDEX VISIBLE EN HAUT À DROITE -->
-
 <div class="indexCounter">
   <div class="indexCounterTitle">📖 INDEX</div>
   <div class="indexCounterValue">
@@ -1001,10 +1289,6 @@ Joueur :
 
 
 <main class="game">
-
-<!-- =========================
-     TERRAIN
-========================= -->
 
 <section class="field" id="field">
 
@@ -1081,10 +1365,6 @@ Joueur :
 </section>
 
 
-<!-- =========================
-     BOUTONS
-========================= -->
-
 <div class="buttons">
 
 <button
@@ -1119,10 +1399,6 @@ Joueur :
 
 </div>
 
-
-<!-- =========================
-     RECORDS
-========================= -->
 
 <section class="panel">
 
@@ -1168,10 +1444,6 @@ Aucune
 </section>
 
 
-<!-- =========================
-     LEADERBOARD
-========================= -->
-
 <section class="panel">
 
 <h2>🌎 TOP 10</h2>
@@ -1203,10 +1475,6 @@ Chargement...
 
 </section>
 
-
-<!-- =========================
-     JOURNAL
-========================= -->
 
 <section class="panel">
 
@@ -1406,11 +1674,6 @@ window.supabase.createClient(
 
 const UPDATE_VERSION="6.0";
 
-
-/*
-Reset de l'argent LOCAL à chaque nouvelle version.
-*/
-
 if(
 localStorage.getItem("tomatoUpdateVersion")
 !==UPDATE_VERSION
@@ -1490,14 +1753,6 @@ localStorage.getItem(
 /* =====================================================
    MUTATIONS
 ===================================================== */
-
-/*
-Format :
-
-[nom, emoji, multiplicateur, poids]
-
-96 mutations NON secrètes au total.
-*/
 
 const M=[
 
@@ -1626,12 +1881,11 @@ const M=[
 
 /* =========================
    NÉGATIVES
-   MULTIPLICATEURS INCHANGÉS
 ========================= */
 
 ["Pourris","☠️",0.5,2],
 
-["Assèché","🏜️",1/3,1],
+["Assèché","🏜️",0.33,1],
 
 
 /* =========================
@@ -1699,10 +1953,9 @@ const M=[
 ["Magnétique","🧲",3.10,.05],
 
 
-/* =====================================================
-   10 NOUVELLES MUTATIONS
-   MULTIPLICATEURS ENTRE ×1.5 ET ×5
-===================================================== */
+/* =========================
+   10 NOUVELLES
+========================= */
 
 ["Framboise","🫐",1.50,.8],
 
@@ -1728,13 +1981,8 @@ const M=[
 
 
 /* =====================================================
-   VÉRIFICATION
+   INDEX
 ===================================================== */
-
-/*
-96 mutations normales sont définies ci-dessus.
-Avec les 4 secrets, l'index total = 100.
-*/
 
 const TOTAL_INDEX_MUTATIONS =
 M.length + 4;
@@ -1766,12 +2014,6 @@ emoji:"🐢🐧",
 multiplier:50,
 denominator:100000
 },
-
-/*
-SECRÈTE ULTIME
-Encore plus rare que les autres.
-Non affichée dans ODDS.
-*/
 
 {
 name:"???",
@@ -1811,7 +2053,6 @@ const animalNames=new Set([
 "Tortue",
 "Dragon",
 
-/* nouvelles */
 "Léopard",
 "Requin",
 "Phénix"
@@ -2004,11 +2245,6 @@ saveDiscovered();
 
 function addSecret(secret){
 
-/*
-Évite qu'un même secret soit ajouté plusieurs fois
-dans la même combinaison.
-*/
-
 if(
 currentMutations.some(
 m=>m.name===secret.name
@@ -2058,8 +2294,6 @@ secret.name
 triggerRareExplosion();
 
 
-/* secret ultime */
-
 if(
 secret.ultimate
 ){
@@ -2072,8 +2306,6 @@ return;
 
 }
 
-
-/* FAAAAAAAAAAH */
 
 if(
 secret.name==="FAAAAAAAAAAAH"
@@ -2093,12 +2325,6 @@ showSecret(
 ===================================================== */
 
 function leafSecret(){
-
-/*
-Tortue Pingouin :
-Le clic sur une feuille déclenche
-directement la découverte du secret.
-*/
 
 currentMutations=[];
 
@@ -2511,11 +2737,6 @@ updateWeather();
 
 function updateIndexCounter(){
 
-/*
-On compte uniquement les noms uniques.
-L'index est limité à 100.
-*/
-
 const unique =
 [...new Set(discovered)];
 
@@ -2642,7 +2863,7 @@ if(m.name==="Pourris"){
 multiplierText="×0.5";
 }
 else if(m.name==="Assèché"){
-multiplierText="×"+m.multiplier;
+multiplierText="×0.33";
 }
 else{
 multiplierText="×"+m.multiplier;
@@ -2924,10 +3145,6 @@ await saveLeaderboard();
 
 function buyCarrot(){
 
-/*
-INTERDIT SI MUTATION
-*/
-
 if(
 currentMutations.length>0
 ){
@@ -3170,10 +3387,6 @@ list.appendChild(row);
 }
 
 
-/*
-Compte en haut du panneau.
-*/
-
 updateIndexCounter();
 
 document.getElementById(
@@ -3196,23 +3409,11 @@ document.getElementById(
 
 list.innerHTML="";
 
-
-/*
-IMPORTANT :
-M contient uniquement les mutations non secrètes.
-Les 4 secrets ne passent donc jamais dans ODDS.
-*/
-
 const total =
 M.reduce(
 (s,m)=>s+m[3],
 0
 );
-
-
-/*
-Plus fréquent → plus rare.
-*/
 
 const sorted =
 [...M].sort(
@@ -3341,11 +3542,6 @@ username+
 " !"
 );
 
-
-/*
-Crée/récupère le joueur Supabase.
-*/
-
 await loadPlayer();
 
 await loadLeaderboard();
@@ -3389,10 +3585,6 @@ return;
 }
 
 if(data){
-
-/*
-Le leaderboard en ligne contient les records.
-*/
 
 bestTomatoValue =
 Number(data.best_tomato)||0;
@@ -3606,11 +3798,6 @@ return;
 
 }
 
-
-/*
-Classement sur la meilleure valeur tomate/carotte.
-*/
-
 const sorted =
 [...data].sort(
 (a,b)=>
@@ -3787,10 +3974,7 @@ buyCarrot
 );
 
 
-/*
-Les deux feuilles déclenchent
-Tortue Pingouin.
-*/
+/* feuilles */
 
 document
 .getElementById(
@@ -3858,14 +4042,8 @@ document.getElementById(
 }
 
 
-/* lancement */
-
 startGame();
 
-
-/*
-Actualise le classement périodiquement.
-*/
 
 setInterval(
 loadLeaderboard,
@@ -3876,4 +4054,3 @@ loadLeaderboard,
 
 </body>
 </html>
-```
