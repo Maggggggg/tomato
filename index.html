@@ -269,7 +269,7 @@ h1{
   background:#49a544;
 }
 
-/* BANANE - nouveau skin */
+/* BANANE */
 
 .fruit.banana{
   width:145px;
@@ -1566,15 +1566,7 @@ SUPABASE_KEY
 VERSION
 ===================================================== */
 
-/*
-Nouvelle version :
-- reset INDEX de tout le monde côté client
-- nouveau système de boutique
-- inventaire
-- trèfles
-*/
-
-const UPDATE_VERSION="7.0";
+const UPDATE_VERSION="7.1";
 
 if(
 localStorage.getItem("tomatoUpdateVersion")
@@ -1634,11 +1626,6 @@ localStorage.getItem("tomatoGeneration")
 let currentMutations=[];
 
 let fruitType="tomato";
-
-/*
-Un seul trèfle actif.
-0 = aucun.
-*/
 
 let activeClover =
 Number(
@@ -1717,14 +1704,21 @@ localStorage.getItem(
 MUTATIONS
 ===================================================== */
 
+/*
+IMPORTANT :
+
+Toutes les mutations qui étaient entre ×1 et ×1,5
+sont maintenant entre ×1,5 et ×2.
+
+Les mutations déjà à ×2 ou plus ne sont pas modifiées.
+
+Les deux mutations négatives restent exactement
+à leurs multiplicateurs négatifs.
+*/
+
 const M=[
 
-/* =========================
-FRUITS
-Toutes les anciennes mutations
-≤1.5 passent maintenant
-entre 1.5 et 2.
-========================= */
+/* FRUITS */
 
 ["Dorée","🟡",1.55,10],
 ["Verte","🟢",1.58,10],
@@ -1788,7 +1782,7 @@ entre 1.5 et 2.
 ["Glacée","❄️",3.8,.07],
 ["Arc-en-ciel","🌈",4,.06],
 
-/* NÉGATIVES */
+/* NÉGATIVES — NE PAS MODIFIER */
 
 ["Pourris","☠️",0.5,2],
 ["Assèché","🏜️",0.33,1],
@@ -2045,15 +2039,6 @@ return Math.max(0,value);
 CHANCE TRÈFLE
 ===================================================== */
 
-/*
-Le trèfle ne modifie PAS les multiplicateurs.
-
-Il multiplie uniquement la chance de la prochaine mutation.
-
-Une seule utilisation.
-Après MUTER, il est consommé.
-*/
-
 function getLuckMultiplier(){
 
 return activeClover>0
@@ -2158,10 +2143,6 @@ showSecret(
 LEAF SECRET
 ===================================================== */
 
-/*
-Les feuilles ne déclenchent plus de secret.
-*/
-
 function leafSecret(){
 
 addLog(
@@ -2177,11 +2158,6 @@ MUTER
 
 function mutate(){
 
-/*
-Le trèfle est utilisé UNIQUEMENT
-pour cette mutation.
-*/
-
 const luckUsed=activeClover;
 
 currentMutations=[];
@@ -2191,14 +2167,6 @@ const amount=getMutationAmount();
 for(let i=0;i<amount;i++){
 
 let m=chooseMutation();
-
-/*
-Avec un trèfle, les mutations plus rares
-ont plus de chances d'être sélectionnées.
-
-On effectue plusieurs tirages et on garde
-le meilleur selon le poids inverse.
-*/
 
 if(luckUsed>1){
 
@@ -2215,11 +2183,6 @@ chooseMutation()
 candidates.sort(
 (a,b)=>a[3]-b[3]
 );
-
-/*
-Plus le trèfle est puissant,
-plus on favorise les mutations rares.
-*/
 
 m=candidates[0];
 
@@ -2238,10 +2201,6 @@ secret:false
 }
 
 checkSecrets();
-
-/*
-Le trèfle est consommé après cette mutation.
-*/
 
 if(luckUsed>0){
 
@@ -2488,7 +2447,6 @@ fruit.classList.add("meteor");
 if(has("Trou noir"))
 fruit.classList.add("blackhole");
 
-
 const companions=
 document.getElementById(
 "mutationCompanions"
@@ -2559,13 +2517,6 @@ if(b)b.textContent=count+"/100";
 
 }
 
-
-/*
-IMPORTANT :
-
-La découverte n'est ajoutée que lors
-de la vente.
-*/
 
 function registerSoldMutations(){
 
@@ -2868,12 +2819,6 @@ emoji:m.emoji,
 multiplier:m.multiplier
 })
 );
-
-/*
-C'est ICI que l'index augmente.
-
-Pas au moment de MUTER.
-*/
 
 registerSoldMutations();
 
@@ -3345,10 +3290,6 @@ UTILISER TRÈFLE
 
 function useClover(multiplier){
 
-/*
-Pas de cumul.
-*/
-
 if(activeClover>0){
 
 addLog(
@@ -3393,13 +3334,6 @@ SHOP : ACHETER TRÈFLE
 
 function buyClover(multiplier,price){
 
-/*
-Un trèfle peut être acheté même si
-un autre est actif.
-Mais il ne peut pas être utilisé
-tant qu'un autre est actif.
-*/
-
 if(money<price){
 
 addLog(
@@ -3413,7 +3347,7 @@ return;
 
 money-=price;
 
-clovers[multiplier] =
+clovers[multiplier]=
 (Number(clovers[multiplier])||0)+1;
 
 save();
@@ -3444,23 +3378,7 @@ let shopStock={
 
 let shopRestockAt=0;
 
-
-/*
-Tire le nombre de trèfles du restock.
-*/
-
 function rollStock(){
-
-/* ×2
-90% d'avoir au moins 1.
-Dans ces 90% :
-55% 2
-30% 3
-10% 4
-2% 5
-
-Le 1 correspond au reste.
-*/
 
 function roll2(){
 
@@ -3480,9 +3398,6 @@ return 1;
 
 }
 
-
-/* ×3 */
-
 function roll3(){
 
 const r=Math.random();
@@ -3495,9 +3410,6 @@ return 0;
 
 }
 
-
-/* ×5 */
-
 function roll5(){
 
 const r=Math.random();
@@ -3508,9 +3420,6 @@ if(r<.20)return 1;
 return 0;
 
 }
-
-
-/* ×10 */
 
 function roll10(){
 
@@ -3570,8 +3479,7 @@ button.textContent="❌ VIDE";
 
 button.textContent=
 formatMoney(price)+
-" • x"+
-amount;
+" • x"+amount;
 
 }
 
@@ -3664,7 +3572,7 @@ money-=price;
 
 shopStock[multiplier]--;
 
-clovers[multiplier] =
+clovers[multiplier]=
 (Number(clovers[multiplier])||0)+1;
 
 save();
@@ -4253,12 +4161,6 @@ DÉMARRAGE
 
 async function startGame(){
 
-/*
-Sécurité supplémentaire :
-si une ancienne version n'a pas
-correctement reset l'index.
-*/
-
 if(
 localStorage.getItem(
 "tomatoUpdateVersion"
@@ -4316,9 +4218,6 @@ document.getElementById(
 "🟢 Serveur prêt";
 
 }
-
-
-/* lancement */
 
 startGame();
 
