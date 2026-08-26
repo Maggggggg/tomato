@@ -39,6 +39,11 @@ button:active{
   box-shadow:0 1px 0 #0005;
 }
 
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
 header{
   text-align:center;
   padding:15px 10px 5px;
@@ -53,62 +58,6 @@ h1{
 .subtitle{
   color:#aeb9c5;
   margin-top:5px;
-}
-
-/* =========================
-   INDEX VISIBLE
-========================= */
-
-.indexCounter{
-  position:absolute;
-  top:12px;
-  right:15px;
-  min-width:88px;
-  padding:8px 12px;
-  border-radius:13px;
-  background:linear-gradient(145deg,#7653c9,#4b3188);
-  border:2px solid #a98ce8;
-  box-shadow:
-    0 5px 0 #35225f,
-    0 0 18px #7653c955;
-  text-align:center;
-  font-weight:bold;
-  z-index:20;
-}
-
-.indexCounterTitle{
-  font-size:11px;
-  color:#d9ceff;
-  letter-spacing:1px;
-}
-
-.indexCounterValue{
-  font-size:23px;
-  line-height:25px;
-  color:white;
-}
-
-@media(max-width:600px){
-
-  .indexCounter{
-    top:8px;
-    right:8px;
-    min-width:72px;
-    padding:5px 8px;
-  }
-
-  .indexCounterTitle{
-    font-size:9px;
-  }
-
-  .indexCounterValue{
-    font-size:19px;
-  }
-
-  h1{
-    padding-right:70px;
-    padding-left:10px;
-  }
 }
 
 .game{
@@ -133,9 +82,9 @@ h1{
   text-align:center;
 }
 
-/* =========================
+/* =====================================================
    TERRAIN
-========================= */
+===================================================== */
 
 .field{
   position:relative;
@@ -153,14 +102,14 @@ h1{
   align-items:center;
 }
 
-/* =========================
-   FRUIT CARTOON
-========================= */
+/* =====================================================
+   FRUIT
+===================================================== */
 
 .fruitWrap{
   position:relative;
-  width:230px;
-  height:220px;
+  width:270px;
+  height:245px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -180,53 +129,40 @@ h1{
     inset -15px -17px 20px #760c1644,
     inset 8px 5px 12px #ffffff33,
     0 13px 25px #0007;
-
-  /* L'animation utilise maintenant translate uniquement,
-     pour ne pas annuler les changements de forme */
   animation:float 1.5s infinite alternate ease-in-out;
-
-  transition:
-    width .35s ease,
-    height .35s ease,
-    border-radius .35s ease,
-    transform .35s ease,
-    box-shadow .35s ease;
-
+  transition:.4s;
   z-index:5;
 }
 
 @keyframes float{
-  from{
-    translate:0 0;
-  }
-  to{
-    translate:0 -6px;
-  }
+  from{transform:translateY(0)}
+  to{transform:translateY(-6px)}
 }
 
-/* =========================
-   TOMATE PETITE
-========================= */
+/* =====================================================
+   PETITE / GEANTE
+===================================================== */
 
-.fruit.small:not(.carrot){
-  width:105px;
-  height:100px;
-  border-radius:45% 55% 52% 48%;
+.fruit.small{
+  transform:scale(.55);
 }
 
-/* =========================
-   TOMATE GÉANTE
-========================= */
-
-.fruit.big:not(.carrot){
-  width:220px;
-  height:205px;
-  border-radius:44% 56% 51% 49%;
+.fruit.big{
+  transform:scale(1.45);
 }
 
-/* =========================
-   YEUX
-========================= */
+/*
+Toutes les mutations entre ×1 et ×1.5
+rendent également le fruit plus grand.
+*/
+
+.fruit.mediumMutation{
+  transform:scale(1.28);
+}
+
+/* =====================================================
+   VISAGE
+===================================================== */
 
 .faceEye{
   position:absolute;
@@ -258,56 +194,6 @@ h1{
   right:38px;
 }
 
-/* adaptation yeux tomate petite */
-
-.fruit.small:not(.carrot) .faceEye{
-  top:34px;
-  width:17px;
-  height:21px;
-}
-
-.fruit.small:not(.carrot) .faceEye:after{
-  width:7px;
-  height:10px;
-  left:4px;
-  top:4px;
-}
-
-.fruit.small:not(.carrot) .faceEye.left{
-  left:25px;
-}
-
-.fruit.small:not(.carrot) .faceEye.right{
-  right:25px;
-}
-
-/* adaptation yeux tomate géante */
-
-.fruit.big:not(.carrot) .faceEye{
-  top:70px;
-  width:30px;
-  height:37px;
-}
-
-.fruit.big:not(.carrot) .faceEye:after{
-  width:13px;
-  height:18px;
-  left:6px;
-  top:7px;
-}
-
-.fruit.big:not(.carrot) .faceEye.left{
-  left:55px;
-}
-
-.fruit.big:not(.carrot) .faceEye.right{
-  right:55px;
-}
-
-/* =========================
-   BOUCHE
-========================= */
-
 .mouth{
   position:absolute;
   left:50%;
@@ -319,24 +205,6 @@ h1{
   border-radius:0 0 50px 50px;
   z-index:10;
 }
-
-.fruit.small:not(.carrot) .mouth{
-  bottom:21px;
-  width:34px;
-  height:18px;
-  border-bottom-width:4px;
-}
-
-.fruit.big:not(.carrot) .mouth{
-  bottom:42px;
-  width:67px;
-  height:35px;
-  border-bottom-width:7px;
-}
-
-/* =========================
-   JOUES
-========================= */
 
 .cheek{
   position:absolute;
@@ -356,37 +224,9 @@ h1{
   right:12px;
 }
 
-.fruit.small:not(.carrot) .cheek{
-  top:57px;
-  width:18px;
-  height:8px;
-}
-
-.fruit.small:not(.carrot) .cheek.left{
-  left:8px;
-}
-
-.fruit.small:not(.carrot) .cheek.right{
-  right:8px;
-}
-
-.fruit.big:not(.carrot) .cheek{
-  top:112px;
-  width:34px;
-  height:15px;
-}
-
-.fruit.big:not(.carrot) .cheek.left{
-  left:18px;
-}
-
-.fruit.big:not(.carrot) .cheek.right{
-  right:18px;
-}
-
-/* =========================
-   TIGE
-========================= */
+/* =====================================================
+   TIGE / FEUILLES
+===================================================== */
 
 .stem{
   position:absolute;
@@ -400,22 +240,6 @@ h1{
   z-index:8;
 }
 
-.fruit.small:not(.carrot) .stem{
-  top:-19px;
-  width:7px;
-  height:25px;
-}
-
-.fruit.big:not(.carrot) .stem{
-  top:-34px;
-  width:13px;
-  height:44px;
-}
-
-/* =========================
-   FEUILLES
-========================= */
-
 .leaf{
   position:absolute;
   top:-22px;
@@ -426,7 +250,6 @@ h1{
   border-radius:100% 0 100% 0;
   transform:translateX(-80%) rotate(-20deg);
   z-index:9;
-  cursor:pointer;
 }
 
 .leaf.r{
@@ -434,21 +257,9 @@ h1{
   border-radius:0 100% 0 100%;
 }
 
-.fruit.small:not(.carrot) .leaf{
-  top:-18px;
-  width:28px;
-  height:15px;
-}
-
-.fruit.big:not(.carrot) .leaf{
-  top:-31px;
-  width:50px;
-  height:27px;
-}
-
-/* =========================
+/* =====================================================
    CAROTTE
-========================= */
+===================================================== */
 
 .fruit.carrot{
   width:92px;
@@ -459,24 +270,6 @@ h1{
     linear-gradient(150deg,#ffc45a,#f36a19 60%,#c7440c);
   border:3px solid #a83c0b;
 }
-
-/* CAROTTE PETITE */
-
-.fruit.carrot.small{
-  width:62px;
-  height:130px;
-  border-radius:46% 46% 62% 62%;
-}
-
-/* CAROTTE GÉANTE */
-
-.fruit.carrot.big{
-  width:125px;
-  height:245px;
-  border-radius:46% 46% 60% 60%;
-}
-
-/* yeux carotte normale */
 
 .fruit.carrot .faceEye{
   top:66px;
@@ -492,74 +285,11 @@ h1{
   right:19px;
 }
 
-/* yeux carotte petite */
-
-.fruit.carrot.small .faceEye{
-  top:45px;
-  width:13px;
-  height:17px;
-}
-
-.fruit.carrot.small .faceEye:after{
-  width:7px;
-  height:10px;
-  left:3px;
-  top:4px;
-}
-
-.fruit.carrot.small .faceEye.left{
-  left:12px;
-}
-
-.fruit.carrot.small .faceEye.right{
-  right:12px;
-}
-
-/* yeux carotte géante */
-
-.fruit.carrot.big .faceEye{
-  top:82px;
-  width:24px;
-  height:30px;
-}
-
-.fruit.carrot.big .faceEye:after{
-  width:11px;
-  height:15px;
-  left:5px;
-  top:6px;
-}
-
-.fruit.carrot.big .faceEye.left{
-  left:26px;
-}
-
-.fruit.carrot.big .faceEye.right{
-  right:26px;
-}
-
-/* bouche carotte */
-
 .fruit.carrot .mouth{
   bottom:40px;
   width:38px;
   height:20px;
 }
-
-.fruit.carrot.small .mouth{
-  bottom:27px;
-  width:26px;
-  height:14px;
-  border-bottom-width:4px;
-}
-
-.fruit.carrot.big .mouth{
-  bottom:52px;
-  width:50px;
-  height:27px;
-}
-
-/* joues carotte */
 
 .fruit.carrot .cheek{
   top:96px;
@@ -574,118 +304,97 @@ h1{
   right:5px;
 }
 
-.fruit.carrot.small .cheek{
-  top:66px;
-  width:13px;
-  height:7px;
-}
-
-.fruit.carrot.small .cheek.left{
-  left:3px;
-}
-
-.fruit.carrot.small .cheek.right{
-  right:3px;
-}
-
-.fruit.carrot.big .cheek{
-  top:122px;
-  width:25px;
-  height:12px;
-}
-
-.fruit.carrot.big .cheek.left{
-  left:7px;
-}
-
-.fruit.carrot.big .cheek.right{
-  right:7px;
-}
-
-/* tige carotte */
-
 .fruit.carrot .stem{
   height:27px;
   background:#438c39;
 }
 
-.fruit.carrot.small .stem{
-  height:20px;
-  width:7px;
-  top:-17px;
-}
+/* =====================================================
+   BANANE — NOUVEAU SKIN
+===================================================== */
 
-.fruit.carrot.big .stem{
-  height:35px;
-  width:13px;
-  top:-30px;
-}
-
-/* feuilles carotte */
-
-.fruit.carrot .leaf{
-  background:#49a544;
-}
-
-.fruit.carrot.small .leaf{
-  top:-16px;
-  width:27px;
-  height:14px;
-}
-
-.fruit.carrot.big .leaf{
-  top:-28px;
-  width:48px;
-  height:25px;
-}
-
-/* =========================
-   BANANE
-========================= */
-
-.bananaCostume{
+.bananaSkin{
   display:none;
   position:absolute;
-  inset:0;
+  inset:-25px;
   z-index:20;
   pointer-events:none;
 }
 
-.bananaPiece{
+.bananaPart{
   position:absolute;
-  width:75px;
-  height:28px;
-  background:linear-gradient(#ffe66b,#f5c400);
-  border:3px solid #b98d00;
-  border-radius:100% 20% 80% 20%;
-  box-shadow:0 5px 10px #0005;
+  width:105px;
+  height:43px;
+  background:
+    linear-gradient(
+      180deg,
+      #fff38b 0%,
+      #ffe04a 35%,
+      #f5bf00 75%,
+      #c99500 100%
+    );
+  border:3px solid #9d7600;
+  box-shadow:
+    inset 0 5px 5px #ffffff88,
+    0 5px 8px #0006;
 }
 
-.bananaPiece:nth-child(1){
-  left:8px;
-  top:60px;
-  transform:rotate(-35deg);
+/* banane gauche */
+.bananaPart:nth-child(1){
+  left:2px;
+  top:72px;
+  border-radius:70% 15% 70% 25%;
+  transform:rotate(-42deg);
 }
 
-.bananaPiece:nth-child(2){
-  right:8px;
-  top:55px;
-  transform:rotate(35deg);
+/* banane droite */
+.bananaPart:nth-child(2){
+  right:2px;
+  top:72px;
+  border-radius:15% 70% 25% 70%;
+  transform:rotate(42deg);
 }
 
-.bananaPiece:nth-child(3){
-  left:77px;
-  bottom:20px;
-  transform:rotate(90deg);
+/* banane basse */
+.bananaPart:nth-child(3){
+  left:50%;
+  bottom:8px;
+  width:125px;
+  height:45px;
+  border-radius:50% 50% 20% 20%;
+  transform:translateX(-50%) rotate(90deg);
 }
 
-.fruit.banana .bananaCostume{
+/* petites extrémités */
+.bananaPart:after{
+  content:"";
+  position:absolute;
+  width:12px;
+  height:20px;
+  background:#5b4200;
+  border-radius:4px;
+  top:10px;
+}
+
+.bananaPart:nth-child(1):after{
+  left:-5px;
+}
+
+.bananaPart:nth-child(2):after{
+  right:-5px;
+}
+
+.bananaPart:nth-child(3):after{
+  right:-5px;
+}
+
+.fruit.banana .bananaSkin{
   display:block;
 }
 
-/* =========================
+/* =====================================================
    EFFETS
-========================= */
+===================================================== */
 
 .fruit.golden{
   box-shadow:
@@ -725,10 +434,6 @@ h1{
   filter:saturate(.55);
 }
 
-/* =========================
-   EFFETS SUPPLEMENTAIRES
-========================= */
-
 .fruit.crystal{
   background:
     linear-gradient(135deg,#ffffff,#9be7ff 35%,#7c5cff 70%,#e5b8ff);
@@ -761,9 +466,9 @@ h1{
     0 0 65px #5721b8;
 }
 
-/* =========================
+/* =====================================================
    ELECTRIQUE
-========================= */
+===================================================== */
 
 .electricAura{
   display:none;
@@ -776,7 +481,7 @@ h1{
     0 0 15px #48dfff,
     0 0 35px #48dfff,
     inset 0 0 30px #48dfff;
-  animation:electric 0.18s infinite alternate;
+  animation:electric .18s infinite alternate;
   z-index:2;
 }
 
@@ -795,9 +500,9 @@ h1{
   }
 }
 
-/* =========================
+/* =====================================================
    METEO
-========================= */
+===================================================== */
 
 .weatherEffect{
   position:absolute;
@@ -824,9 +529,9 @@ h1{
   }
 }
 
-/* =========================
-   MUTATIONS AUTOUR DU FRUIT
-========================= */
+/* =====================================================
+   MUTATIONS
+===================================================== */
 
 .mutationDisplay{
   margin-top:10px;
@@ -852,10 +557,6 @@ h1{
   color:#ff9a9a;
 }
 
-/* =========================
-   PETITS EMOJIS
-========================= */
-
 .sideEmoji{
   position:absolute;
   font-size:var(--size);
@@ -877,10 +578,6 @@ h1{
     transform:scale(1) translateY(-35px) rotate(20deg);
   }
 }
-
-/* =========================
-   ANIMAUX
-========================= */
 
 .mutationCompanions{
   position:absolute;
@@ -911,9 +608,9 @@ h1{
   }
 }
 
-/* =========================
+/* =====================================================
    NOM / VALEUR
-========================= */
+===================================================== */
 
 .fruitName{
   margin-top:10px;
@@ -931,9 +628,9 @@ h1{
   z-index:50;
 }
 
-/* =========================
+/* =====================================================
    BOUTONS
-========================= */
+===================================================== */
 
 .buttons{
   display:flex;
@@ -968,9 +665,14 @@ h1{
   box-shadow:0 5px 0 #4d3187;
 }
 
-/* =========================
+.inventoryBtn{
+  background:#8e67d1;
+  box-shadow:0 5px 0 #5e4292;
+}
+
+/* =====================================================
    PANNEAUX
-========================= */
+===================================================== */
 
 .panel{
   background:#15212b;
@@ -999,9 +701,9 @@ th{
   color:#ffd95a;
 }
 
-/* =========================
+/* =====================================================
    MODALES
-========================= */
+===================================================== */
 
 .modal{
   position:fixed;
@@ -1022,6 +724,7 @@ th{
   border:1px solid #455b6b;
   border-radius:18px;
   padding:20px;
+  position:relative;
 }
 
 .close{
@@ -1030,9 +733,137 @@ th{
   padding:8px 12px;
 }
 
-/* =========================
+/* =====================================================
+   INDEX
+===================================================== */
+
+.indexHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+  padding-right:4px;
+}
+
+.indexCounterModal{
+  min-width:90px;
+  padding:8px 12px;
+  border-radius:13px;
+  background:linear-gradient(145deg,#7653c9,#4b3188);
+  border:2px solid #a98ce8;
+  box-shadow:
+    0 4px 0 #35225f,
+    0 0 18px #7653c955;
+  text-align:center;
+  font-weight:bold;
+}
+
+.indexCounterTitle{
+  font-size:10px;
+  color:#d9ceff;
+  letter-spacing:1px;
+}
+
+.indexCounterValue{
+  font-size:23px;
+  line-height:25px;
+}
+
+.mutationRow{
+  display:flex;
+  justify-content:space-between;
+  padding:8px;
+  border-bottom:1px solid #2d3b46;
+  gap:10px;
+}
+
+.unknown{
+  color:#687783;
+}
+
+/* =====================================================
+   SHOP
+===================================================== */
+
+.shopItem{
+  background:#202f3a;
+  border:1px solid #3b5262;
+  border-radius:15px;
+  padding:15px;
+  margin:10px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.shopBuy{
+  background:#28a765;
+  box-shadow:0 4px 0 #16713f;
+  min-width:100px;
+}
+
+.stock{
+  color:#8ee8a9;
+  font-size:14px;
+  margin-top:5px;
+}
+
+.noStock{
+  color:#ff7777;
+}
+
+.shopTimer{
+  text-align:center;
+  color:#7eeaff;
+  font-size:16px;
+  margin:12px 0 18px;
+}
+
+/* =====================================================
+   INVENTAIRE
+===================================================== */
+
+.inventoryCategory{
+  margin-top:10px;
+}
+
+.inventoryCategory h3{
+  margin-bottom:10px;
+}
+
+.cloverItem{
+  background:#202f3a;
+  border:1px solid #3b5262;
+  border-radius:15px;
+  padding:14px;
+  margin:9px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.cloverUse{
+  background:#2ca85f;
+  box-shadow:0 4px 0 #16713f;
+}
+
+.activeLuck{
+  background:#183c2a;
+  border:2px solid #48d477;
+  padding:12px;
+  border-radius:13px;
+  text-align:center;
+  margin-bottom:15px;
+  color:#8dffb2;
+  font-weight:bold;
+}
+
+/* =====================================================
    USERNAME
-========================= */
+===================================================== */
 
 input{
   width:100%;
@@ -1069,9 +900,15 @@ input{
   background:#9b59b6;
 }
 
-/* =========================
+.status{
+  font-size:13px;
+  color:#7eeaff;
+  margin-top:8px;
+}
+
+/* =====================================================
    SECRET
-========================= */
+===================================================== */
 
 .secret{
   position:fixed;
@@ -1099,9 +936,9 @@ input{
   }
 }
 
-/* =========================
+/* =====================================================
    EXPLOSION
-========================= */
+===================================================== */
 
 .explosion{
   position:fixed;
@@ -1139,9 +976,9 @@ input{
   }
 }
 
-/* =========================
+/* =====================================================
    JOURNAL
-========================= */
+===================================================== */
 
 .log{
   max-height:170px;
@@ -1155,48 +992,6 @@ input{
   border-bottom:1px solid #26343f;
 }
 
-/* =========================
-   INDEX / ODDS
-========================= */
-
-.mutationRow{
-  display:flex;
-  justify-content:space-between;
-  padding:8px;
-  border-bottom:1px solid #2d3b46;
-  gap:10px;
-}
-
-.unknown{
-  color:#687783;
-}
-
-/* =========================
-   SHOP
-========================= */
-
-.shopItem{
-  background:#202f3a;
-  border:1px solid #3b5262;
-  border-radius:15px;
-  padding:15px;
-  margin:10px 0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.shopBuy{
-  background:#28a765;
-  box-shadow:0 4px 0 #16713f;
-}
-
-.shopBuy:disabled{
-  opacity:.4;
-  cursor:not-allowed;
-}
-
 .info{
   color:#84929e;
   font-size:13px;
@@ -1204,19 +999,39 @@ input{
   padding-bottom:25px;
 }
 
-.status{
-  font-size:13px;
-  color:#7eeaff;
-  margin-top:8px;
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+  .fruitWrap{
+    width:260px;
+  }
+
+  .modalBox{
+    padding:16px;
+  }
+
+  .shopItem,
+  .cloverItem{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .shopBuy,
+  .cloverUse{
+    width:100%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
+<!-- =====================================================
      USERNAME
-========================= -->
+===================================================== -->
 
 <div class="usernameScreen" id="usernameScreen">
 
@@ -1247,13 +1062,6 @@ input{
 
 
 <header>
-
-<div class="indexCounter">
-  <div class="indexCounterTitle">📖 INDEX</div>
-  <div class="indexCounterValue">
-    <span id="indexCounter">0</span>/100
-  </div>
-</div>
 
 <h1>🍅 Tomato Mutations</h1>
 
@@ -1290,30 +1098,23 @@ Joueur :
 
 <main class="game">
 
+<!-- =====================================================
+     TERRAIN
+===================================================== -->
+
 <section class="field" id="field">
 
 <div class="fruitWrap" id="fruitWrap">
 
   <div class="electricAura"></div>
 
-  <div
-    class="fruit"
-    id="fruit"
-  >
+  <div class="fruit" id="fruit">
 
     <div class="stem"></div>
 
-    <div
-      class="leaf leafLeft"
-      id="leafLeft"
-      title="..."
-    ></div>
+    <div class="leaf leafLeft" id="leafLeft"></div>
 
-    <div
-      class="leaf r"
-      id="leafRight"
-      title="..."
-    ></div>
+    <div class="leaf r" id="leafRight"></div>
 
     <div class="faceEye left"></div>
 
@@ -1325,80 +1126,70 @@ Joueur :
 
     <div class="mouth"></div>
 
-    <div class="bananaCostume">
-      <div class="bananaPiece"></div>
-      <div class="bananaPiece"></div>
-      <div class="bananaPiece"></div>
+    <!-- nouveau skin banane -->
+    <div class="bananaSkin">
+      <div class="bananaPart"></div>
+      <div class="bananaPart"></div>
+      <div class="bananaPart"></div>
     </div>
 
   </div>
 
 </div>
 
-<div
-  class="weatherEffect"
-  id="weatherEffect"
-></div>
+<div class="weatherEffect" id="weatherEffect"></div>
 
-<div
-  class="fruitName"
-  id="fruitName">
-  🍅 Tomate normale
+<div class="fruitName" id="fruitName">
+🍅 Tomate normale
 </div>
 
-<div
-  class="value"
-  id="fruitValue">
-  $10
+<div class="value" id="fruitValue">
+$10
 </div>
 
-<div
-  class="mutationDisplay"
-  id="mutationDisplay">
-</div>
+<div class="mutationDisplay" id="mutationDisplay"></div>
 
-<div
-  class="mutationCompanions"
-  id="mutationCompanions">
-</div>
+<div class="mutationCompanions" id="mutationCompanions"></div>
 
 </section>
 
 
+<!-- =====================================================
+     BOUTONS
+===================================================== -->
+
 <div class="buttons">
 
-<button
-  class="mutate"
-  id="mutateButton">
-  🧬 MUTER
+<button class="mutate" id="mutateButton">
+🧬 MUTER
 </button>
 
-<button
-  class="sell"
-  id="sellButton">
-  💰 VENDRE
+<button class="sell" id="sellButton">
+💰 VENDRE
 </button>
 
-<button
-  class="shopBtn"
-  id="shopButton">
-  🛒 BOUTIQUE
+<button class="shopBtn" id="shopButton">
+🛒 BOUTIQUE
 </button>
 
-<button
-  class="indexBtn"
-  id="indexButton">
-  📖 INDEX
+<button class="inventoryBtn" id="inventoryButton">
+🎒 INVENTAIRE
 </button>
 
-<button
-  class="oddsBtn"
-  id="oddsButton">
-  🎲 ODDS
+<button class="indexBtn" id="indexButton">
+📖 INDEX
+</button>
+
+<button class="oddsBtn" id="oddsButton">
+🎲 ODDS
 </button>
 
 </div>
 
+
+<!-- =====================================================
+     RECORDS
+===================================================== -->
 
 <section class="panel">
 
@@ -1414,35 +1205,24 @@ Joueur :
 
 <tr>
 <th>🍅 Tomate</th>
-
-<td id="bestTomatoValue">
-$0
-</td>
-
-<td id="bestTomatoMutations">
-Aucune
-</td>
-
+<td id="bestTomatoValue">$0</td>
+<td id="bestTomatoMutations">Aucune</td>
 </tr>
 
 <tr>
-
 <th>🥕 Carotte</th>
-
-<td id="bestCarrotValue">
-$0
-</td>
-
-<td id="bestCarrotMutations">
-Aucune
-</td>
-
+<td id="bestCarrotValue">$0</td>
+<td id="bestCarrotMutations">Aucune</td>
 </tr>
 
 </table>
 
 </section>
 
+
+<!-- =====================================================
+     LEADERBOARD
+===================================================== -->
 
 <section class="panel">
 
@@ -1451,14 +1231,12 @@ Aucune
 <table>
 
 <thead>
-
 <tr>
 <th>#</th>
 <th>Pseudo</th>
 <th>🍅 Tomate</th>
 <th>🥕 Carotte</th>
 </tr>
-
 </thead>
 
 <tbody id="leaderboard">
@@ -1476,49 +1254,44 @@ Chargement...
 </section>
 
 
+<!-- =====================================================
+     JOURNAL
+===================================================== -->
+
 <section class="panel">
 
 <h2>📜 Journal</h2>
 
-<div
-class="log"
-id="log">
-</div>
+<div class="log" id="log"></div>
 
 </section>
-
-
-<div class="info">
-
-Chaque clic sur MUTER remplace complètement
-la combinaison précédente.
-
-<br><br>
-
-🐢🐧 Clique sur une feuille pour tenter le secret...
-
-</div>
 
 </main>
 
 
-<!-- =========================
+<!-- =====================================================
      BOUTIQUE
-========================= -->
+===================================================== -->
 
-<div
-class="modal"
-id="shopModal">
+<div class="modal" id="shopModal">
 
 <div class="modalBox">
 
-<button
-class="close"
-onclick="closeModal('shopModal')">
+<button class="close" onclick="closeModal('shopModal')">
 ✕
 </button>
 
 <h2>🛒 Boutique</h2>
+
+<p>
+Le stock change toutes les <strong>5 minutes</strong>.
+</p>
+
+<div class="shopTimer" id="shopTimer">
+Nouveau stock dans 5:00
+</div>
+
+<!-- CAROTTE -->
 
 <div class="shopItem">
 
@@ -1533,9 +1306,7 @@ Prix :
 
 <br>
 
-💵
-<strong>×2</strong>
-valeur
+💵 ×2 valeur
 
 <br><br>
 
@@ -1545,12 +1316,128 @@ La carotte ne peut être achetée que si la tomate est normale.
 
 </div>
 
+<button class="shopBuy" id="carrotButton">
+1K
+</button>
+
+</div>
+
+
+<!-- TREFLE X2 -->
+
+<div class="shopItem">
+
+<div>
+
+<strong>🍀 Trèfle ×2 chance</strong>
+
+<br>
+
+Prix :
+<strong>20K</strong>
+
+<br>
+
+<span id="stock2" class="stock">
+Stock : -
+</span>
+
+</div>
+
 <button
 class="shopBuy"
-id="carrotButton">
+id="buyClover2">
+ACHETER
+</button>
 
-1K
+</div>
 
+
+<!-- TREFLE X3 -->
+
+<div class="shopItem">
+
+<div>
+
+<strong>🍀 Trèfle ×3 chance</strong>
+
+<br>
+
+Prix :
+<strong>50K</strong>
+
+<br>
+
+<span id="stock3" class="stock">
+Stock : -
+</span>
+
+</div>
+
+<button
+class="shopBuy"
+id="buyClover3">
+ACHETER
+</button>
+
+</div>
+
+
+<!-- TREFLE X5 -->
+
+<div class="shopItem">
+
+<div>
+
+<strong>🍀 Trèfle ×5 chance</strong>
+
+<br>
+
+Prix :
+<strong>250K</strong>
+
+<br>
+
+<span id="stock5" class="stock">
+Stock : -
+</span>
+
+</div>
+
+<button
+class="shopBuy"
+id="buyClover5">
+ACHETER
+</button>
+
+</div>
+
+
+<!-- TREFLE X10 -->
+
+<div class="shopItem">
+
+<div>
+
+<strong>🍀 Trèfle ×10 chance</strong>
+
+<br>
+
+Prix :
+<strong>1M</strong>
+
+<br>
+
+<span id="stock10" class="stock">
+Stock : -
+</span>
+
+</div>
+
+<button
+class="shopBuy"
+id="buyClover10">
+ACHETER
 </button>
 
 </div>
@@ -1560,19 +1447,44 @@ id="carrotButton">
 </div>
 
 
-<!-- =========================
-     ODDS
-========================= -->
+<!-- =====================================================
+     INVENTAIRE
+===================================================== -->
 
-<div
-class="modal"
-id="oddsModal">
+<div class="modal" id="inventoryModal">
 
 <div class="modalBox">
 
-<button
-class="close"
-onclick="closeModal('oddsModal')">
+<button class="close" onclick="closeModal('inventoryModal')">
+✕
+</button>
+
+<h2>🎒 Inventaire</h2>
+
+<div id="activeLuckBox"></div>
+
+<div class="inventoryCategory">
+
+<h3>🍀 TRÈFLES</h3>
+
+<div id="cloverInventory"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ODDS
+===================================================== -->
+
+<div class="modal" id="oddsModal">
+
+<div class="modalBox">
+
+<button class="close" onclick="closeModal('oddsModal')">
 ✕
 </button>
 
@@ -1590,27 +1502,41 @@ Les 4 mutations secrètes ne sont pas affichées.
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      INDEX
-========================= -->
+===================================================== -->
 
-<div
-class="modal"
-id="indexModal">
+<div class="modal" id="indexModal">
 
 <div class="modalBox">
 
-<button
-class="close"
-onclick="closeModal('indexModal')">
+<button class="close" onclick="closeModal('indexModal')">
 ✕
 </button>
 
+<div class="indexHeader">
+
 <h2>📖 Index des mutations</h2>
 
+<div class="indexCounterModal">
+
+<div class="indexCounterTitle">
+INDEX
+</div>
+
+<div class="indexCounterValue">
+<span id="indexModalCounter">
+0/100
+</span>
+</div>
+
+</div>
+
+</div>
+
 <p>
-Découvertes :
-<strong id="indexModalCounter">0/100</strong>
+Une mutation est découverte dans l'Index uniquement
+lorsqu'un fruit possédant cette mutation est vendu.
 </p>
 
 <div id="indexList"></div>
@@ -1620,29 +1546,22 @@ Découvertes :
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      SECRET
-========================= -->
+===================================================== -->
 
-<div
-class="secret"
-id="secretScreen">
+<div class="secret" id="secretScreen">
 
-<div
-class="secretText"
-id="secretText">
-</div>
+<div class="secretText" id="secretText"></div>
 
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      EXPLOSION
-========================= -->
+===================================================== -->
 
-<div
-class="explosion"
-id="explosion">
+<div class="explosion" id="explosion">
 
 <div class="boom"></div>
 
@@ -1672,7 +1591,17 @@ window.supabase.createClient(
    VERSION
 ===================================================== */
 
-const UPDATE_VERSION="6.0";
+const UPDATE_VERSION="7.0";
+
+
+/*
+NOUVELLE VERSION :
+
+- reset de l'argent
+- reset complet de l'Index local
+- nouvel inventaire
+- nouveau système de shop
+*/
 
 if(
 localStorage.getItem("tomatoUpdateVersion")
@@ -1682,6 +1611,31 @@ localStorage.getItem("tomatoUpdateVersion")
 localStorage.setItem(
 "tomatoMoney",
 "0"
+);
+
+localStorage.setItem(
+"tomatoGeneration",
+"1"
+);
+
+localStorage.setItem(
+"discoveredMutations",
+"[]"
+);
+
+localStorage.setItem(
+"cloverInventory",
+JSON.stringify({
+  2:0,
+  3:0,
+  5:0,
+  10:0
+})
+);
+
+localStorage.setItem(
+"activeLuck",
+"1"
 );
 
 localStorage.setItem(
@@ -1715,6 +1669,34 @@ let fruitType="tomato";
 
 
 /* =====================================================
+   LUCK
+===================================================== */
+
+/*
+Un seul trèfle peut être actif.
+
+activeLuck = 1 par défaut.
+*/
+
+let activeLuck =
+Number(
+localStorage.getItem("activeLuck")
+) || 1;
+
+
+/* =====================================================
+   INVENTAIRE
+===================================================== */
+
+let cloverInventory =
+JSON.parse(
+localStorage.getItem("cloverInventory")
+||
+'{"2":0,"3":0,"5":0,"10":0}'
+);
+
+
+/* =====================================================
    RECORDS
 ===================================================== */
 
@@ -1742,6 +1724,16 @@ localStorage.getItem(
 ) || "[]"
 );
 
+
+/*
+IMPORTANT :
+
+L'Index est local.
+Il sera remis à zéro par la version 7.0
+pour tous les joueurs lorsqu'ils chargeront
+la nouvelle version.
+*/
+
 let discovered =
 JSON.parse(
 localStorage.getItem(
@@ -1756,236 +1748,109 @@ localStorage.getItem(
 
 const M=[
 
-/* =========================
-   FRUITS
-========================= */
-
 ["Dorée","🟡",1.15,10],
-
 ["Verte","🟢",1.12,10],
-
 ["Géante","🔴",1.20,8],
-
 ["Petite","🔵",0.85,8],
-
 ["Banane","🍌",1.18,7],
-
 ["Fraise","🍓",1.20,7],
-
 ["Pastèque","🍉",1.25,6],
-
 ["Citron","🍋",1.22,6],
-
 ["Orange","🍊",1.25,6],
-
 ["Raisin","🍇",1.28,5],
-
 ["Cerise","🍒",1.30,5],
-
 ["Pêche","🍑",1.30,5],
-
 ["Ananas","🍍",1.35,4],
-
 ["Kiwi","🥝",1.32,4],
-
 ["Noix de coco","🥥",1.40,4],
-
 ["Pomme","🍎",1.40,4],
-
 ["Poire","🍐",1.42,4],
-
 ["Mangue","🥭",1.45,3],
-
 ["Myrtille","🫐",1.48,3],
-
 ["Melon","🍈",1.50,3],
-
 ["Grenade","🍎",1.55,3],
-
 ["Carambole","⭐",1.60,2.5],
-
 ["Fruit du dragon","🐉",1.65,2.5],
-
 ["Litchi","🍒",1.65,2.5],
-
 ["Papaye","🥭",1.70,2],
-
 ["Avocat","🥑",1.75,2],
-
 ["Aubergine","🍆",1.80,2],
-
 ["Poivron","🫑",1.85,2],
-
 ["Maïs","🌽",1.90,2],
 
-
-/* =========================
-   ANIMAUX
-========================= */
-
 ["Lapin","🐇",2.0,1.5],
-
 ["Chat","🐱",2.05,1.5],
-
 ["Chien","🐶",2.1,1.4],
-
 ["Renard","🦊",2.15,1.3],
-
 ["Loup","🐺",2.2,1.2],
-
 ["Ours","🐻",2.25,1.1],
-
 ["Panda","🐼",2.3,1],
-
 ["Koala","🐨",2.35,.9],
-
 ["Singe","🐒",2.4,.8],
-
 ["Gorille","🦍",2.45,.7],
-
 ["Lion","🦁",2.5,.6],
-
 ["Tigre","🐯",2.55,.5],
-
 ["Éléphant","🐘",2.6,.4],
-
 ["Girafe","🦒",2.65,.35],
-
 ["Zèbre","🦓",2.7,.3],
-
 ["Poule","🐔",2.75,.25],
-
 ["Canard","🦆",2.8,.2],
-
 ["Pingouin","🐧",2.85,.18],
-
 ["Tortue","🐢",2.9,.15],
-
 ["Dragon","🐲",3,.12],
 
-
-/* =========================
-   MUTATIONS SPÉCIALES
-========================= */
-
 ["Cristallisée","💎",3.2,.10],
-
 ["Électrique","⚡",3.4,.09],
-
 ["Enflammée","🔥",3.6,.08],
-
 ["Glacée","❄️",3.8,.07],
-
 ["Arc-en-ciel","🌈",4,.06],
 
-
-/* =========================
-   NÉGATIVES
-========================= */
-
 ["Pourris","☠️",0.5,2],
-
 ["Assèché","🏜️",0.33,1],
 
-
-/* =========================
-   MÉTÉO
-========================= */
-
 ["Pluie","🌧️",1.10,5],
-
 ["Orage","⛈️",1.25,2],
-
 ["Foudre","⚡",1.40,1],
-
 ["Neige","🌨️",1.20,1.5],
-
 ["Blizzard","🌬️",1.50,.8],
-
 ["Brouillard","🌫️",1.08,2],
-
 ["Vent","💨",1.10,3],
-
 ["Tornade","🌪️",1.60,.5],
-
 ["Ouragan","🌀",1.80,.3],
-
 ["Canicule","☀️",1.35,1],
-
 ["Éclipse","🌑",1.70,.3],
-
 ["Aurore","🌌",1.90,.2],
-
 ["Arc solaire","🌈",2.10,.15],
-
 ["Gravité","🪐",2.30,.10],
-
 ["Antigravité","🌀",2.50,.08],
-
 ["Onde de choc","💥",2.70,.06],
-
 ["Séisme","🌋",2.40,.07],
-
 ["Météorite","☄️",3,.05],
-
 ["Supernova","💫",3.5,.04],
-
 ["Trou noir","🕳️",4,.03],
-
 ["Cristaux de glace","🧊",1.70,.4],
-
 ["Rosée","💧",1.05,2.5],
-
 ["Givre","🥶",1.30,.7],
-
 ["Sable","🏜️",1.10,2],
-
 ["Tempête de sable","🌪️",1.55,.35],
-
 ["Lave","🌋",2.30,.10],
-
 ["Volcanique","🌋",2.80,.07],
-
 ["Plasma","🔮",3.20,.05],
-
 ["Radiation","☢️",3.50,.04],
-
 ["Magnétique","🧲",3.10,.05],
 
-
-/* =========================
-   10 NOUVELLES
-========================= */
-
 ["Framboise","🫐",1.50,.8],
-
 ["Abricot","🍑",1.75,.65],
-
 ["Mandarine","🍊",2.00,.55],
-
 ["Fruit de la passion","🥭",2.25,.45],
-
 ["Grenadille","🟠",2.50,.35],
-
 ["Ramboutan","🔴",3.00,.25],
-
 ["Durian","🥭",3.50,.18],
-
 ["Léopard","🐆",4.00,.10],
-
 ["Requin","🦈",4.50,.06],
-
 ["Phénix","🔥",5.00,.03]
 
 ];
-
-
-/* =====================================================
-   INDEX
-===================================================== */
-
-const TOTAL_INDEX_MUTATIONS =
-M.length + 4;
 
 
 /* =====================================================
@@ -2052,7 +1917,6 @@ const animalNames=new Set([
 "Pingouin",
 "Tortue",
 "Dragon",
-
 "Léopard",
 "Requin",
 "Phénix"
@@ -2075,7 +1939,6 @@ if(n<1000)
 return "$"+Math.floor(n);
 
 const units=[
-
 ["K",1e3],
 ["M",1e6],
 ["B",1e9],
@@ -2087,7 +1950,6 @@ const units=[
 ["Oc",1e27],
 ["No",1e30],
 ["Dc",1e33]
-
 ];
 
 for(
@@ -2114,18 +1976,62 @@ x>=100
 }
 
 return "$"+Math.floor(n);
+
 }
 
 
 /* =====================================================
-   CHOISIR MUTATION
+   CHOISIR MUTATION AVEC LUCK
 ===================================================== */
+
+/*
+Le trèfle n'est valable que pour UNE mutation.
+
+La chance favorise les mutations rares :
+plus le poids normal est faible,
+plus le bonus de luck est important.
+
+Cela permet réellement à ×2/×3/×5/×10
+d'augmenter les chances d'obtenir les mutations rares.
+*/
 
 function chooseMutation(){
 
+const luck =
+activeLuck || 1;
+
 const total =
 M.reduce(
-(s,m)=>s+m[3],
+(s,m)=>{
+
+let weight=m[3];
+
+if(luck>1){
+
+/*
+Les mutations fréquentes gardent davantage
+leur poids normal tandis que les mutations rares
+profitent beaucoup plus de la luck.
+*/
+
+const rarityFactor =
+Math.max(
+1,
+Math.sqrt(
+10 / Math.max(weight,.03)
+)
+);
+
+weight *=
+1 +
+(luck-1)*
+(rarityFactor-1)/4;
+
+}
+
+return s+weight;
+
+},
 0
 );
 
@@ -2136,7 +2042,26 @@ for(
 const m of M
 ){
 
-r-=m[3];
+let weight=m[3];
+
+if(luck>1){
+
+const rarityFactor =
+Math.max(
+1,
+Math.sqrt(
+10 / Math.max(weight,.03)
+)
+);
+
+weight *=
+1+
+(luck-1)*
+(rarityFactor-1)/4;
+
+}
+
+r-=weight;
 
 if(r<=0)
 return m;
@@ -2144,6 +2069,7 @@ return m;
 }
 
 return M[0];
+
 }
 
 
@@ -2180,6 +2106,7 @@ if(r<.999995)
 return Math.floor(Math.random()*50)+51;
 
 return Math.floor(Math.random()*100)+101;
+
 }
 
 
@@ -2199,14 +2126,10 @@ value*=mutation.multiplier;
 
 }
 
-if(fruitType==="carrot"){
+if(fruitType==="carrot")
 value*=2;
-}
 
-return Math.max(
-0,
-value
-);
+return Math.max(0,value);
 
 }
 
@@ -2233,8 +2156,6 @@ addSecret(secret);
 }
 
 }
-
-saveDiscovered();
 
 }
 
@@ -2266,17 +2187,6 @@ ultimate:secret.ultimate || false
 
 });
 
-if(
-!discovered.includes(secret.name)
-){
-
-discovered.push(
-secret.name
-);
-
-updateIndexCounter();
-
-}
 
 addLog(
 "🔐 SECRET : "+
@@ -2293,58 +2203,21 @@ secret.name
 
 triggerRareExplosion();
 
+if(secret.ultimate){
 
-if(
-secret.ultimate
-){
-
-showSecret(
-"❓ ??? ❓"
-);
+showSecret("❓ ??? ❓");
 
 return;
 
 }
 
-
-if(
-secret.name==="FAAAAAAAAAAAH"
-){
+if(secret.name==="FAAAAAAAAAAAH"){
 
 showSecret(
 "📢 FAAAAAAAAAAAAAH 📢"
 );
 
 }
-
-}
-
-
-/* =====================================================
-   TORTUE PINGOUIN FEUILLES
-===================================================== */
-
-function leafSecret(){
-
-currentMutations=[];
-
-fruitType="tomato";
-
-addSecret(
-SECRETS.find(
-s=>s.name==="Tortue Pingouin"
-)
-);
-
-saveDiscovered();
-
-updateFruit();
-updateUI();
-save();
-
-addLog(
-"🍃 Les feuilles ont réveillé une mutation secrète !"
-);
 
 }
 
@@ -2360,14 +2233,33 @@ currentMutations=[];
 const amount =
 getMutationAmount();
 
+
+/*
+Le trèfle est consommé maintenant.
+
+Il ne peut donc jamais influencer
+la mutation suivante.
+*/
+
+const usedLuck =
+activeLuck;
+
 for(
 let i=0;
 i<amount;
 i++
 ){
 
-const m =
-chooseMutation();
+/*
+Le bonus s'applique à toute la combinaison
+issue de ce clic, puis est consommé.
+*/
+
+const oldLuck=activeLuck;
+
+activeLuck=usedLuck;
+
+const m=chooseMutation();
 
 currentMutations.push({
 
@@ -2379,23 +2271,39 @@ secret:false
 
 });
 
-if(
-!discovered.includes(m[0])
-){
-
-discovered.push(
-m[0]
-);
+activeLuck=oldLuck;
 
 }
 
-}
+
+/*
+Secrets.
+*/
 
 checkSecrets();
 
-saveDiscovered();
 
-updateIndexCounter();
+/*
+Le trèfle est maintenant consommé.
+*/
+
+if(usedLuck>1){
+
+addLog(
+"🍀 Trèfle ×"+
+usedLuck+
+" utilisé pour cette mutation !"
+);
+
+activeLuck=1;
+
+saveActiveLuck();
+
+}
+
+
+updateFruit();
+updateUI();
 
 if(amount>=10){
 
@@ -2406,9 +2314,6 @@ amount+
 );
 
 }
-
-updateFruit();
-updateUI();
 
 addLog(
 
@@ -2441,9 +2346,7 @@ save();
 function triggerRareExplosion(){
 
 const explosion =
-document.getElementById(
-"explosion"
-);
+document.getElementById("explosion");
 
 explosion.style.display="flex";
 
@@ -2472,7 +2375,7 @@ currentMutations
 .slice(0,4);
 
 emojis.forEach(
-(emoji,index)=>{
+emoji=>{
 
 const el =
 document.createElement("div");
@@ -2486,10 +2389,10 @@ el.style.setProperty(
 (24+Math.random()*28)+"px"
 );
 
-el.style.left =
+el.style.left=
 (10+Math.random()*75)+"%";
 
-el.style.top =
+el.style.top=
 (25+Math.random()*35)+"%";
 
 field.appendChild(el);
@@ -2507,76 +2410,46 @@ el.remove();
 
 
 /* =====================================================
-   EFFETS METEO
+   METEO
 ===================================================== */
 
 function updateWeather(){
 
 const weatherEffect =
-document.getElementById(
-"weatherEffect"
-);
+document.getElementById("weatherEffect");
 
 weatherEffect.innerHTML="";
 
 const weatherMap={
 
 "Pluie":"💧",
-
 "Orage":"⚡",
-
 "Foudre":"⚡",
-
 "Neige":"❄️",
-
 "Blizzard":"❄️",
-
 "Brouillard":"🌫️",
-
 "Vent":"💨",
-
 "Tornade":"🌪️",
-
 "Ouragan":"🌀",
-
 "Canicule":"☀️",
-
 "Éclipse":"🌑",
-
 "Aurore":"🌌",
-
 "Arc solaire":"🌈",
-
 "Gravité":"🪐",
-
 "Antigravité":"🌀",
-
 "Ondes de choc":"💥",
-
 "Trou noir":"🕳️",
-
 "Météorite":"☄️",
-
 "Supernova":"💫",
-
 "Lave":"🌋",
-
 "Volcanique":"🌋",
-
 "Plasma":"🔮",
-
 "Radiation":"☢️",
-
 "Magnétique":"🧲",
-
 "Sable":"🏜️",
-
 "Tempête de sable":"🌪️",
-
 "Rosée":"💧",
-
 "Givre":"❄️",
-
 "Cristaux de glace":"🧊"
 
 };
@@ -2596,13 +2469,13 @@ document.createElement("div");
 
 p.className="weatherParticle";
 
-p.textContent =
+p.textContent=
 weatherMap[selected.name];
 
-p.style.left =
+p.style.left=
 Math.random()*100+"%";
 
-p.style.animationDelay =
+p.style.animationDelay=
 Math.random()*1.2+"s";
 
 weatherEffect.appendChild(p);
@@ -2623,13 +2496,8 @@ document.getElementById("fruit");
 
 fruit.className="fruit";
 
-if(
-fruitType==="carrot"
-){
-
+if(fruitType==="carrot")
 fruit.classList.add("carrot");
-
-}
 
 const has =
 name =>
@@ -2638,7 +2506,7 @@ m=>m.name===name
 );
 
 
-/* visuels */
+/* effets */
 
 if(has("Dorée"))
 fruit.classList.add("golden");
@@ -2683,6 +2551,33 @@ if(has("Trou noir"))
 fruit.classList.add("blackhole");
 
 
+/*
+Toutes les mutations dont le multiplicateur
+est entre ×1 et ×1.5 rendent le fruit plus grand.
+
+On ne remplace pas Petite/Géante :
+ces deux mutations ont leur taille propre.
+*/
+
+const hasExplicitSize =
+has("Petite") ||
+has("Géante");
+
+if(!hasExplicitSize){
+
+const hasMedium =
+currentMutations.some(
+m=>
+m.multiplier>=1 &&
+m.multiplier<=1.5
+);
+
+if(hasMedium)
+fruit.classList.add("mediumMutation");
+
+}
+
+
 /* animaux */
 
 const companions =
@@ -2707,9 +2602,7 @@ animalNames.has(m.name)
 shown.push(m.name);
 
 const c =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 c.className="companion";
 
@@ -2732,7 +2625,7 @@ updateWeather();
 
 
 /* =====================================================
-   INDEX COMPTEUR
+   INDEX
 ===================================================== */
 
 function updateIndexCounter(){
@@ -2742,20 +2635,11 @@ const unique =
 
 discovered=unique;
 
-const count =
+const count=
 Math.min(
 discovered.length,
 100
 );
-
-const visible =
-document.getElementById(
-"indexCounter"
-);
-
-if(visible){
-visible.textContent=count;
-}
 
 const modalCounter =
 document.getElementById(
@@ -2763,8 +2647,63 @@ document.getElementById(
 );
 
 if(modalCounter){
+
 modalCounter.textContent=
 count+"/100";
+
+}
+
+}
+
+
+/*
+IMPORTANT :
+
+L'Index n'est plus mis à jour
+pendant MUTER.
+
+Il est mis à jour uniquement
+dans discoverSoldMutations(),
+appelé après une vente.
+*/
+
+function discoverSoldMutations(){
+
+let changed=false;
+
+for(
+const mutation of currentMutations
+){
+
+if(
+!discovered.includes(
+mutation.name
+)
+){
+
+discovered.push(
+mutation.name
+);
+
+changed=true;
+
+}
+
+}
+
+if(changed){
+
+saveDiscovered();
+
+addLog(
+"📖 "+
+
+(
+discovered.length
+)+
+"/100 mutations découvertes !"
+);
+
 }
 
 }
@@ -2776,54 +2715,34 @@ count+"/100";
 
 function updateUI(){
 
-document.getElementById(
-"money"
-).textContent =
+document.getElementById("money").textContent=
 formatMoney(money);
 
-document.getElementById(
-"generation"
-).textContent =
+document.getElementById("generation").textContent=
 generation;
 
-document.getElementById(
-"mutationCount"
-).textContent =
+document.getElementById("mutationCount").textContent=
 currentMutations.length;
 
-document.getElementById(
-"fruitValue"
-).textContent =
-formatMoney(
-calculateValue()
-);
+document.getElementById("fruitValue").textContent=
+formatMoney(calculateValue());
 
 
 /* nom */
 
-if(
-fruitType==="carrot"
-){
+if(fruitType==="carrot"){
 
-document.getElementById(
-"fruitName"
-).textContent =
+document.getElementById("fruitName").textContent=
 "🥕 Carotte 💵 ×2";
 
-}else if(
-currentMutations.length
-){
+}else if(currentMutations.length){
 
-document.getElementById(
-"fruitName"
-).textContent =
+document.getElementById("fruitName").textContent=
 "🍅 Tomate mutée";
 
 }else{
 
-document.getElementById(
-"fruitName"
-).textContent =
+document.getElementById("fruitName").textContent=
 "🍅 Tomate normale";
 
 }
@@ -2832,9 +2751,7 @@ document.getElementById(
 /* mutations */
 
 const display =
-document.getElementById(
-"mutationDisplay"
-);
+document.getElementById("mutationDisplay");
 
 display.innerHTML="";
 
@@ -2843,11 +2760,9 @@ const m of currentMutations
 ){
 
 const tag =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
-tag.className =
+tag.className=
 "mutationTag"+
 (
 m.negative
@@ -2857,19 +2772,7 @@ m.negative
 ""
 );
 
-let multiplierText;
-
-if(m.name==="Pourris"){
-multiplierText="×0.5";
-}
-else if(m.name==="Assèché"){
-multiplierText="×0.33";
-}
-else{
-multiplierText="×"+m.multiplier;
-}
-
-tag.textContent =
+tag.textContent=
 m.emoji+
 " "+
 (
@@ -2879,28 +2782,26 @@ m.secret && m.ultimate
 :
 m.name
 )+
-" "+
-multiplierText;
+" ×"+
+m.multiplier;
 
 display.appendChild(tag);
 
 }
 
+
 updateFruit();
-
 updateRecords();
-
 updateCarrotButton();
-
 spawnMutationEmojis();
-
 updateIndexCounter();
+updateInventoryDisplay();
 
 }
 
 
 /* =====================================================
-   CAROTTE BUTTON
+   CAROTTE
 ===================================================== */
 
 function updateCarrotButton(){
@@ -2922,7 +2823,7 @@ button.textContent=
 
 }else{
 
-button.disabled =
+button.disabled=
 money<1000;
 
 button.textContent=
@@ -2945,21 +2846,18 @@ function updateRecords(){
 
 document.getElementById(
 "bestTomatoValue"
-).textContent =
-formatMoney(
-bestTomatoValue
-);
+).textContent=
+formatMoney(bestTomatoValue);
 
 document.getElementById(
 "bestCarrotValue"
-).textContent =
-formatMoney(
-bestCarrotValue
-);
+).textContent=
+formatMoney(bestCarrotValue);
+
 
 document.getElementById(
 "bestTomatoMutations"
-).innerHTML =
+).innerHTML=
 
 bestTomatoMutations.length
 
@@ -2983,7 +2881,7 @@ m.multiplier
 
 document.getElementById(
 "bestCarrotMutations"
-).innerHTML =
+).innerHTML=
 
 bestCarrotMutations.length
 
@@ -3008,7 +2906,7 @@ m.multiplier
 
 
 /* =====================================================
-   RECORD APRÈS VENTE
+   RECORD
 ===================================================== */
 
 function checkBestAfterSale(
@@ -3044,6 +2942,7 @@ formatMoney(value)
 );
 
 }
+
 
 if(
 soldFruit==="carrot"
@@ -3094,13 +2993,13 @@ return;
 
 }
 
-const value =
+const value=
 calculateValue();
 
-const soldFruit =
+const soldFruit=
 fruitType;
 
-const soldMutations =
+const soldMutations=
 currentMutations.map(
 m=>({
 
@@ -3110,6 +3009,17 @@ multiplier:m.multiplier
 
 })
 );
+
+
+/*
+IMPORTANT :
+
+C'est ICI que les mutations
+entrent dans l'Index.
+*/
+
+discoverSoldMutations();
+
 
 checkBestAfterSale(
 value,
@@ -3181,15 +3091,13 @@ save();
 
 updateUI();
 
-closeModal(
-"shopModal"
-);
+closeModal("shopModal");
 
 }
 
 
 /* =====================================================
-   SAUVEGARDE LOCALE
+   SAUVEGARDE
 ===================================================== */
 
 function save(){
@@ -3205,6 +3113,8 @@ generation
 );
 
 saveDiscovered();
+saveClovers();
+saveActiveLuck();
 
 }
 
@@ -3258,17 +3168,13 @@ screen.style.display="none";
 
 function addLog(message){
 
-const log =
-document.getElementById(
-"log"
-);
+const log=
+document.getElementById("log");
 
-const div =
-document.createElement(
-"div"
-);
+const div=
+document.createElement("div");
 
-div.textContent =
+div.textContent=
 "• "+message;
 
 log.prepend(div);
@@ -3332,10 +3238,8 @@ for(
 const m of all
 ){
 
-const row =
-document.createElement(
-"div"
-);
+const row=
+document.createElement("div");
 
 row.className=
 "mutationRow";
@@ -3409,11 +3313,13 @@ document.getElementById(
 
 list.innerHTML="";
 
+
 const total =
 M.reduce(
 (s,m)=>s+m[3],
 0
 );
+
 
 const sorted =
 [...M].sort(
@@ -3425,13 +3331,11 @@ for(
 const m of sorted
 ){
 
-const probability =
+const probability=
 m[3]/total*100;
 
-const row =
-document.createElement(
-"div"
-);
+const row=
+document.createElement("div");
 
 row.className=
 "mutationRow";
@@ -3468,6 +3372,7 @@ list.appendChild(row);
 
 }
 
+
 document.getElementById(
 "oddsModal"
 ).style.display="flex";
@@ -3481,9 +3386,712 @@ document.getElementById(
 
 function closeModal(id){
 
+document.getElementById(id).style.display="none";
+
+}
+
+
+/* =====================================================
+   SHOP : RESTOCK
+===================================================== */
+
+/*
+Un cycle dure exactement 5 minutes.
+
+Le stock est calculé à partir du numéro du cycle,
+ce qui donne le même stock à tous les joueurs
+pendant le même cycle.
+*/
+
+const SHOP_INTERVAL=5*60*1000;
+
+
+/*
+Générateur pseudo-aléatoire déterministe.
+*/
+
+function seededRandom(seed){
+
+let x=
+Math.sin(seed)*10000;
+
+return x-
+Math.floor(x);
+
+}
+
+
+/*
+Détermine une quantité à partir
+de probabilités pondérées.
+*/
+
+function quantityFromWeights(
+seed,
+weights
+){
+
+const r=
+seededRandom(seed);
+
+let total=0;
+
+for(
+const item of weights
+){
+
+total+=item[1];
+
+}
+
+let cursor=0;
+
+for(
+const item of weights
+){
+
+cursor+=
+item[1]/total;
+
+if(r<cursor)
+return item[0];
+
+}
+
+return 0;
+
+}
+
+
+/*
+Pour le ×2 :
+
+90% qu'il y en ait au moins 1.
+
+Dans les 90% :
+55% → 2
+30% → 3
+10% → 4
+2% → 5
+
+Le reliquat de 3% est ajouté au résultat 1.
+*/
+
+function getShopStock(cycle){
+
+const result={
+2:0,
+3:0,
+5:0,
+10:0
+};
+
+
+/* =========================
+   ×2
+========================= */
+
+const r2=
+seededRandom(cycle*101+2);
+
+if(r2<.90){
+
+const qSeed=
+seededRandom(cycle*103+2);
+
+if(qSeed<.55){
+
+result[2]=2;
+
+}else if(qSeed<.85){
+
+result[2]=3;
+
+}else if(qSeed<.95){
+
+result[2]=4;
+
+}else if(qSeed<.97){
+
+result[2]=5;
+
+}else{
+
+result[2]=1;
+
+}
+
+}
+
+
+/* =========================
+   ×3
+========================= */
+
+const r3=
+seededRandom(cycle*107+3);
+
+if(r3<.90){
+
+const q3=
+seededRandom(cycle*109+3);
+
+if(q3<.50){
+
+result[3]=1;
+
+}else if(q3<.80){
+
+result[3]=2;
+
+}else if(q3<.90){
+
+result[3]=3;
+
+}else{
+
+result[3]=1;
+
+}
+
+}
+
+
+/* =========================
+   ×5
+========================= */
+
+const r5=
+seededRandom(cycle*113+5);
+
+if(r5<.15){
+
+const q5=
+seededRandom(cycle*127+5);
+
+if(q5<.05){
+
+result[5]=2;
+
+}else{
+
+result[5]=1;
+
+}
+
+}
+
+
+/* =========================
+   ×10
+========================= */
+
+const r10=
+seededRandom(cycle*131+10);
+
+if(r10<.02){
+
+result[10]=1;
+
+}
+
+return result;
+
+}
+
+
+/* =====================================================
+   STOCK ACTUEL
+===================================================== */
+
+function getCurrentShopStock(){
+
+const cycle=
+Math.floor(
+Date.now()/SHOP_INTERVAL
+);
+
+return getShopStock(cycle);
+
+}
+
+
+/* =====================================================
+   AFFICHER STOCK
+===================================================== */
+
+function updateShop(){
+
+const stock=
+getCurrentShopStock();
+
+updateStockElement(2,stock[2]);
+updateStockElement(3,stock[3]);
+updateStockElement(5,stock[5]);
+updateStockElement(10,stock[10]);
+
+updateShopTimer();
+
+}
+
+
+/* =====================================================
+   STOCK + ACHATS
+===================================================== */
+
+function updateStockElement(
+multiplier,
+amount
+){
+
+const element=
 document.getElementById(
-id
-).style.display="none";
+"stock"+multiplier
+);
+
+const button=
+document.getElementById(
+"buyClover"+multiplier
+);
+
+if(!element || !button)
+return;
+
+
+if(amount>0){
+
+element.textContent=
+"Stock : "+amount;
+
+element.className="stock";
+
+button.disabled=
+money<
+getCloverPrice(multiplier);
+
+}else{
+
+element.textContent=
+"Stock : ÉPUISÉ";
+
+element.className=
+"stock noStock";
+
+button.disabled=true;
+
+}
+
+}
+
+
+/* =====================================================
+   PRIX
+===================================================== */
+
+function getCloverPrice(multiplier){
+
+if(multiplier===2)
+return 20000;
+
+if(multiplier===3)
+return 50000;
+
+if(multiplier===5)
+return 250000;
+
+if(multiplier===10)
+return 1000000;
+
+return Infinity;
+
+}
+
+
+/* =====================================================
+   ACHETER TREFLE
+===================================================== */
+
+function buyClover(multiplier){
+
+const stock=
+getCurrentShopStock();
+
+if(!stock[multiplier] || stock[multiplier]<=0){
+
+addLog(
+"❌ Ce trèfle est épuisé."
+);
+
+return;
+
+}
+
+const price=
+getCloverPrice(multiplier);
+
+if(money<price){
+
+addLog(
+"❌ Pas assez d'argent pour le trèfle ×"+
+multiplier+"."
+);
+
+return;
+
+}
+
+
+/*
+On utilise un stock local par joueur.
+*/
+
+const key=
+"shopBoughtCycle"+
+multiplier;
+
+const cycle=
+Math.floor(
+Date.now()/SHOP_INTERVAL
+);
+
+const savedCycle=
+Number(
+localStorage.getItem(key)
+);
+
+let bought=
+savedCycle===cycle
+?
+Number(
+localStorage.getItem(
+key+"Amount"
+)
+)||0
+:
+0;
+
+
+if(bought>=stock[multiplier]){
+
+addLog(
+"❌ Tu as acheté tout ton stock disponible."
+);
+
+return;
+
+}
+
+
+money-=price;
+
+cloverInventory[multiplier]++;
+
+bought++;
+
+localStorage.setItem(
+key,
+cycle
+);
+
+localStorage.setItem(
+key+"Amount",
+bought
+);
+
+saveClovers();
+
+save();
+
+addLog(
+"🍀 Trèfle ×"+
+multiplier+
+" acheté !"
+);
+
+updateUI();
+
+updateShop();
+
+}
+
+
+/* =====================================================
+   SAUVEGARDE TREFLES
+===================================================== */
+
+function saveClovers(){
+
+localStorage.setItem(
+"cloverInventory",
+JSON.stringify(
+cloverInventory
+)
+);
+
+}
+
+
+/* =====================================================
+   ACTIVE LUCK
+===================================================== */
+
+function saveActiveLuck(){
+
+localStorage.setItem(
+"activeLuck",
+String(activeLuck)
+);
+
+}
+
+
+/* =====================================================
+   INVENTAIRE
+===================================================== */
+
+function openInventory(){
+
+updateInventoryDisplay();
+
+document.getElementById(
+"inventoryModal"
+).style.display="flex";
+
+}
+
+
+/* =====================================================
+   AFFICHAGE INVENTAIRE
+===================================================== */
+
+function updateInventoryDisplay(){
+
+const container=
+document.getElementById(
+"cloverInventory"
+);
+
+const activeBox=
+document.getElementById(
+"activeLuckBox"
+);
+
+if(!container || !activeBox)
+return;
+
+
+if(activeLuck>1){
+
+activeBox.innerHTML=`
+
+<div class="activeLuck">
+
+🍀 Trèfle ×${activeLuck} actif !<br>
+
+<small>
+Il sera utilisé pour ta prochaine mutation.
+</small>
+
+</div>
+
+`;
+
+}else{
+
+activeBox.innerHTML="";
+
+}
+
+
+container.innerHTML="";
+
+
+const multipliers=[
+2,
+3,
+5,
+10
+];
+
+let hasAny=false;
+
+
+for(
+const multiplier of multipliers
+){
+
+const amount=
+Number(
+cloverInventory[multiplier]
+)||0;
+
+if(amount<=0)
+continue;
+
+hasAny=true;
+
+
+const div=
+document.createElement("div");
+
+div.className=
+"cloverItem";
+
+div.innerHTML=`
+
+<div>
+
+<strong>
+🍀 Trèfle ×${multiplier}
+</strong>
+
+<br>
+
+Possédé :
+<strong>
+${amount}
+</strong>
+
+</div>
+
+<button
+class="cloverUse"
+onclick="useClover(${multiplier})"
+${activeLuck>1 ? "disabled" : ""}
+>
+
+${
+activeLuck>1
+?
+"⚠️ UN TRÈFLE ACTIF"
+:
+"UTILISER"
+}
+
+</button>
+
+`;
+
+container.appendChild(div);
+
+}
+
+
+if(!hasAny){
+
+container.innerHTML=`
+
+<p class="unknown">
+Tu ne possèdes aucun trèfle.
+<br><br>
+Va voir la boutique ! 🛒
+</p>
+
+`;
+
+}
+
+}
+
+
+/* =====================================================
+   UTILISER TREFLE
+===================================================== */
+
+function useClover(multiplier){
+
+/*
+Un seul trèfle actif.
+*/
+
+if(activeLuck>1){
+
+addLog(
+"❌ Un trèfle est déjà actif."
+);
+
+return;
+
+}
+
+if(
+!cloverInventory[multiplier] ||
+cloverInventory[multiplier]<=0
+){
+
+return;
+
+}
+
+
+/*
+Le trèfle est retiré immédiatement
+de l'inventaire.
+*/
+
+cloverInventory[multiplier]--;
+
+activeLuck=
+multiplier;
+
+saveClovers();
+saveActiveLuck();
+
+addLog(
+"🍀 Trèfle ×"+
+multiplier+
+" activé pour la prochaine mutation !"
+);
+
+updateInventoryDisplay();
+
+}
+
+
+/* =====================================================
+   TIMER SHOP
+===================================================== */
+
+function updateShopTimer(){
+
+const timer=
+document.getElementById(
+"shopTimer"
+);
+
+if(!timer)
+return;
+
+const now=
+Date.now();
+
+const next=
+(
+Math.floor(
+now/SHOP_INTERVAL
+)+1
+)*
+SHOP_INTERVAL;
+
+let seconds=
+Math.max(
+0,
+Math.floor(
+(next-now)/1000
+)
+);
+
+const minutes=
+Math.floor(seconds/60);
+
+seconds%=
+60;
+
+timer.textContent=
+"Nouveau stock dans "+
+minutes+
+":"+
+String(seconds).padStart(2,"0");
 
 }
 
@@ -3494,17 +4102,15 @@ id
 
 async function buyOrStart(){
 
-const input =
+const input=
 document.getElementById(
 "usernameInput"
 );
 
-const name =
+const name=
 input.value.trim();
 
-if(
-name.length<2
-){
+if(name.length<2){
 
 alert(
 "Choisis un username d'au moins 2 caractères."
@@ -3514,11 +4120,8 @@ return;
 
 }
 
-username =
-name.substring(
-0,
-16
-);
+username=
+name.substring(0,16);
 
 localStorage.setItem(
 "tomatoUsername",
@@ -3550,7 +4153,7 @@ await loadLeaderboard();
 
 
 /* =====================================================
-   SUPABASE : CHARGER JOUEUR
+   SUPABASE : JOUEUR
 ===================================================== */
 
 async function loadPlayer(){
@@ -3563,7 +4166,7 @@ try{
 const {
 data,
 error
-} =
+}=
 await supabaseClient
 
 .from("leaderboard")
@@ -3586,11 +4189,12 @@ return;
 
 if(data){
 
-bestTomatoValue =
+bestTomatoValue=
 Number(data.best_tomato)||0;
 
-bestCarrotValue =
+bestCarrotValue=
 Number(data.best_carrot)||0;
+
 
 if(
 Array.isArray(
@@ -3598,10 +4202,11 @@ data.tomato_mutations
 )
 ){
 
-bestTomatoMutations =
+bestTomatoMutations=
 data.tomato_mutations;
 
 }
+
 
 if(
 Array.isArray(
@@ -3609,10 +4214,11 @@ data.carrot_mutations
 )
 ){
 
-bestCarrotMutations =
+bestCarrotMutations=
 data.carrot_mutations;
 
 }
+
 
 localStorage.setItem(
 "bestTomatoValue",
@@ -3659,7 +4265,7 @@ err
 
 
 /* =====================================================
-   SUPABASE : SAUVER JOUEUR
+   SUPABASE : SAUVER
 ===================================================== */
 
 async function saveLeaderboard(){
@@ -3673,13 +4279,11 @@ const payload={
 
 username:username,
 
-best_tomato:Number(
-bestTomatoValue
-)||0,
+best_tomato:
+Number(bestTomatoValue)||0,
 
-best_carrot:Number(
-bestCarrotValue
-)||0,
+best_carrot:
+Number(bestCarrotValue)||0,
 
 tomato_mutations:
 bestTomatoMutations||[],
@@ -3694,7 +4298,7 @@ new Date().toISOString()
 
 const {
 error
-} =
+}=
 await supabaseClient
 
 .from("leaderboard")
@@ -3727,12 +4331,12 @@ console.error(err);
 
 
 /* =====================================================
-   SUPABASE : LEADERBOARD
+   LEADERBOARD
 ===================================================== */
 
 async function loadLeaderboard(){
 
-const tbody =
+const tbody=
 document.getElementById(
 "leaderboard"
 );
@@ -3742,7 +4346,7 @@ try{
 const {
 data,
 error
-} =
+}=
 await supabaseClient
 
 .from("leaderboard")
@@ -3757,6 +4361,7 @@ await supabaseClient
 ascending:false
 }
 )
+
 .limit(10);
 
 if(error){
@@ -3779,6 +4384,7 @@ return;
 
 tbody.innerHTML="";
 
+
 if(
 !data ||
 !data.length
@@ -3798,7 +4404,8 @@ return;
 
 }
 
-const sorted =
+
+const sorted=
 [...data].sort(
 (a,b)=>
 Math.max(
@@ -3816,33 +4423,33 @@ Number(a.best_carrot)||0
 sorted.forEach(
 (p,i)=>{
 
-const tr =
+const tr=
 document.createElement("tr");
 
-const tdRank =
+const tdRank=
 document.createElement("td");
 
-tdRank.textContent =
+tdRank.textContent=
 i+1;
 
-const tdName =
+const tdName=
 document.createElement("td");
 
-tdName.textContent =
+tdName.textContent=
 p.username;
 
-const tdTomato =
+const tdTomato=
 document.createElement("td");
 
-tdTomato.textContent =
+tdTomato.textContent=
 formatMoney(
 p.best_tomato||0
 );
 
-const tdCarrot =
+const tdCarrot=
 document.createElement("td");
 
-tdCarrot.textContent =
+tdCarrot.textContent=
 formatMoney(
 p.best_carrot||0
 );
@@ -3880,9 +4487,7 @@ tbody.innerHTML=`
 ===================================================== */
 
 document
-.getElementById(
-"startButton"
-)
+.getElementById("startButton")
 .addEventListener(
 "click",
 buyOrStart
@@ -3890,26 +4495,19 @@ buyOrStart
 
 
 document
-.getElementById(
-"usernameInput"
-)
+.getElementById("usernameInput")
 .addEventListener(
 "keydown",
 e=>{
 
-if(e.key==="Enter"){
-
+if(e.key==="Enter")
 buyOrStart();
-
-}
 
 });
 
 
 document
-.getElementById(
-"mutateButton"
-)
+.getElementById("mutateButton")
 .addEventListener(
 "click",
 mutate
@@ -3917,9 +4515,7 @@ mutate
 
 
 document
-.getElementById(
-"sellButton"
-)
+.getElementById("sellButton")
 .addEventListener(
 "click",
 sell
@@ -3927,27 +4523,31 @@ sell
 
 
 document
-.getElementById(
-"shopButton"
-)
+.getElementById("shopButton")
 .addEventListener(
 "click",
 ()=>{
 
+updateShop();
+
 document.getElementById(
 "shopModal"
 ).style.display="flex";
-
-updateCarrotButton();
 
 }
 );
 
 
 document
-.getElementById(
-"indexButton"
-)
+.getElementById("inventoryButton")
+.addEventListener(
+"click",
+openInventory
+);
+
+
+document
+.getElementById("indexButton")
 .addEventListener(
 "click",
 openIndex
@@ -3955,9 +4555,7 @@ openIndex
 
 
 document
-.getElementById(
-"oddsButton"
-)
+.getElementById("oddsButton")
 .addEventListener(
 "click",
 openOdds
@@ -3965,33 +4563,42 @@ openOdds
 
 
 document
-.getElementById(
-"carrotButton"
-)
+.getElementById("carrotButton")
 .addEventListener(
 "click",
 buyCarrot
 );
 
 
-/* feuilles */
-
 document
-.getElementById(
-"leafLeft"
-)
+.getElementById("buyClover2")
 .addEventListener(
 "click",
-leafSecret
+()=>buyClover(2)
 );
 
+
 document
-.getElementById(
-"leafRight"
-)
+.getElementById("buyClover3")
 .addEventListener(
 "click",
-leafSecret
+()=>buyClover(3)
+);
+
+
+document
+.getElementById("buyClover5")
+.addEventListener(
+"click",
+()=>buyClover(5)
+);
+
+
+document
+.getElementById("buyClover10")
+.addEventListener(
+"click",
+()=>buyClover(10)
 );
 
 
@@ -4025,10 +4632,9 @@ document.getElementById(
 }
 
 updateFruit();
-
 updateUI();
-
 updateIndexCounter();
+updateShop();
 
 addLog(
 "🍅 Bienvenue dans Tomato Mutations !"
@@ -4042,12 +4648,53 @@ document.getElementById(
 }
 
 
+/* =====================================================
+   ACTUALISATIONS
+===================================================== */
+
 startGame();
 
+
+/*
+Classement.
+*/
 
 setInterval(
 loadLeaderboard,
 10000
+);
+
+
+/*
+Boutique :
+le stock change automatiquement
+toutes les 5 minutes.
+*/
+
+setInterval(
+()=>{
+updateShop();
+},
+1000
+);
+
+
+/*
+Si le shop est ouvert, on actualise
+aussi les boutons d'achat.
+*/
+
+setInterval(
+()=>{
+if(
+document.getElementById("shopModal").style.display==="flex"
+){
+
+updateShop();
+
+}
+},
+1000
 );
 
 </script>
