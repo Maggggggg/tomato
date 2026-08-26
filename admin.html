@@ -59,6 +59,11 @@ button:hover{
   filter:brightness(1.15)
 }
 
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed
+}
+
 .danger{background:#b52d35}
 .warn{background:#9b6718}
 .good{background:#247a49}
@@ -199,6 +204,34 @@ button:hover{
   color:#f4c95d
 }
 
+.login{
+  width:min(420px,100%);
+  margin:70px auto
+}
+
+.login h2{
+  margin-top:0
+}
+
+.login input{
+  width:100%;
+  margin:7px 0 12px;
+  background:#0c1017;
+  color:#fff;
+  border:1px solid #333c4c;
+  border-radius:10px;
+  padding:12px
+}
+
+.login button{
+  width:100%;
+  margin-top:5px
+}
+
+#adminPanel{
+  display:none
+}
+
 @media(max-width:700px){
 
   .stats{
@@ -215,20 +248,97 @@ button:hover{
 
 <body>
 
+<!-- =====================================================
+     CONNEXION
+====================================================== -->
+
+<div id="loginPanel" class="login">
+
+  <div class="card">
+
+    <h2>🍅 Tomato Mutations</h2>
+
+    <h3>🔐 Connexion Admin</h3>
+
+    <p class="small">
+      Connecte-toi avec ton compte administrateur Supabase.
+    </p>
+
+    <label>Email</label>
+
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Ton adresse email"
+      autocomplete="email"
+    >
+
+    <label>Mot de passe</label>
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Ton mot de passe"
+      autocomplete="current-password"
+    >
+
+    <button
+      class="blue"
+      id="loginBtn"
+    >
+      Se connecter
+    </button>
+
+    <div
+      id="loginStatus"
+      class="small"
+      style="margin-top:12px"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN
+====================================================== -->
+
+<div id="adminPanel">
+
 <header>
-  <h1>🍅 Tomato Mutations — ADMIN</h1>
+
+  <h1>
+    🍅 Tomato Mutations — ADMIN
+  </h1>
 
   <div class="controls">
-    <span id="adminEmail" class="small"></span>
-    <button id="logout">Déconnexion</button>
+
+    <span
+      id="adminEmail"
+      class="small"
+    ></span>
+
+    <button id="logout">
+      Déconnexion
+    </button>
+
   </div>
+
 </header>
+
 
 <div class="wrap">
 
-  <div id="status" class="card">
-    <span class="loading">Connexion...</span>
+  <div
+    id="status"
+    class="card"
+  >
+    <span class="loading">
+      Chargement...
+    </span>
   </div>
+
 
   <div class="stats">
 
@@ -254,6 +364,7 @@ button:hover{
 
   </div>
 
+
   <div class="card">
 
     <div class="controls">
@@ -263,17 +374,24 @@ button:hover{
         placeholder="Rechercher un pseudo ou un ID..."
       >
 
-      <button class="blue" id="refresh">
+      <button
+        class="blue"
+        id="refresh"
+      >
         Actualiser
       </button>
 
-      <button class="good" id="messageBtn">
+      <button
+        class="good"
+        id="messageBtn"
+      >
         Message global
       </button>
 
     </div>
 
   </div>
+
 
   <div class="card">
 
@@ -282,6 +400,7 @@ button:hover{
       <table class="player">
 
         <thead>
+
           <tr>
             <th>Joueur</th>
             <th>Statut</th>
@@ -290,6 +409,7 @@ button:hover{
             <th>Dernière activité</th>
             <th>Actions</th>
           </tr>
+
         </thead>
 
         <tbody id="players"></tbody>
@@ -302,7 +422,17 @@ button:hover{
 
 </div>
 
-<div class="modal" id="modal">
+</div>
+
+
+<!-- =====================================================
+     MODAL
+====================================================== -->
+
+<div
+  class="modal"
+  id="modal"
+>
 
   <div class="modalbox">
 
@@ -318,7 +448,10 @@ button:hover{
         Annuler
       </button>
 
-      <button class="blue" id="confirm">
+      <button
+        class="blue"
+        id="confirm"
+      >
         Confirmer
       </button>
 
@@ -327,6 +460,7 @@ button:hover{
   </div>
 
 </div>
+
 
 <script>
 
@@ -340,12 +474,15 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_mSlW81Ge9VrJmFEk-nWGCQ_31yVwxEL";
 
-const {createClient} = supabase;
+const {
+  createClient
+} = supabase;
 
-const db = createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const db =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
 /* =========================================================
@@ -353,7 +490,9 @@ const db = createClient(
 ========================================================= */
 
 let players = [];
+
 let currentAction = null;
+
 let currentPlayer = null;
 
 
@@ -361,8 +500,10 @@ let currentPlayer = null;
    HELPERS
 ========================================================= */
 
-const $ = id =>
+const $ =
+  id =>
   document.getElementById(id);
+
 
 function esc(v){
 
@@ -380,12 +521,14 @@ function esc(v){
 
 }
 
+
 function money(v){
 
   return Number(v || 0)
     .toLocaleString("fr-FR");
 
 }
+
 
 function date(v){
 
@@ -397,98 +540,54 @@ function date(v){
 
 
 /* =========================================================
-   ADMIN
+   CONNEXION
 ========================================================= */
 
-async function requireAdmin(){
+async function login(){
 
-  const {
-    data:{
-      session
-    }
-  } = await db.auth.getSession();
+  const email =
+    $("loginEmail").value.trim();
 
-  if(!session){
+  const password =
+    $("loginPassword").value;
 
-    location.href = "index.html";
 
-    return false;
-  }
+  if(!email || !password){
 
-  $("adminEmail").textContent =
-    session.user.email ||
-    session.user.id;
-
-  const {
-    data:isAdmin,
-    error
-  } = await db.rpc("is_admin");
-
-  if(error){
-
-    console.error(error);
-
-    $("status").innerHTML =
+    $("loginStatus").innerHTML =
       '<span class="error">' +
-      'Erreur lors de la vérification administrateur : ' +
-      esc(error.message) +
+      'Entre ton email et ton mot de passe.' +
       '</span>';
 
-    return false;
+    return;
   }
 
-  if(!isAdmin){
 
-    $("status").innerHTML =
-      '<span class="error">' +
-      'Accès refusé : ce compte n’est pas administrateur.' +
-      '</span>';
+  $("loginBtn").disabled = true;
 
-    return false;
-  }
-
-  $("status").innerHTML =
-    '<span class="success">' +
-    'Connecté en administrateur.' +
-    '</span>';
-
-  return true;
-}
-
-
-/* =========================================================
-   CHARGEMENT DES JOUEURS
-========================================================= */
-
-async function load(){
-
-  const ok = await requireAdmin();
-
-  if(!ok) return;
-
-  $("status").innerHTML =
+  $("loginStatus").innerHTML =
     '<span class="loading">' +
-    'Chargement des joueurs...' +
+    'Connexion...' +
     '</span>';
+
 
   const {
     data,
     error
-  } = await db
-    .from("players")
-    .select("*")
-    .order(
-      "last_seen",
-      {
-        ascending:false
-      }
-    );
+  } =
+    await db.auth.signInWithPassword({
+
+      email,
+      password
+
+    });
+
 
   if(error){
 
-    console.error(error);
+    $("loginBtn").disabled = false;
 
-    $("status").innerHTML =
+    $("loginStatus").innerHTML =
       '<span class="error">' +
       esc(error.message) +
       '</span>';
@@ -496,14 +595,180 @@ async function load(){
     return;
   }
 
-  players = data || [];
+
+  if(!data.session){
+
+    $("loginBtn").disabled = false;
+
+    $("loginStatus").innerHTML =
+      '<span class="error">' +
+      'Connexion impossible.' +
+      '</span>';
+
+    return;
+  }
+
+
+  $("loginStatus").innerHTML =
+    '<span class="success">' +
+    'Connexion réussie.' +
+    '</span>';
+
+
+  await startAdmin();
+
+}
+
+
+$("loginBtn").onclick =
+  login;
+
+
+$("loginPassword").addEventListener(
+  "keydown",
+  e => {
+
+    if(e.key === "Enter")
+      login();
+
+  }
+);
+
+
+/* =========================================================
+   VÉRIFICATION ADMIN
+========================================================= */
+
+async function startAdmin(){
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+
+  if(!session){
+
+    $("loginPanel").style.display =
+      "block";
+
+    $("adminPanel").style.display =
+      "none";
+
+    return false;
+  }
+
+
+  $("adminEmail").textContent =
+    session.user.email ||
+    session.user.id;
+
+
+  $("status").innerHTML =
+    '<span class="loading">' +
+    'Vérification des droits administrateur...' +
+    '</span>';
+
+
+  const {
+    data:isAdmin,
+    error
+  } =
+    await db.rpc("is_admin");
+
+
+  if(error){
+
+    $("status").innerHTML =
+      '<span class="error">' +
+      'Erreur lors de la vérification : ' +
+      esc(error.message) +
+      '</span>';
+
+    return false;
+  }
+
+
+  if(!isAdmin){
+
+    $("status").innerHTML =
+      '<span class="error">' +
+      '⛔ Accès refusé : ce compte n’est pas administrateur.' +
+      '</span>';
+
+    return false;
+  }
+
+
+  $("loginPanel").style.display =
+    "none";
+
+  $("adminPanel").style.display =
+    "block";
+
 
   $("status").innerHTML =
     '<span class="success">' +
-    'Connecté en administrateur.' +
+    '🛡️ Connecté en administrateur.' +
     '</span>';
 
+
+  await loadPlayers();
+
+  return true;
+
+}
+
+
+/* =========================================================
+   CHARGEMENT JOUEURS
+========================================================= */
+
+async function loadPlayers(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("players")
+      .select("*")
+      .order(
+        "last_seen",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    $("status").innerHTML =
+      '<span class="error">' +
+      'Erreur : ' +
+      esc(error.message) +
+      '</span>';
+
+    return;
+  }
+
+
+  players =
+    data || [];
+
+
+  $("status").innerHTML =
+    '<span class="success">' +
+    '🛡️ Connecté en administrateur.' +
+    '</span>';
+
+
   render();
+
 }
 
 
@@ -514,34 +779,43 @@ async function load(){
 function render(){
 
   const q =
-    $("search").value
+    $("search")
+      .value
       .trim()
       .toLowerCase();
+
 
   const filtered =
     players.filter(
       p =>
+
         (p.username || "")
           .toLowerCase()
           .includes(q)
+
         ||
+
         String(p.id || "")
           .toLowerCase()
           .includes(q)
     );
 
+
   $("total").textContent =
     players.length;
+
 
   $("online").textContent =
     players.filter(
       p => p.is_online
     ).length;
 
+
   $("banned").textContent =
     players.filter(
       p => p.ban_active
     ).length;
+
 
   $("mutations").textContent =
     players.reduce(
@@ -555,108 +829,157 @@ function render(){
 
 
   $("players").innerHTML =
-    filtered.map(p => {
+    filtered
+      .map(p => {
 
-      const status =
-        p.ban_active
+        const status =
 
-        ? '<span class="banned">🔨 BANNI</span>'
+          p.ban_active
 
-        : p.is_online
+          ?
 
-        ? '<span class="online">🟢 En ligne</span>'
+          '<span class="banned">' +
+          '🔨 BANNI' +
+          '</span>'
 
-        : '<span class="offline">⚫ Hors ligne</span>';
+          :
+
+          p.is_online
+
+          ?
+
+          '<span class="online">' +
+          '🟢 En ligne' +
+          '</span>'
+
+          :
+
+          '<span class="offline">' +
+          '⚫ Hors ligne' +
+          '</span>';
 
 
-      return `
-        <tr>
+        return `
 
-          <td>
-            <b>${esc(p.username)}</b>
+          <tr>
 
-            <div class="small">
-              ${esc(p.id)}
-            </div>
-          </td>
+            <td>
 
-          <td>
-            ${status}
-          </td>
+              <b>
+                ${esc(p.username)}
+              </b>
 
-          <td>
-            ${money(p.money)} $
-          </td>
+              <div class="small">
+                ${esc(p.id)}
+              </div>
 
-          <td>
-            ${p.discovered_mutations || 0}
-          </td>
+            </td>
 
-          <td>
-            ${date(p.last_seen)}
-          </td>
+            <td>
+              ${status}
+            </td>
 
-          <td>
+            <td>
+              ${money(p.money)} $
+            </td>
 
-            <div class="actions">
+            <td>
+              ${p.discovered_mutations || 0}
+            </td>
 
-              <button
-                class="warn"
-                onclick="openAction('money',${JSON.stringify(p.id)})"
-              >
-                💰 Argent
-              </button>
+            <td>
+              ${date(p.last_seen)}
+            </td>
 
-              <button
-                class="blue"
-                onclick="openAction('mutations',${JSON.stringify(p.id)})"
-              >
-                🧬 Mutations
-              </button>
+            <td>
 
-              <button
-                class="danger"
-                onclick="openAction('kick',${JSON.stringify(p.id)})"
-              >
-                👢 Kick
-              </button>
+              <div class="actions">
 
-              ${
-                p.ban_active
+                <button
+                  class="warn"
+                  onclick="openAction(
+                    'money',
+                    ${JSON.stringify(p.id)}
+                  )"
+                >
+                  💰 Argent
+                </button>
 
-                ? `
-                  <button
-                    class="good"
-                    onclick="openAction('unban',${JSON.stringify(p.id)})"
-                  >
-                    🔓 Débannir
-                  </button>
-                `
 
-                : `
-                  <button
-                    class="danger"
-                    onclick="openAction('ban',${JSON.stringify(p.id)})"
-                  >
-                    🔨 Ban
-                  </button>
-                `
-              }
+                <button
+                  class="blue"
+                  onclick="openAction(
+                    'mutations',
+                    ${JSON.stringify(p.id)}
+                  )"
+                >
+                  🧬 Mutations
+                </button>
 
-              <button
-                onclick="openAction('reset',${JSON.stringify(p.id)})"
-              >
-                ♻️ Reset
-              </button>
 
-            </div>
+                <button
+                  class="danger"
+                  onclick="openAction(
+                    'kick',
+                    ${JSON.stringify(p.id)}
+                  )"
+                >
+                  👢 Kick
+                </button>
 
-          </td>
 
-        </tr>
-      `;
+                ${
+                  p.ban_active
 
-    }).join("");
+                  ?
+
+                  `
+                    <button
+                      class="good"
+                      onclick="openAction(
+                        'unban',
+                        ${JSON.stringify(p.id)}
+                      )"
+                    >
+                      🔓 Débannir
+                    </button>
+                  `
+
+                  :
+
+                  `
+                    <button
+                      class="danger"
+                      onclick="openAction(
+                        'ban',
+                        ${JSON.stringify(p.id)}
+                      )"
+                    >
+                      🔨 Ban
+                    </button>
+                  `
+                }
+
+
+                <button
+                  onclick="openAction(
+                    'reset',
+                    ${JSON.stringify(p.id)}
+                  )"
+                >
+                  ♻️ Reset
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      })
+      .join("");
 
 }
 
@@ -665,17 +988,24 @@ function render(){
    MODAL
 ========================================================= */
 
-function openAction(action,id){
+function openAction(
+  action,
+  id
+){
 
-  currentAction = action;
+  currentAction =
+    action;
+
 
   currentPlayer =
     players.find(
       p => p.id === id
     );
 
+
   if(!currentPlayer)
     return;
+
 
   $("modal")
     .classList
@@ -721,7 +1051,9 @@ function openAction(action,id){
         id="v"
         type="number"
         min="0"
-        value="${Number(currentPlayer.money || 0)}"
+        value="${Number(
+          currentPlayer.money || 0
+        )}"
       >
 
       <div class="small">
@@ -745,7 +1077,9 @@ function openAction(action,id){
         id="v"
         type="number"
         min="0"
-        value="${Number(currentPlayer.discovered_mutations || 0)}"
+        value="${Number(
+          currentPlayer.discovered_mutations || 0
+        )}"
       >
 
     `;
@@ -759,7 +1093,9 @@ function openAction(action,id){
 
       <p>
         Déconnecter
-        <b>${esc(currentPlayer.username)}</b>
+        <b>
+          ${esc(currentPlayer.username)}
+        </b>
         immédiatement ?
       </p>
 
@@ -809,6 +1145,7 @@ function openAction(action,id){
 
       </select>
 
+
       <label>
         Raison
       </label>
@@ -826,7 +1163,10 @@ function openAction(action,id){
 
       <p>
         Retirer le bannissement de
-        <b>${esc(currentPlayer.username)}</b> ?
+        <b>
+          ${esc(currentPlayer.username)}
+        </b>
+        ?
       </p>
 
     `;
@@ -841,7 +1181,9 @@ function openAction(action,id){
       <p>
         ⚠️ Cette action efface l'argent,
         les records et la progression de
-        <b>${esc(currentPlayer.username)}</b>.
+        <b>
+          ${esc(currentPlayer.username)}
+        </b>.
       </p>
 
     `;
@@ -857,8 +1199,11 @@ function closeModal(){
     .classList
     .remove("show");
 
-  currentAction = null;
-  currentPlayer = null;
+  currentAction =
+    null;
+
+  currentPlayer =
+    null;
 
 }
 
@@ -877,23 +1222,33 @@ async function log(
     data:{
       user
     }
-  } = await db.auth.getUser();
+  } =
+    await db.auth.getUser();
+
 
   if(!user)
     return;
 
+
   const {
     error
-  } = await db
-    .from("admin_logs")
-    .insert({
+  } =
+    await db
+      .from("admin_logs")
+      .insert({
 
-      admin_id:user.id,
-      player_id:pid,
-      action,
-      details
+        admin_id:
+          user.id,
 
-    });
+        player_id:
+          pid,
+
+        action,
+
+        details
+
+      });
+
 
   if(error)
     console.error(
@@ -905,7 +1260,7 @@ async function log(
 
 
 /* =========================================================
-   ACTIONS
+   CONFIRMATION ACTION
 ========================================================= */
 
 async function confirmAction(){
@@ -913,10 +1268,13 @@ async function confirmAction(){
   if(!currentPlayer)
     return;
 
+
   const p =
     currentPlayer;
 
+
   try{
+
 
     /* ARGENT */
 
@@ -925,20 +1283,29 @@ async function confirmAction(){
       const value =
         Math.max(
           0,
-          Number($("v").value) || 0
+          Number(
+            $("v").value
+          ) || 0
         );
+
 
       const {
         error
-      } = await db
-        .from("players")
-        .update({
-          money:value
-        })
-        .eq("id",p.id);
+      } =
+        await db
+          .from("players")
+          .update({
+            money:value
+          })
+          .eq(
+            "id",
+            p.id
+          );
+
 
       if(error)
         throw error;
+
 
       await log(
         "set_money",
@@ -959,21 +1326,30 @@ async function confirmAction(){
         Math.max(
           0,
           Math.floor(
-            Number($("v").value) || 0
+            Number(
+              $("v").value
+            ) || 0
           )
         );
 
+
       const {
         error
-      } = await db
-        .from("players")
-        .update({
-          discovered_mutations:value
-        })
-        .eq("id",p.id);
+      } =
+        await db
+          .from("players")
+          .update({
+            discovered_mutations:value
+          })
+          .eq(
+            "id",
+            p.id
+          );
+
 
       if(error)
         throw error;
+
 
       await log(
         "set_mutations",
@@ -994,20 +1370,29 @@ async function confirmAction(){
         $("v").value ||
         "Expulsé par un administrateur.";
 
+
       const {
         error
-      } = await db
-        .from("players")
-        .update({
-          kick_until:
-            new Date(
-              Date.now() + 30000
-            ).toISOString()
-        })
-        .eq("id",p.id);
+      } =
+        await db
+          .from("players")
+          .update({
+
+            kick_until:
+              new Date(
+                Date.now() + 30000
+              ).toISOString()
+
+          })
+          .eq(
+            "id",
+            p.id
+          );
+
 
       if(error)
         throw error;
+
 
       await log(
         "kick",
@@ -1029,13 +1414,20 @@ async function confirmAction(){
           $("duration").value
         );
 
+
       const expires =
         sec
-        ? new Date(
-            Date.now() +
-            sec * 1000
-          ).toISOString()
-        : null;
+
+        ?
+
+        new Date(
+          Date.now() +
+          sec * 1000
+        ).toISOString()
+
+        :
+
+        null;
 
 
       let result =
@@ -1053,6 +1445,7 @@ async function confirmAction(){
             true
           );
 
+
       if(result.error)
         throw result.error;
 
@@ -1062,17 +1455,20 @@ async function confirmAction(){
           .from("bans")
           .insert({
 
-            player_id:p.id,
+            player_id:
+              p.id,
 
             reason:
               $("v").value ||
               "Aucune raison",
 
-            expires_at:expires,
+            expires_at:
+              expires,
 
             active:true
 
           });
+
 
       if(result.error)
         throw result.error;
@@ -1089,6 +1485,7 @@ async function confirmAction(){
             p.id
           );
 
+
       if(result.error)
         throw result.error;
 
@@ -1097,7 +1494,8 @@ async function confirmAction(){
         "ban",
         p.id,
         {
-          expires_at:expires
+          expires_at:
+            expires
         }
       );
 
@@ -1110,22 +1508,25 @@ async function confirmAction(){
 
       const {
         error
-      } = await db
-        .from("bans")
-        .update({
-          active:false
-        })
-        .eq(
-          "player_id",
-          p.id
-        )
-        .eq(
-          "active",
-          true
-        );
+      } =
+        await db
+          .from("bans")
+          .update({
+            active:false
+          })
+          .eq(
+            "player_id",
+            p.id
+          )
+          .eq(
+            "active",
+            true
+          );
+
 
       if(error)
         throw error;
+
 
       await log(
         "unban",
@@ -1142,30 +1543,33 @@ async function confirmAction(){
 
       const {
         error
-      } = await db
-        .from("players")
-        .update({
+      } =
+        await db
+          .from("players")
+          .update({
 
-          money:0,
+            money:0,
 
-          discovered_mutations:0,
+            discovered_mutations:0,
 
-          best_tomato_value:0,
+            best_tomato_value:0,
 
-          best_tomato_mutations:[],
+            best_tomato_mutations:[],
 
-          best_carrot_value:0,
+            best_carrot_value:0,
 
-          best_carrot_mutations:[]
+            best_carrot_mutations:[]
 
-        })
-        .eq(
-          "id",
-          p.id
-        );
+          })
+          .eq(
+            "id",
+            p.id
+          );
+
 
       if(error)
         throw error;
+
 
       await log(
         "reset_account",
@@ -1178,7 +1582,7 @@ async function confirmAction(){
 
     closeModal();
 
-    await load();
+    await loadPlayers();
 
 
   }catch(e){
@@ -1202,18 +1606,21 @@ async function confirmAction(){
 $("cancel").onclick =
   closeModal;
 
+
 $("confirm").onclick =
   confirmAction;
 
+
 $("refresh").onclick =
-  load;
+  loadPlayers;
+
 
 $("search").oninput =
   render;
 
 
 /* =========================================================
-   DECONNEXION
+   LOGOUT
 ========================================================= */
 
 $("logout").onclick =
@@ -1221,8 +1628,14 @@ $("logout").onclick =
 
     await db.auth.signOut();
 
-    location.href =
-      "index.html";
+    $("adminPanel").style.display =
+      "none";
+
+    $("loginPanel").style.display =
+      "block";
+
+    $("loginPassword").value =
+      "";
 
   };
 
@@ -1238,6 +1651,7 @@ $("messageBtn").onclick =
       prompt(
         "Message à envoyer à tous les joueurs :"
       );
+
 
     if(!message)
       return;
@@ -1309,7 +1723,7 @@ db
     },
     () => {
 
-      load();
+      loadPlayers();
 
     }
   )
@@ -1318,10 +1732,34 @@ db
 
 
 /* =========================================================
-   DEMARRAGE
+   DÉMARRAGE
 ========================================================= */
 
-load();
+(async () => {
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+
+  if(session){
+
+    await startAdmin();
+
+  }else{
+
+    $("loginPanel").style.display =
+      "block";
+
+    $("adminPanel").style.display =
+      "none";
+
+  }
+
+})();
 
 </script>
 
