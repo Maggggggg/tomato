@@ -9,13 +9,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   background:#090b10;
   color:#fff;
-  font-family:Arial,sans-serif
+  font-family:Arial,sans-serif;
 }
 
 header{
@@ -27,22 +29,25 @@ header{
   gap:10px;
   position:sticky;
   top:0;
-  z-index:5
+  z-index:5;
 }
 
 h1{
   font-size:21px;
-  margin:0
+  margin:0;
 }
 
 .wrap{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
-  padding:16px
+  padding:16px;
 }
 
-button,input,select,textarea{
-  font:inherit
+button,
+input,
+select,
+textarea{
+  font:inherit;
 }
 
 button{
@@ -51,53 +56,65 @@ button{
   padding:10px 13px;
   color:#fff;
   background:#272e3b;
-  cursor:pointer
+  cursor:pointer;
 }
 
 button:hover{
-  filter:brightness(1.15)
+  filter:brightness(1.15);
 }
 
 button:disabled{
   opacity:.5;
-  cursor:not-allowed
+  cursor:not-allowed;
 }
 
-.danger{background:#b52d35}
-.warn{background:#9b6718}
-.good{background:#247a49}
-.blue{background:#285c9d}
+.danger{
+  background:#b52d35;
+}
+
+.warn{
+  background:#9b6718;
+}
+
+.good{
+  background:#247a49;
+}
+
+.blue{
+  background:#285c9d;
+}
 
 .card{
   background:#121722;
   border:1px solid #252c39;
   border-radius:14px;
   padding:14px;
-  margin-bottom:14px
+  margin-bottom:14px;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:10px
+  gap:10px;
+  margin-bottom:14px;
 }
 
 .stat{
   background:#181e29;
   border-radius:12px;
-  padding:13px
+  padding:13px;
 }
 
 .stat b{
   font-size:22px;
   display:block;
-  margin-top:5px
+  margin-top:5px;
 }
 
 .controls{
   display:flex;
   gap:8px;
-  flex-wrap:wrap
+  flex-wrap:wrap;
 }
 
 .controls input{
@@ -107,17 +124,17 @@ button:disabled{
   color:#fff;
   border:1px solid #303847;
   border-radius:10px;
-  padding:10px
+  padding:10px;
 }
 
 .tablewrap{
-  overflow:auto
+  overflow:auto;
 }
 
 .player{
-  min-width:900px;
+  min-width:1000px;
   width:100%;
-  border-collapse:collapse
+  border-collapse:collapse;
 }
 
 .player th,
@@ -125,30 +142,76 @@ button:disabled{
   text-align:left;
   padding:10px;
   border-bottom:1px solid #282f3c;
-  vertical-align:top
+  vertical-align:top;
 }
 
 .player th{
-  color:#aeb8ca
+  color:#aeb8ca;
 }
 
 .online{
-  color:#45d889
+  color:#45d889;
 }
 
 .offline{
-  color:#8992a3
+  color:#8992a3;
 }
 
 .banned{
   color:#ff5f67;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .actions{
   display:flex;
   flex-wrap:wrap;
-  gap:5px
+  gap:5px;
+}
+
+.small{
+  font-size:12px;
+  color:#98a3b7;
+}
+
+.error{
+  color:#ff6a72;
+}
+
+.success{
+  color:#50dd91;
+}
+
+.loading{
+  color:#f4c95d;
+}
+
+.login{
+  width:min(420px,100%);
+  margin:70px auto;
+  padding:15px;
+}
+
+.login h2{
+  margin-top:0;
+}
+
+.login input{
+  width:100%;
+  margin:7px 0 12px;
+  background:#0c1017;
+  color:#fff;
+  border:1px solid #333c4c;
+  border-radius:10px;
+  padding:12px;
+}
+
+.login button{
+  width:100%;
+  margin-top:5px;
+}
+
+#adminPanel{
+  display:none;
 }
 
 .modal{
@@ -159,19 +222,21 @@ button:disabled{
   align-items:center;
   justify-content:center;
   padding:15px;
-  z-index:20
+  z-index:20;
 }
 
 .modal.show{
-  display:flex
+  display:flex;
 }
 
 .modalbox{
   width:min(500px,100%);
+  max-height:90vh;
+  overflow:auto;
   background:#151b26;
   border:1px solid #303848;
   border-radius:16px;
-  padding:18px
+  padding:18px;
 }
 
 .modalbox input,
@@ -183,78 +248,43 @@ button:disabled{
   color:#fff;
   border:1px solid #333c4c;
   border-radius:9px;
-  padding:10px
+  padding:10px;
 }
 
-.small{
-  font-size:12px;
-  color:#98a3b7
+#actionError{
+  margin-top:10px;
+  padding:10px;
+  border-radius:8px;
+  background:#30171a;
+  display:none;
 }
 
-.error{
-  color:#ff6a72
-}
-
-.success{
-  color:#50dd91
-}
-
-.loading{
-  color:#f4c95d
-}
-
-.login{
-  width:min(420px,100%);
-  margin:70px auto;
-  padding:15px
-}
-
-.login h2{
-  margin-top:0
-}
-
-.login input{
-  width:100%;
-  margin:7px 0 12px;
-  background:#0c1017;
-  color:#fff;
-  border:1px solid #333c4c;
-  border-radius:10px;
-  padding:12px
-}
-
-.login button{
-  width:100%;
-  margin-top:5px
-}
-
-#adminPanel{
-  display:none
-}
-
-.hidden{
-  display:none!important
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#8992a3;
 }
 
 @media(max-width:700px){
 
   .stats{
-    grid-template-columns:repeat(2,1fr)
+    grid-template-columns:repeat(2,1fr);
   }
 
   header{
     align-items:flex-start;
-    flex-direction:column
+    flex-direction:column;
   }
+
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     CONNEXION ADMIN
-====================================================== -->
+<!-- =========================
+     CONNEXION
+========================= -->
 
 <div id="loginPanel" class="login">
 
@@ -304,9 +334,9 @@ button:disabled{
 </div>
 
 
-<!-- =====================================================
-     PANNEAU ADMIN
-====================================================== -->
+<!-- =========================
+     ADMIN
+========================= -->
 
 <div id="adminPanel">
 
@@ -382,14 +412,14 @@ button:disabled{
         class="blue"
         id="refresh"
       >
-        Actualiser
+        🔄 Actualiser
       </button>
 
       <button
         class="good"
         id="messageBtn"
       >
-        Message global
+        📢 Message global
       </button>
 
     </div>
@@ -429,9 +459,9 @@ button:disabled{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      MODAL
-====================================================== -->
+========================= -->
 
 <div
   class="modal"
@@ -445,6 +475,11 @@ button:disabled{
     </h2>
 
     <div id="modalContent"></div>
+
+    <div
+      id="actionError"
+      class="error"
+    ></div>
 
     <div class="controls">
 
@@ -478,12 +513,15 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_mSlW81Ge9VrJmFEk-nWGCQ_31yVwxEL";
 
-const { createClient } = supabase;
+const {
+  createClient
+} = supabase;
 
-const db = createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const db =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
 /* =========================================================
@@ -498,11 +536,11 @@ let currentPlayer = null;
 
 
 /* =========================================================
-   HELPERS
+   HELPER
 ========================================================= */
 
-const $ = id =>
-  document.getElementById(id);
+const $ =
+  id => document.getElementById(id);
 
 
 function esc(v){
@@ -532,9 +570,42 @@ function money(v){
 
 function date(v){
 
-  return v
-    ? new Date(v).toLocaleString("fr-FR")
-    : "—";
+  if(!v)
+    return "—";
+
+  const d =
+    new Date(v);
+
+  if(
+    isNaN(
+      d.getTime()
+    )
+  )
+    return "—";
+
+  return d.toLocaleString("fr-FR");
+
+}
+
+
+function showActionError(message){
+
+  $("actionError").style.display =
+    "block";
+
+  $("actionError").textContent =
+    "❌ " + message;
+
+}
+
+
+function clearActionError(){
+
+  $("actionError").style.display =
+    "none";
+
+  $("actionError").textContent =
+    "";
 
 }
 
@@ -546,10 +617,13 @@ function date(v){
 async function login(){
 
   const email =
-    $("loginEmail").value.trim();
+    $("loginEmail")
+      .value
+      .trim();
 
   const password =
-    $("loginPassword").value;
+    $("loginPassword")
+      .value;
 
 
   if(!email || !password){
@@ -564,7 +638,8 @@ async function login(){
   }
 
 
-  $("loginBtn").disabled = true;
+  $("loginBtn").disabled =
+    true;
 
   $("loginStatus").innerHTML =
     '<span class="loading">' +
@@ -572,61 +647,55 @@ async function login(){
     '</span>';
 
 
-  try{
+  const {
+    data,
+    error
+  } =
+    await db.auth.signInWithPassword({
 
-    const {
-      data,
-      error
-    } =
-      await db.auth.signInWithPassword({
+      email,
+      password
 
-        email:email,
-        password:password
-
-      });
+    });
 
 
-    if(error){
+  if(error){
 
-      throw error;
-
-    }
-
-
-    if(!data || !data.session){
-
-      throw new Error(
-        "La connexion a réussi mais aucune session n'a été créée."
-      );
-
-    }
-
-
-    $("loginStatus").innerHTML =
-      '<span class="success">' +
-      'Connexion réussie. Vérification des droits...' +
-      '</span>';
-
-
-    await startAdmin();
-
-
-  }catch(error){
-
-    console.error(
-      "Erreur connexion :",
-      error
-    );
+    $("loginBtn").disabled =
+      false;
 
     $("loginStatus").innerHTML =
       '<span class="error">' +
-      'Erreur : ' +
-      esc(error.message || error) +
+      esc(error.message) +
       '</span>';
 
-    $("loginBtn").disabled = false;
+    return;
 
   }
+
+
+  if(!data.session){
+
+    $("loginBtn").disabled =
+      false;
+
+    $("loginStatus").innerHTML =
+      '<span class="error">' +
+      'Aucune session créée.' +
+      '</span>';
+
+    return;
+
+  }
+
+
+  $("loginStatus").innerHTML =
+    '<span class="success">' +
+    '✅ Connexion réussie.' +
+    '</span>';
+
+
+  await startAdmin();
 
 }
 
@@ -635,66 +704,39 @@ $("loginBtn").onclick =
   login;
 
 
-$("loginPassword").addEventListener(
-  "keydown",
-  e => {
+$("loginPassword")
+  .addEventListener(
+    "keydown",
+    e => {
 
-    if(e.key === "Enter"){
-
-      login();
+      if(e.key === "Enter")
+        login();
 
     }
-
-  }
-);
+  );
 
 
 /* =========================================================
-   DÉMARRAGE ADMIN
+   VÉRIFICATION ADMIN
 ========================================================= */
 
 async function startAdmin(){
 
-  $("loginStatus").innerHTML =
-    '<span class="loading">' +
-    'Vérification des droits administrateur...' +
-    '</span>';
-
-
   const {
     data:{
       session
-    },
-    error:sessionError
+    }
   } =
     await db.auth.getSession();
 
 
-  if(sessionError){
-
-    console.error(sessionError);
-
-    $("loginStatus").innerHTML =
-      '<span class="error">' +
-      'Erreur de session : ' +
-      esc(sessionError.message) +
-      '</span>';
-
-    $("loginBtn").disabled = false;
-
-    return false;
-
-  }
-
-
   if(!session){
 
-    $("loginStatus").innerHTML =
-      '<span class="error">' +
-      'Aucune session administrateur.' +
-      '</span>';
+    $("loginPanel").style.display =
+      "block";
 
-    $("loginBtn").disabled = false;
+    $("adminPanel").style.display =
+      "none";
 
     return false;
 
@@ -706,13 +748,6 @@ async function startAdmin(){
     session.user.id;
 
 
-  /*
-     IMPORTANT :
-     On affiche le panneau admin avant
-     l'appel RPC afin que l'utilisateur
-     voie exactement où ça bloque.
-  */
-
   $("loginPanel").style.display =
     "none";
 
@@ -722,158 +757,127 @@ async function startAdmin(){
 
   $("status").innerHTML =
     '<span class="loading">' +
-    'Vérification des droits administrateur...' +
+    '🔐 Vérification des droits...' +
     '</span>';
 
 
-  try{
-
-    const {
-      data:isAdmin,
-      error
-    } =
-      await db.rpc("is_admin");
-
-
-    console.log(
-      "RESULTAT is_admin :",
-      isAdmin
-    );
-
-    console.log(
-      "ERREUR is_admin :",
-      error
+  const {
+    data:isAdmin,
+    error
+  } =
+    await db.rpc(
+      "is_admin"
     );
 
 
-    if(error){
-
-      $("status").innerHTML =
-        '<span class="error">' +
-        '❌ Erreur avec la fonction is_admin : ' +
-        esc(error.message) +
-        '</span>';
-
-      return false;
-
-    }
-
-
-    if(isAdmin !== true){
-
-      $("status").innerHTML =
-        '<span class="error">' +
-        '⛔ Accès refusé : ce compte n’est pas administrateur.' +
-        '<br><br>' +
-        '<span class="small">' +
-        'Le compte est bien connecté à Supabase, ' +
-        'mais la fonction is_admin ne le reconnaît pas comme administrateur.' +
-        '</span>' +
-        '</span>';
-
-      return false;
-
-    }
-
-
-    $("status").innerHTML =
-      '<span class="success">' +
-      '🛡️ Connecté en administrateur.' +
-      '</span>';
-
-
-    $("loginBtn").disabled = false;
-
-
-    await loadPlayers();
-
-
-    return true;
-
-
-  }catch(error){
-
-    console.error(
-      "Erreur startAdmin :",
-      error
-    );
+  if(error){
 
     $("status").innerHTML =
       '<span class="error">' +
-      '❌ Erreur : ' +
-      esc(error.message || error) +
+      '❌ Erreur is_admin : ' +
+      esc(error.message) +
       '</span>';
 
     return false;
 
   }
 
+
+  if(!isAdmin){
+
+    $("status").innerHTML =
+      '<span class="error">' +
+      '⛔ Ce compte n’est pas administrateur.' +
+      '</span>';
+
+    return false;
+
+  }
+
+
+  $("status").innerHTML =
+    '<span class="success">' +
+    '🛡️ Connecté en tant qu’administrateur.' +
+    '</span>';
+
+
+  await loadPlayers();
+
+  return true;
+
 }
 
 
 /* =========================================================
-   CHARGEMENT DES JOUEURS
+   CHARGER LES JOUEURS
 ========================================================= */
 
 async function loadPlayers(){
 
   $("status").innerHTML =
     '<span class="loading">' +
-    'Chargement des joueurs...' +
+    '⏳ Chargement des joueurs...' +
     '</span>';
 
 
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from("players")
-        .select("*")
-        .order(
-          "last_seen",
-          {
-            ascending:false
-          }
-        );
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("players")
+      .select("*")
+      .order(
+        "last_seen",
+        {
+          ascending:false
+        }
+      );
 
 
-    if(error){
-
-      throw error;
-
-    }
-
-
-    players =
-      data || [];
-
-
-    $("status").innerHTML =
-      '<span class="success">' +
-      '🛡️ Connecté en administrateur.' +
-      '</span>';
-
-
-    render();
-
-
-  }catch(error){
+  if(error){
 
     console.error(
-      "Erreur chargement joueurs :",
+      "ERREUR PLAYERS:",
       error
     );
 
+
     $("status").innerHTML =
       '<span class="error">' +
-      '❌ Impossible de charger les joueurs : ' +
-      esc(error.message || error) +
+      '❌ Impossible de charger les joueurs.<br><br>' +
+      '<b>Erreur Supabase :</b><br>' +
+      esc(error.message) +
+      '<br><br>' +
+      '<span class="small">' +
+      'Code : ' +
+      esc(error.code || "inconnu") +
+      '</span>' +
       '</span>';
 
+    players = [];
+
+    render();
+
+    return;
+
   }
+
+
+  players =
+    data || [];
+
+
+  $("status").innerHTML =
+    '<span class="success">' +
+    '🛡️ Connecté en tant qu’administrateur.' +
+    ' — ' +
+    players.length +
+    ' joueur(s)' +
+    '</span>';
+
+
+  render();
 
 }
 
@@ -895,15 +899,19 @@ function render(){
     players.filter(
       p =>
 
-        (p.username || "")
-          .toLowerCase()
-          .includes(q)
+        String(
+          p.username || ""
+        )
+        .toLowerCase()
+        .includes(q)
 
         ||
 
-        String(p.id || "")
-          .toLowerCase()
-          .includes(q)
+        String(
+          p.id || ""
+        )
+        .toLowerCase()
+        .includes(q)
     );
 
 
@@ -913,20 +921,20 @@ function render(){
 
   $("online").textContent =
     players.filter(
-      p => p.is_online
+      p => p.is_online === true
     ).length;
 
 
   $("banned").textContent =
     players.filter(
-      p => p.ban_active
+      p => p.ban_active === true
     ).length;
 
 
   $("mutations").textContent =
     players.reduce(
-      (a,p) =>
-        a +
+      (total,p) =>
+        total +
         Number(
           p.discovered_mutations || 0
         ),
@@ -934,35 +942,53 @@ function render(){
     );
 
 
+  if(!filtered.length){
+
+    $("players").innerHTML =
+      `<tr>
+        <td colspan="6" class="empty">
+          Aucun joueur trouvé.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
   $("players").innerHTML =
     filtered
       .map(p => {
 
-        const status =
+        let status;
 
-          p.ban_active
 
-          ?
+        if(p.ban_active){
 
-          '<span class="banned">' +
-          '🔨 BANNI' +
-          '</span>'
+          status =
+            '<span class="banned">' +
+            '🔨 BANNI' +
+            '</span>';
 
-          :
+        }
 
-          p.is_online
+        else if(p.is_online){
 
-          ?
+          status =
+            '<span class="online">' +
+            '🟢 En ligne' +
+            '</span>';
 
-          '<span class="online">' +
-          '🟢 En ligne' +
-          '</span>'
+        }
 
-          :
+        else{
 
-          '<span class="offline">' +
-          '⚫ Hors ligne' +
-          '</span>';
+          status =
+            '<span class="offline">' +
+            '⚫ Hors ligne' +
+            '</span>';
+
+        }
 
 
         return `
@@ -972,11 +998,11 @@ function render(){
             <td>
 
               <b>
-                ${esc(p.username)}
+                ${esc(p.username || "Sans pseudo")}
               </b>
 
               <div class="small">
-                ${esc(p.id)}
+                ${esc(p.id || "")}
               </div>
 
             </td>
@@ -990,7 +1016,7 @@ function render(){
             </td>
 
             <td>
-              ${p.discovered_mutations || 0}
+              ${Number(p.discovered_mutations || 0)}
             </td>
 
             <td>
@@ -1003,36 +1029,24 @@ function render(){
 
                 <button
                   class="warn"
-                  onclick="openAction(
-                    'money',
-                    ${JSON.stringify(p.id)}
-                  )"
+                  onclick="openAction('money', ${JSON.stringify(p.id)})"
                 >
                   💰 Argent
                 </button>
 
-
                 <button
                   class="blue"
-                  onclick="openAction(
-                    'mutations',
-                    ${JSON.stringify(p.id)}
-                  )"
+                  onclick="openAction('mutations', ${JSON.stringify(p.id)})"
                 >
                   🧬 Mutations
                 </button>
 
-
                 <button
                   class="danger"
-                  onclick="openAction(
-                    'kick',
-                    ${JSON.stringify(p.id)}
-                  )"
+                  onclick="openAction('kick', ${JSON.stringify(p.id)})"
                 >
                   👢 Kick
                 </button>
-
 
                 ${
                   p.ban_active
@@ -1040,38 +1054,28 @@ function render(){
                   ?
 
                   `
-                    <button
-                      class="good"
-                      onclick="openAction(
-                        'unban',
-                        ${JSON.stringify(p.id)}
-                      )"
-                    >
-                      🔓 Débannir
-                    </button>
+                  <button
+                    class="good"
+                    onclick="openAction('unban', ${JSON.stringify(p.id)})"
+                  >
+                    🔓 Débannir
+                  </button>
                   `
 
                   :
 
                   `
-                    <button
-                      class="danger"
-                      onclick="openAction(
-                        'ban',
-                        ${JSON.stringify(p.id)}
-                      )"
-                    >
-                      🔨 Ban
-                    </button>
+                  <button
+                    class="danger"
+                    onclick="openAction('ban', ${JSON.stringify(p.id)})"
+                  >
+                    🔨 Ban
+                  </button>
                   `
                 }
 
-
                 <button
-                  onclick="openAction(
-                    'reset',
-                    ${JSON.stringify(p.id)}
-                  )"
+                  onclick="openAction('reset', ${JSON.stringify(p.id)})"
                 >
                   ♻️ Reset
                 </button>
@@ -1091,7 +1095,7 @@ function render(){
 
 
 /* =========================================================
-   MODAL
+   OUVRIR ACTION
 ========================================================= */
 
 function openAction(
@@ -1105,12 +1109,22 @@ function openAction(
 
   currentPlayer =
     players.find(
-      p => p.id === id
+      p => String(p.id) === String(id)
     );
 
 
-  if(!currentPlayer)
+  if(!currentPlayer){
+
+    alert(
+      "Joueur introuvable."
+    );
+
     return;
+
+  }
+
+
+  clearActionError();
 
 
   $("modal")
@@ -1121,7 +1135,7 @@ function openAction(
   const titles = {
 
     money:
-      "💰 Modifier l'argent",
+      "💰 Modifier l’argent",
 
     mutations:
       "🧬 Modifier les mutations",
@@ -1163,7 +1177,8 @@ function openAction(
       >
 
       <div class="small">
-        La valeur sera remplacée.
+        La valeur actuelle est :
+        ${money(currentPlayer.money)} $
       </div>
 
     `;
@@ -1251,7 +1266,6 @@ function openAction(
 
       </select>
 
-
       <label>
         Raison
       </label>
@@ -1285,8 +1299,18 @@ function openAction(
     $("modalContent").innerHTML = `
 
       <p>
-        ⚠️ Cette action efface l'argent,
-        les records et la progression de
+        ⚠️ Cette action efface :
+      </p>
+
+      <ul>
+        <li>l’argent</li>
+        <li>les mutations découvertes</li>
+        <li>le record tomate</li>
+        <li>le record carotte</li>
+      </ul>
+
+      <p>
+        du joueur
         <b>
           ${esc(currentPlayer.username)}
         </b>.
@@ -1299,19 +1323,23 @@ function openAction(
 }
 
 
+/* =========================================================
+   FERMER MODAL
+========================================================= */
+
 function closeModal(){
 
   $("modal")
     .classList
     .remove("show");
 
-
   currentAction =
     null;
 
-
   currentPlayer =
     null;
+
+  clearActionError();
 
 }
 
@@ -1361,7 +1389,7 @@ async function log(
   if(error){
 
     console.error(
-      "Erreur log admin:",
+      "Erreur admin_logs:",
       error
     );
 
@@ -1371,7 +1399,7 @@ async function log(
 
 
 /* =========================================================
-   CONFIRMATION DES ACTIONS
+   CONFIRMATION
 ========================================================= */
 
 async function confirmAction(){
@@ -1380,14 +1408,22 @@ async function confirmAction(){
     return;
 
 
+  clearActionError();
+
+
+  $("confirm").disabled =
+    true;
+
+
   const p =
     currentPlayer;
 
 
   try{
 
-
-    /* ARGENT */
+    /* =====================
+       ARGENT
+    ===================== */
 
     if(currentAction === "money"){
 
@@ -1429,7 +1465,9 @@ async function confirmAction(){
     }
 
 
-    /* MUTATIONS */
+    /* =====================
+       MUTATIONS
+    ===================== */
 
     else if(currentAction === "mutations"){
 
@@ -1466,14 +1504,16 @@ async function confirmAction(){
         "set_mutations",
         p.id,
         {
-          value:value
+          value
         }
       );
 
     }
 
 
-    /* KICK */
+    /* =====================
+       KICK
+    ===================== */
 
     else if(currentAction === "kick"){
 
@@ -1516,7 +1556,9 @@ async function confirmAction(){
     }
 
 
-    /* BAN */
+    /* =====================
+       BAN
+    ===================== */
 
     else if(currentAction === "ban"){
 
@@ -1541,7 +1583,10 @@ async function confirmAction(){
         null;
 
 
-      let result =
+      let result;
+
+
+      result =
         await db
           .from("bans")
           .update({
@@ -1613,7 +1658,9 @@ async function confirmAction(){
     }
 
 
-    /* UNBAN */
+    /* =====================
+       UNBAN
+    ===================== */
 
     else if(currentAction === "unban"){
 
@@ -1648,7 +1695,9 @@ async function confirmAction(){
     }
 
 
-    /* RESET */
+    /* =====================
+       RESET
+    ===================== */
 
     else if(currentAction === "reset"){
 
@@ -1696,19 +1745,26 @@ async function confirmAction(){
     await loadPlayers();
 
 
-  }catch(error){
+  }
+
+  catch(e){
 
     console.error(
-      "Erreur action admin :",
-      error
+      "ACTION ADMIN ERROR:",
+      e
     );
 
-    alert(
-      "Erreur : " +
-      (error.message || error)
+
+    showActionError(
+      e.message ||
+      "Une erreur inconnue est survenue."
     );
 
   }
+
+
+  $("confirm").disabled =
+    false;
 
 }
 
@@ -1747,6 +1803,9 @@ $("logout").onclick =
 
     $("loginPanel").style.display =
       "block";
+
+    $("loginEmail").value =
+      "";
 
     $("loginPassword").value =
       "";
@@ -1811,13 +1870,16 @@ $("messageBtn").onclick =
     if(error){
 
       alert(
+        "Erreur : " +
         error.message
       );
 
-    }else{
+    }
+
+    else{
 
       alert(
-        "Message envoyé."
+        "✅ Message envoyé."
       );
 
     }
@@ -1855,42 +1917,27 @@ db
 
 (async () => {
 
-  try{
-
-    const {
-      data:{
-        session
-      }
-    } =
-      await db.auth.getSession();
-
-
-    if(session){
-
-      await startAdmin();
-
-    }else{
-
-      $("loginPanel").style.display =
-        "block";
-
-      $("adminPanel").style.display =
-        "none";
-
+  const {
+    data:{
+      session
     }
+  } =
+    await db.auth.getSession();
 
-  }catch(error){
 
-    console.error(
-      "Erreur démarrage :",
-      error
-    );
+  if(session){
 
-    $("loginStatus").innerHTML =
-      '<span class="error">' +
-      'Erreur : ' +
-      esc(error.message || error) +
-      '</span>';
+    await startAdmin();
+
+  }
+
+  else{
+
+    $("loginPanel").style.display =
+      "block";
+
+    $("adminPanel").style.display =
+      "none";
 
   }
 
